@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Principal Component Analysis | STAT 372 Open Textbook (Python)</title>
+  <meta name="description" content="This is an open textbook resource for the STAT372 course at MacEwan University, an introduction to Multivariate Statistics and Machine Learning." />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Principal Component Analysis | STAT 372 Open Textbook (Python)" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is an open textbook resource for the STAT372 course at MacEwan University, an introduction to Multivariate Statistics and Machine Learning." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Principal Component Analysis | STAT 372 Open Textbook (Python)" />
+  
+  <meta name="twitter:description" content="This is an open textbook resource for the STAT372 course at MacEwan University, an introduction to Multivariate Statistics and Machine Learning." />
+  
+
+<meta name="author" content="Dr. Wanhua Su" />
+
+
+<meta name="date" content="2025-08-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="hypothesis-tests-on-mean-vectors.html"/>
+<link rel="next" href="factor-analysis.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#some-examples"><i class="fa fa-check"></i><b>1.2</b> Some Examples</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#example-1-storm-survival-of-sparrows"><i class="fa fa-check"></i>Example 1: Storm Survival of Sparrows</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#example-2-spam-or-e-mail"><i class="fa fa-check"></i>Example 2: Spam or E-mail?</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#example-3-classification-of-iris"><i class="fa fa-check"></i>Example 3: Classification of Iris</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#multivariate-methods-covered-in-stat-372"><i class="fa fa-check"></i><b>1.3</b> Multivariate Methods Covered in STAT 372</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#review-univariate-analysis"><i class="fa fa-check"></i><b>1.4</b> Review: Univariate Analysis</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="intro.html"><a href="intro.html#random-variable-and-its-distribution"><i class="fa fa-check"></i><b>1.4.1</b> Random Variable and Its Distribution</a></li>
+<li class="chapter" data-level="1.4.2" data-path="intro.html"><a href="intro.html#properties-of-expectation-and-variance"><i class="fa fa-check"></i><b>1.4.2</b> Properties of Expectation and Variance</a></li>
+<li class="chapter" data-level="1.4.3" data-path="intro.html"><a href="intro.html#continuous-random-variables"><i class="fa fa-check"></i><b>1.4.3</b> Continuous Random Variables</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#revisit-learning-learning-outcomes"><i class="fa fa-check"></i>Revisit Learning Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="matrix-algebra.html"><a href="matrix-algebra.html"><i class="fa fa-check"></i><b>2</b> Matrix Algebra</a>
+<ul>
+<li class="chapter" data-level="" data-path="matrix-algebra.html"><a href="matrix-algebra.html#learning-outcomes-1"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="2.1" data-path="matrix-algebra.html"><a href="matrix-algebra.html#vectors"><i class="fa fa-check"></i><b>2.1</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="matrix-algebra.html"><a href="matrix-algebra.html#some-basic-operations-on-vectors"><i class="fa fa-check"></i><b>2.1.1</b> Some Basic Operations on Vectors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="matrix-algebra.html"><a href="matrix-algebra.html#matrices"><i class="fa fa-check"></i><b>2.2</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="matrix-algebra.html"><a href="matrix-algebra.html#basic-operations-on-matrix"><i class="fa fa-check"></i><b>2.2.1</b> Basic Operations on Matrix</a></li>
+<li class="chapter" data-level="2.2.2" data-path="matrix-algebra.html"><a href="matrix-algebra.html#eigenvalues-and-eigenvectors"><i class="fa fa-check"></i><b>2.2.2</b> Eigenvalues and Eigenvectors</a></li>
+<li class="chapter" data-level="2.2.3" data-path="matrix-algebra.html"><a href="matrix-algebra.html#spectral-eigen-decomposition"><i class="fa fa-check"></i><b>2.2.3</b> Spectral (Eigen) Decomposition</a></li>
+<li class="chapter" data-level="2.2.4" data-path="matrix-algebra.html"><a href="matrix-algebra.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.2.4</b> Singular-Value Decomposition</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="matrix-algebra.html"><a href="matrix-algebra.html#mean-vectors-and-covariance-matrices"><i class="fa fa-check"></i><b>2.3</b> Mean Vectors and Covariance Matrices</a></li>
+<li class="chapter" data-level="2.4" data-path="matrix-algebra.html"><a href="matrix-algebra.html#sample-mean-vector-and-covariance-matrix"><i class="fa fa-check"></i><b>2.4</b> Sample Mean Vector and Covariance Matrix</a></li>
+<li class="chapter" data-level="2.5" data-path="matrix-algebra.html"><a href="matrix-algebra.html#review-exercises"><i class="fa fa-check"></i><b>2.5</b> Review Exercises</a></li>
+<li class="chapter" data-level="" data-path="matrix-algebra.html"><a href="matrix-algebra.html#revisit-the-learning-outcomes"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html"><i class="fa fa-check"></i><b>3</b> Displaying Multivariate Data and Measures of Distance</a>
+<ul>
+<li class="chapter" data-level="" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#learning-outcomes-2"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="3.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#display-multivariate-data"><i class="fa fa-check"></i><b>3.1</b> Display Multivariate Data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#scatterplot"><i class="fa fa-check"></i><b>3.1.1</b> Scatterplot</a></li>
+<li class="chapter" data-level="3.1.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#graphs-of-growth-curves"><i class="fa fa-check"></i><b>3.1.2</b> Graphs of Growth Curves</a></li>
+<li class="chapter" data-level="3.1.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#star-plots"><i class="fa fa-check"></i><b>3.1.3</b> Star Plots</a></li>
+<li class="chapter" data-level="3.1.4" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#chernoff-faces-plot"><i class="fa fa-check"></i><b>3.1.4</b> Chernoff Faces Plot</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distance-in-multivariate-analysis"><i class="fa fa-check"></i><b>3.2</b> Distance in Multivariate Analysis</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distances-for-quantitative-variables"><i class="fa fa-check"></i><b>3.2.1</b> Distances for Quantitative Variables</a></li>
+<li class="chapter" data-level="3.2.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distance-for-categorical-variables"><i class="fa fa-check"></i><b>3.2.2</b> Distance for Categorical Variables</a></li>
+<li class="chapter" data-level="3.2.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distance-for-mixed-variable-types"><i class="fa fa-check"></i><b>3.2.3</b> Distance for Mixed Variable Types</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#multivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3</b> Multivariate Normal Distribution</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#properties-of-multivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3.1</b> Properties of Multivariate Normal Distribution</a></li>
+<li class="chapter" data-level="3.3.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#bivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3.2</b> Bivariate Normal Distribution</a></li>
+<li class="chapter" data-level="3.3.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#contour-of-multivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3.3</b> Contour of Multivariate Normal Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#the-sampling-distribution-of-mathbfbar-x-and-boldsymbols"><i class="fa fa-check"></i><b>3.4</b> The Sampling Distribution of <span class="math inline">\(\mathbf{\bar X}\)</span> and <span class="math inline">\(\boldsymbol{S}\)</span></a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distributions-related-to-normal-distribution"><i class="fa fa-check"></i><b>3.4.1</b> Distributions Related to Normal Distribution</a></li>
+<li class="chapter" data-level="3.4.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#applications-to-distributions-related-to-sample-means"><i class="fa fa-check"></i><b>3.4.2</b> Applications to Distributions Related to Sample Means</a></li>
+<li class="chapter" data-level="3.4.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#generalize-to-multivariate-cases"><i class="fa fa-check"></i><b>3.4.3</b> Generalize to Multivariate Cases</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#review-exercises-1"><i class="fa fa-check"></i><b>3.5</b> Review Exercises</a></li>
+<li class="chapter" data-level="" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#revisit-the-learning-outcomes-1"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Tests on Mean Vectors</a>
+<ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#learning-outcomes-3"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="4.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#hypothesis-test-for-one-mean-vector"><i class="fa fa-check"></i><b>4.1</b> Hypothesis Test for one Mean Vector</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case"><i class="fa fa-check"></i><b>4.1.1</b> Univariate Case</a></li>
+<li class="chapter" data-level="4.1.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case"><i class="fa fa-check"></i><b>4.1.2</b> Multivariate Case</a></li>
+<li class="chapter" data-level="4.1.3" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#evaluating-multivariate-normality"><i class="fa fa-check"></i><b>4.1.3</b> Evaluating Multivariate Normality</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#hypothesis-test-for-two-mean-vectors"><i class="fa fa-check"></i><b>4.2</b> Hypothesis Test for Two Mean Vectors</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case-based-on-two-independent-samples"><i class="fa fa-check"></i><b>4.2.1</b> Univariate Case Based on Two Independent Samples</a></li>
+<li class="chapter" data-level="4.2.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case-based-on-two-independent-samples"><i class="fa fa-check"></i><b>4.2.2</b> Multivariate Case Based on Two Independent Samples</a></li>
+<li class="chapter" data-level="4.2.3" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#two-sample-non-pooled-hotellings-t2-test"><i class="fa fa-check"></i><b>4.2.3</b> Two-sample Non-pooled Hotelling’s <span class="math inline">\(T^2\)</span> Test</a></li>
+<li class="chapter" data-level="4.2.4" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#two-sample-hotellings-t2-confidence-interval"><i class="fa fa-check"></i><b>4.2.4</b> Two-sample Hotelling’s <span class="math inline">\(T^2\)</span> Confidence Interval</a></li>
+<li class="chapter" data-level="4.2.5" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case-based-on-a-paired-sample"><i class="fa fa-check"></i><b>4.2.5</b> Univariate Case Based on a Paired Sample</a></li>
+<li class="chapter" data-level="4.2.6" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case-based-on-a-paired-sample"><i class="fa fa-check"></i><b>4.2.6</b> Multivariate Case Based on a Paired Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#hypothesis-test-for-several-mean-vectors"><i class="fa fa-check"></i><b>4.3</b> Hypothesis Test for Several Mean Vectors</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case-one-way-anova-f-test"><i class="fa fa-check"></i><b>4.3.1</b> Univariate Case: One-Way ANOVA F Test</a></li>
+<li class="chapter" data-level="4.3.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case-one-way-manova"><i class="fa fa-check"></i><b>4.3.2</b> Multivariate Case: One-Way MANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#revisit-the-learning-outcomes-2"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html"><i class="fa fa-check"></i><b>5</b> Principal Component Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#learning-outcomes-4"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="5.1" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#finding-the-principal-components"><i class="fa fa-check"></i><b>5.1</b> Finding the Principal Components</a></li>
+<li class="chapter" data-level="5.2" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#scaling-in-principal-component-analysis"><i class="fa fa-check"></i><b>5.2</b> Scaling in Principal Component Analysis</a></li>
+<li class="chapter" data-level="5.3" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#limitations-of-principal-component-analysis"><i class="fa fa-check"></i><b>5.3</b> Limitations of Principal Component Analysis</a></li>
+<li class="chapter" data-level="5.4" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#further-reading"><i class="fa fa-check"></i><b>5.4</b> Further Reading</a></li>
+<li class="chapter" data-level="" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#revisit-the-learning-outcomes-3"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="factor-analysis.html"><a href="factor-analysis.html"><i class="fa fa-check"></i><b>6</b> Factor Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#learning-outcomes-5"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="6.1" data-path="factor-analysis.html"><a href="factor-analysis.html#model-of-factor-analysis"><i class="fa fa-check"></i><b>6.1</b> Model of Factor Analysis</a></li>
+<li class="chapter" data-level="6.2" data-path="factor-analysis.html"><a href="factor-analysis.html#estimating-factor-loadings-l_ij-and-specific-variance-psi_i"><i class="fa fa-check"></i><b>6.2</b> Estimating Factor Loadings <span class="math inline">\(l_{ij}\)</span> and Specific Variance <span class="math inline">\(\psi_i\)</span></a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#the-principle-component-method"><i class="fa fa-check"></i><b>6.2.1</b> The Principle Component Method</a></li>
+<li class="chapter" data-level="6.2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#the-maximum-likelihood-method"><i class="fa fa-check"></i><b>6.2.2</b> The Maximum Likelihood Method</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="factor-analysis.html"><a href="factor-analysis.html#factor-rotation"><i class="fa fa-check"></i><b>6.3</b> Factor Rotation</a></li>
+<li class="chapter" data-level="6.4" data-path="factor-analysis.html"><a href="factor-analysis.html#factor-scores"><i class="fa fa-check"></i><b>6.4</b> Factor Scores</a></li>
+<li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#revisit-the-learning-outcomes-4"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html"><i class="fa fa-check"></i><b>7</b> Discriminant Analysis and Classification</a>
+<ul>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#learning-outcomes-6"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="7.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#introduction-1"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#performance-measure"><i class="fa fa-check"></i><b>7.2</b> Performance Measure</a></li>
+<li class="chapter" data-level="7.3" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#overfitting-and-cross-validation"><i class="fa fa-check"></i><b>7.3</b> Overfitting and Cross Validation</a></li>
+<li class="chapter" data-level="7.4" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#classification-models"><i class="fa fa-check"></i><b>7.4</b> Classification Models</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>7.4.1</b> <span class="math inline">\(K\)</span> Nearest Neighbors</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#logistic-regression-for-binary-response"><i class="fa fa-check"></i><b>7.5</b> Logistic Regression for Binary Response</a>
+<ul>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#interpretation-of-beta_i"><i class="fa fa-check"></i>Interpretation of <span class="math inline">\(\beta_i\)</span></a></li>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#estimation-of-beta_i"><i class="fa fa-check"></i>Estimation of <span class="math inline">\(\beta_i\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#logistic-regression-for-multi-class-nominal-data"><i class="fa fa-check"></i><b>7.6</b> Logistic Regression for Multi-class Nominal Data</a></li>
+<li class="chapter" data-level="7.7" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#cumulative-logit-model-for-multi-class-ordinal-data"><i class="fa fa-check"></i><b>7.7</b> Cumulative Logit Model for Multi-class Ordinal Data</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#cumulative-logit-models-with-proportional-odds"><i class="fa fa-check"></i><b>7.7.1</b> Cumulative Logit Models with Proportional Odds</a></li>
+<li class="chapter" data-level="7.7.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#model-probability-of-each-category"><i class="fa fa-check"></i><b>7.7.2</b> Model Probability of Each Category</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#model-selection-for-logistic-regression"><i class="fa fa-check"></i><b>7.8</b> Model Selection for Logistic Regression</a>
+<ul>
+<li class="chapter" data-level="7.8.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#aic-and-bic"><i class="fa fa-check"></i><b>7.8.1</b> AIC and BIC</a></li>
+<li class="chapter" data-level="7.8.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#forward-selection"><i class="fa fa-check"></i><b>7.8.2</b> Forward Selection</a></li>
+<li class="chapter" data-level="7.8.3" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#backward-elimination"><i class="fa fa-check"></i><b>7.8.3</b> Backward Elimination</a></li>
+</ul></li>
+<li class="chapter" data-level="7.9" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#model-checking"><i class="fa fa-check"></i><b>7.9</b> Model Checking</a>
+<ul>
+<li class="chapter" data-level="7.9.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#residual-analysis"><i class="fa fa-check"></i><b>7.9.1</b> Residual Analysis</a></li>
+<li class="chapter" data-level="7.9.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#preditive-power-accuracy-and-roc-curve"><i class="fa fa-check"></i><b>7.9.2</b> Preditive Power: Accuracy and ROC Curve</a></li>
+</ul></li>
+<li class="chapter" data-level="7.10" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#classification-tree-recursive-partitioning"><i class="fa fa-check"></i><b>7.10</b> Classification Tree (Recursive Partitioning)</a></li>
+<li class="chapter" data-level="7.11" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#regression-tree"><i class="fa fa-check"></i><b>7.11</b> Regression Tree</a></li>
+<li class="chapter" data-level="7.12" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#random-forest"><i class="fa fa-check"></i><b>7.12</b> Random Forest</a></li>
+<li class="chapter" data-level="7.13" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#support-vector-machines"><i class="fa fa-check"></i><b>7.13</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="7.14" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#neural-networks"><i class="fa fa-check"></i><b>7.14</b> Neural Networks</a></li>
+<li class="chapter" data-level="7.15" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#classical-methods"><i class="fa fa-check"></i><b>7.15</b> Classical Methods</a>
+<ul>
+<li class="chapter" data-level="7.15.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#mahalanobis-distance-method"><i class="fa fa-check"></i><b>7.15.1</b> Mahalanobis Distance Method</a></li>
+<li class="chapter" data-level="7.15.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#bayes-posterior"><i class="fa fa-check"></i><b>7.15.2</b> Bayes Posterior</a></li>
+<li class="chapter" data-level="7.15.3" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#fishers-discriminant-analysis"><i class="fa fa-check"></i><b>7.15.3</b> Fisher’s Discriminant Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="7.16" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#summary"><i class="fa fa-check"></i><b>7.16</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#revisit-learning-outcomes"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="clustering-analysis.html"><a href="clustering-analysis.html"><i class="fa fa-check"></i><b>8</b> Clustering Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="clustering-analysis.html"><a href="clustering-analysis.html#learning-outcomes-7"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="8.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#introduction-2"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#clustering-methods"><i class="fa fa-check"></i><b>8.2</b> Clustering Methods</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#hierarchical-method"><i class="fa fa-check"></i><b>8.2.1</b> Hierarchical Method</a></li>
+<li class="chapter" data-level="8.2.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#k-means"><i class="fa fa-check"></i><b>8.2.2</b> K-Means</a></li>
+<li class="chapter" data-level="8.2.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#model-based-clustering"><i class="fa fa-check"></i><b>8.2.3</b> Model-Based Clustering</a></li>
+<li class="chapter" data-level="8.2.4" data-path="clustering-analysis.html"><a href="clustering-analysis.html#pros-and-cons-of-clustering-methods"><i class="fa fa-check"></i><b>8.2.4</b> Pros and Cons of Clustering Methods</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#determine-k-number-of-clusters"><i class="fa fa-check"></i><b>8.3</b> Determine <span class="math inline">\(K\)</span>: Number of Clusters</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#the-elbow-plot-method"><i class="fa fa-check"></i><b>8.3.1</b> The Elbow Plot Method</a></li>
+<li class="chapter" data-level="8.3.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#the-silhouette-score"><i class="fa fa-check"></i><b>8.3.2</b> The Silhouette Score</a></li>
+<li class="chapter" data-level="8.3.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#gap-statistics"><i class="fa fa-check"></i><b>8.3.3</b> Gap Statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="clustering-analysis.html"><a href="clustering-analysis.html#side-note-on-the-em-algorithm"><i class="fa fa-check"></i>Side-Note on the EM Algorithm</a></li>
+<li class="chapter" data-level="" data-path="clustering-analysis.html"><a href="clustering-analysis.html#revisit-learning-outcomes-1"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html"><i class="fa fa-check"></i><b>9</b> Canonical Correlation Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#learning-outcomes-8"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="9.1" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#objective"><i class="fa fa-check"></i><b>9.1</b> Objective</a></li>
+<li class="chapter" data-level="9.2" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#obtain-the-canonical-variates-pairs"><i class="fa fa-check"></i><b>9.2</b> Obtain the Canonical Variates Pairs</a></li>
+<li class="chapter" data-level="9.3" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#interpretation"><i class="fa fa-check"></i><b>9.3</b> Interpretation</a></li>
+<li class="chapter" data-level="9.4" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#testing-mathbfsigma_120"><i class="fa fa-check"></i><b>9.4</b> Testing <span class="math inline">\(\mathbf{\Sigma}_{12}=0\)</span></a></li>
+<li class="chapter" data-level="" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#revisit-learning-outcomes-2"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html"><i class="fa fa-check"></i><b>10</b> Multidimensional Scaling</a>
+<ul>
+<li class="chapter" data-level="" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#learning-outcomes-9"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="10.1" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#objective-1"><i class="fa fa-check"></i><b>10.1</b> Objective</a></li>
+<li class="chapter" data-level="10.2" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#methods"><i class="fa fa-check"></i><b>10.2</b> Methods</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#classical-scaling"><i class="fa fa-check"></i><b>10.2.1</b> Classical Scaling</a></li>
+<li class="chapter" data-level="10.2.2" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#metric-scaling"><i class="fa fa-check"></i><b>10.2.2</b> Metric Scaling</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#example"><i class="fa fa-check"></i><b>10.3</b> Example</a></li>
+<li class="chapter" data-level="" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#revisit-learning-outcomes-3"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">STAT 372 Open Textbook (Python)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="principal-component-analysis" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Principal Component Analysis<a href="principal-component-analysis.html#principal-component-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>A principal component analysis is to capture the variance-covariance structure of the original <span class="math inline">\(p\)</span> variables using <span class="math inline">\(k\)</span> uncorrelated linear combinations of those variables such that <span class="math inline">\(k\le p\)</span>. Each of those <span class="math inline">\(k\)</span> linear
+combination is called a <span class="math inline">\(\textit{principal component}.\)</span></p>
+<p>The advantages of conducting a principal component analysis are:</p>
+<ul>
+<li>With fewer variables the principle components, it is easier to interpret and present the data graphically.</li>
+<li>The model fitted using the uncorrelated principal components might result in a better model.</li>
+</ul>
+<div id="learning-outcomes-4" class="section level2 unnumbered hasAnchor">
+<h2>Learning Outcomes<a href="principal-component-analysis.html#learning-outcomes-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After finishing this note, students should be able to</p>
+<ul>
+<li>Explain the advantages and limitations of principal components analysis.</li>
+<li>Prove the two important results for principal component analysis:</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>The <span class="math inline">\(i\)</span>th principal component is given by
+<span class="math display">\[
+Y_i=\mathbf{e}_i^{T}\mathbf{X}=e_{i1}X_1+e_{i2}X_2+\cdots+e_{ip}X_p, i=1, 2, \cdots, p
+\]</span>
+where <span class="math inline">\(\mathbf{e}_i\)</span> is the unit eigenvector corresponding to the <span class="math inline">\(i\)</span>th largest eigenvalue of <span class="math inline">\(\mathbf{\Sigma}\)</span>.</li>
+<li>The total variance
+<span class="math display">\[
+\sigma_{11}+\sigma_{22}+\cdots+\sigma_{pp}=\sum_{i=1}^p Var(X_i)=\lambda_1+\lambda_2+\cdots+\lambda_p=\sum_{i=1}^p Var(Y_i)
+\]</span></li>
+</ol>
+<ul>
+<li>Determine the number of principal components, <span class="math inline">\(k\)</span>, needed to capture a given percentage of variation of the data. And find the first <span class="math inline">\(k\)</span> corresponding principal components.</li>
+</ul>
+</div>
+<div id="finding-the-principal-components" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Finding the Principal Components<a href="principal-component-analysis.html#finding-the-principal-components" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Algebraically, principal components are linear combinations of the <span class="math inline">\(p\)</span> random variables <span class="math inline">\(X_1, X_2, \cdots, X_p\)</span>. Geometrically, these linear combinations represent the selection of a new coordinate system obtained by rotating the original system using <span class="math inline">\(X_1, X_2, \cdots, X_p\)</span> as the coordinate axes. The new axes represent the directions with maximum variability and provide a simpler description of the covariance structure.</p>
+<p>Let the random vector <span class="math inline">\(\mathbf{X}=[X_1, X_2, \cdots, X_p]^{T}\)</span> have the covariance matrix <span class="math inline">\(\mathbf{\Sigma}\)</span> with eigenvalues <span class="math inline">\(\lambda_1\ge \lambda_2\ge \cdots \ge \lambda_p\ge0\)</span>. Consider the following linear combinations:
+<span class="math display">\[
+\begin{aligned}
+Y_1&amp;=\mathbf{a}_1^{T}\mathbf{X}=a_{11}X_1+a_{12}X_2+\cdots+a_{1p}X_p\\
+Y_2&amp;=\mathbf{a}_2^{T}\mathbf{X}=a_{21}X_1+a_{22}X_2+\cdots+a_{2p}X_p\\
+\vdots\\
+Y_p&amp;=\mathbf{a}_p^{T}\mathbf{X}=a_{p1}X_1+a_{p2}X_2+\cdots+a_{pp}X_p
+\end{aligned}
+\]</span>
+We have
+<span class="math display">\[
+\begin{aligned}
+Var(Y_i)&amp;=Cov(\mathbf{a}_i^{T}\mathbf{X}, \mathbf{a}_i^{T}\mathbf{X})=\mathbf{a}_i^{T}Cov(\mathbf{X})\mathbf{a}_i=\mathbf{a}_i^{T}\mathbf{\Sigma}\mathbf{a}_i, i=1, 2, \cdots, p\\
+Cov(Y_i, Y_j)&amp;=Cov(\mathbf{a}_i^{T}\mathbf{X}, \mathbf{a}_j^{T}\mathbf{X})=\mathbf{a}_i^{T}\mathbf{\Sigma}\mathbf{a}_j, i\ne j
+\end{aligned}
+\]</span>
+The principal components are those uncorrelated linear combinations <span class="math inline">\(Y_1, Y_2, \cdots, Y_p\)</span> whose variances are maximized. The first principal component is the linear combination with the largest variance, that is to find the vector <span class="math inline">\(\mathbf{a}_1\)</span> such that <span class="math inline">\(Var(Y_1)=\mathbf{a}_1^{T}\mathbf{\Sigma}\mathbf{a}_1\)</span> is maximized. Note that <span class="math inline">\(Var(Y_1)\)</span> will increase if <span class="math inline">\(\mathbf{a}_1\)</span> is multiplied by some constant. To fix this problem, we constrain <span class="math inline">\(\mathbf{a}_1\)</span> to have unit length, that is <span class="math inline">\(\mathbf{a}_1^{T}\mathbf{a}_1=1\)</span>. The second principal component is the linear combination that maximizes <span class="math inline">\(Var(Y_2)=\mathbf{a}_2^{T}\mathbf{\Sigma}\mathbf{a}_2\)</span> subject to <span class="math inline">\(\mathbf{a}_2^{T}\mathbf{a}_2=1\)</span> and <span class="math inline">\(Cov(\mathbf{a}_1^{T}\mathbf{X}, \mathbf{a}_2^{T}\mathbf{X})=0\)</span>. In general, the <span class="math inline">\(i\)</span>th principal component is the linear combination <span class="math inline">\(\mathbf{a}_i^{T}\mathbf{X}\)</span> that maximizes <span class="math inline">\(Var(Y_i)=\mathbf{a}_i^{T}\mathbf{\Sigma}\mathbf{a}_i\)</span> subject to <span class="math inline">\(\mathbf{a}_i^{T}\mathbf{a}_i=1\)</span> and <span class="math inline">\(Cov(\mathbf{a}_i^{T}\mathbf{X}, \mathbf{a}_j^{T}\mathbf{X})=0\)</span> for all <span class="math inline">\(j&lt;i\)</span>.</p>
+<p>Here are three important results for principal component analysis:</p>
+<ul>
+<li>The <span class="math inline">\(i\)</span>th principal component is given by
+<span class="math display">\[
+Y_i=\mathbf{e}_i^{T}\mathbf{X}=e_{i1}X_1+e_{i2}X_2+\cdots+e_{ip}X_p, i=1, 2, \cdots, p
+\]</span>
+where <span class="math inline">\(\mathbf{e}_i\)</span> is the unit eigenvector corresponding to the <span class="math inline">\(i\)</span>th largest eigenvalue of <span class="math inline">\(\mathbf{\Sigma}\)</span>.</li>
+<li>The total variance
+<span class="math display">\[
+\sigma_{11}+\sigma_{22}+\cdots+\sigma_{pp}=\sum_{i=1}^p Var(X_i)=\lambda_1+\lambda_2+\cdots+\lambda_p=\sum_{i=1}^p Var(Y_i)
+\]</span></li>
+<li>The proportion of total variance explained by the <span class="math inline">\(j\)</span>th principal component is
+<span class="math display">\[
+\frac{\lambda_j}{\lambda_1+\lambda_2+\cdots+\lambda_p}, j=1, 2, \cdots, p
+\]</span></li>
+</ul>
+<p>The following facts are useful for the proof of the first result.</p>
+<ul>
+<li>Let <span class="math inline">\(\mathbf{u}\)</span> and <span class="math inline">\(\mathbf{v}\)</span> be <span class="math inline">\(p\times 1\)</span> vectors and consider their inner product <span class="math inline">\(c=\mathbf{u}^{T}\mathbf{v}\)</span>. When we differentiate <span class="math inline">\(c\)</span> with respect to each <span class="math inline">\(u_j\)</span> in turn, we get
+<span class="math display">\[
+\frac{\partial c}{\partial \mathbf{u}}=\left[
+\begin{array}{c}
+\frac{\partial c}{\partial u_1}\\
+\vdots\\
+\frac{\partial c}{\partial u_p}
+\end{array}
+\right]=\left[
+\begin{array}{c}
+v_1\\
+\vdots\\
+v_p
+\end{array}
+\right]=\mathbf{v}
+\]</span>
+Similarly, <span class="math inline">\(\frac{\partial c}{\partial \mathbf{v}}=\mathbf{u}\)</span>.</li>
+<li>Let <span class="math inline">\(q=\mathbf{u}^{T}\mathbf{\Sigma}\mathbf{u}\)</span>, then differentiate <span class="math inline">\(q\)</span> with respect to <span class="math inline">\(u_j\)</span> in turn, we have
+<span class="math display">\[
+\frac{\partial q}{\partial \mathbf{u}}=2\mathbf{\Sigma}\mathbf{u}
+\]</span></li>
+</ul>
+<div style="page-break-after: always;"></div>
+<p><span class="math inline">\(\textbf{Proofs (Exercises)}\)</span></p>
+<ol style="list-style-type: decimal">
+<li>Show that the first principal component is the unit eigenvector corresponding to the largest eigenvalue of the covariance matrix <span class="math inline">\(\mathbf{\Sigma}\)</span>.</li>
+</ol>
+<p>We need to solve an optimization problem with constraints. That is to find the maximum of <span class="math inline">\(\mathbf{a}_1^{T}\mathbf{\Sigma}\mathbf{a}_1\)</span> subject to <span class="math inline">\(\mathbf{a}_1^{T}\mathbf{a}_1=1\)</span>. A <span class="math inline">\(\gamma\)</span> is introduced to deal with the constraint.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>The second principal component is the linear combination of <span class="math inline">\(X_i\)</span> with the second largest variation and orthogonal to the first principal component.</li>
+</ol>
+<p>Show that the second principal component is the unit eigenvector corresponding to the second largest eigenvalue of the covariance matrix <span class="math inline">\(\mathbf{\Sigma}\)</span>.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Given the fact that <span class="math inline">\(tr(\mathbf{AB})=tr(\mathbf{BA})\)</span>, show that the total variance
+<span class="math display">\[
+\sigma_{11}+\sigma_{22}+\cdots+\sigma_{pp}=\sum_{i=1}^p Var(X_i)=\lambda_1+\lambda_2+\cdots+\lambda_p=\sum_{i=1}^p Var(Y_i).
+\]</span></li>
+</ol>
+</div>
+<div id="scaling-in-principal-component-analysis" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Scaling in Principal Component Analysis<a href="principal-component-analysis.html#scaling-in-principal-component-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A major problem with principal component analysis is that it is not scale invariant. That means multiplying one variable by a common constant might dramatically change the resulting principal components. The variable measured on a large scale with greater variance will dominate the principal components.</p>
+<p>Unless the variables have the same units and similar ranges, principal component analysis is usually carried out on the correlation matrix rather than the covariance matrix. Using the correlation matrix is equivalent to rescaling the variables to have mean 0 and standard deviation 1 before computing the covariance matrix.</p>
+</div>
+<div id="limitations-of-principal-component-analysis" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Limitations of Principal Component Analysis<a href="principal-component-analysis.html#limitations-of-principal-component-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Some limitations of principle component analysis are as follows:</p>
+<ul>
+<li>The new variables <span class="math inline">\(Y_i\)</span> are combinations of the original variables and hence can only capture the linear pattern.</li>
+<li>Principal component analysis is helpful in reducing the dimension of the data if the variables are correlated; otherwise, it does nothing except for ordering the variables according to their variance.</li>
+<li>Compared to the original variables <span class="math inline">\(X_1, X_2, \cdots, X_p\)</span>, the new variables might be hard to interpret.</li>
+</ul>
+<p><span class="math inline">\(\textbf{Example}: \text{Variation of Principle Components}\)</span></p>
+<p>Suppose
+<span class="math display">\[
+\mathbf{X}=[X_1, X_2]^{T}\sim \mbox{MVN}\left(\left[
+\begin{array}{c}
+0\\ 0
+\end{array}
+\right], \left[
+\begin{array}{cc}
+1&amp;0.75\\
+0.75&amp;1
+\end{array}
+\right]\right),
+\]</span> find the principal components of <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<p>It can be shown that the eigenvalues and corresponding unit eigenvectors are:
+<span class="math display">\[
+\lambda_1=1.75, \mathbf{e}_1=\left[
+\begin{array}{r}
+\frac{1}{\sqrt{2}}\\ \frac{1}{\sqrt{2}}
+\end{array}
+\right]=\left[
+\begin{array}{r}
+0.707\\0.707
+\end{array}
+\right]; \quad \lambda_2=0.25, \mathbf{e}_2=\left[
+\begin{array}{r}
+-\frac{1}{\sqrt{2}}\\ \frac{1}{\sqrt{2}}
+\end{array}
+\right]=\left[
+\begin{array}{r}
+-0.707\\0.707
+\end{array}
+\right]
+\]</span>
+Therefore, the first principal component (PC) is the unit eigenvector corresponding to the largest eigenvalue (<span class="math inline">\(\lambda_1=1.75\)</span>), we have
+<span class="math display">\[
+Y_1=0.707X_1+0.707X_2
+\]</span>
+and the second principal component is
+<span class="math display">\[
+Y_2=-0.707X_1+0.707X_2
+\]</span>
+The first PC accounts for <span class="math inline">\(\frac{\lambda_1}{\lambda_1+\lambda_2}=\frac{1.75}{2}=87.5\%\)</span> of the total variance.</p>
+<p><span class="math inline">\(\textbf{Example}: \text{PCA of Birds Data}\)</span></p>
+<p>Recall the birds data. Let’s first take a look of the correlation matrix of the five measurements.</p>
+<p>[</p>
+<p>]</p>
+<p>Figure @ref{fig:corplot} shows the correlation plot of the five measurements of the birds data. It seems that the measurements are moderately correlated.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb127-1"><a href="principal-component-analysis.html#cb127-1" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb127-2"><a href="principal-component-analysis.html#cb127-2" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb127-3"><a href="principal-component-analysis.html#cb127-3" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb127-4"><a href="principal-component-analysis.html#cb127-4" tabindex="-1"></a></span>
+<span id="cb127-5"><a href="principal-component-analysis.html#cb127-5" tabindex="-1"></a>bird <span class="op">=</span> pd.read_csv(<span class="st">&quot;data/bumpus.txt&quot;</span>, sep<span class="op">=</span><span class="vs">r&#39;\s+&#39;</span>)</span>
+<span id="cb127-6"><a href="principal-component-analysis.html#cb127-6" tabindex="-1"></a></span>
+<span id="cb127-7"><a href="principal-component-analysis.html#cb127-7" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb127-8"><a href="principal-component-analysis.html#cb127-8" tabindex="-1"></a>sns.heatmap(bird.drop(<span class="st">&#39;ID&#39;</span>, axis<span class="op">=</span><span class="dv">1</span>).corr(), annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">&quot;GnBu&quot;</span>, center<span class="op">=</span><span class="dv">0</span>, square<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb127-9"><a href="principal-component-analysis.html#cb127-9" tabindex="-1"></a>            linewidths<span class="op">=</span><span class="fl">.5</span>, cbar_kws<span class="op">=</span>{<span class="st">&quot;shrink&quot;</span>: <span class="fl">.8</span>})</span>
+<span id="cb127-10"><a href="principal-component-analysis.html#cb127-10" tabindex="-1"></a>plt.title(<span class="st">&quot;Correlation Matrix of Birds Data&quot;</span>)</span>
+<span id="cb127-11"><a href="principal-component-analysis.html#cb127-11" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb127-12"><a href="principal-component-analysis.html#cb127-12" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:corplot"></span>
+<img src="Plots/corplot-1.png" alt="Correlation Plot of Birds Data" width="65%" />
+<p class="caption">
+Figure 5.1: Correlation Plot of Birds Data
+</p>
+</div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb128-1"><a href="principal-component-analysis.html#cb128-1" tabindex="-1"></a>plt.close()</span></code></pre></div>
+<p>The eigenvalues and unit eigenvectors of the <span class="math inline">\(\textbf{correlation matrix}\)</span> are given by</p>
+<p><span class="math display">\[
+\begin{array}{c|rrrrr}
+\hline
+\text{Eigenvalue}&amp;3.616&amp; 0.532&amp; 0.386&amp; 0.302&amp; 0.165\\
+\hline
+\text{ Component}&amp;\mbox{PC}_1  &amp;  \mbox{PC}_2 &amp;   \mbox{PC}_3 &amp;  \mbox{PC}_4 &amp;   \mbox{PC}_5\\
+\hline
+X_1 &amp; 0.452&amp; -0.051&amp;  0.690&amp; -0.420&amp;  0.374\\
+X_2 &amp;0.462&amp;  0.300&amp;  0.341&amp;  0.548&amp; -0.530\\
+X_3&amp; 0.451&amp;  0.325&amp; -0.454&amp; -0.606&amp; -0.343\\
+X_4&amp; 0.471&amp;  0.185&amp; -0.411&amp;  0.388 &amp; 0.652\\
+X_5&amp; 0.398&amp; -0.876&amp; -0.178&amp;  0.069&amp; -0.192\\
+\hline
+\end{array}
+\]</span></p>
+<p>The sum of the eigenvalues is 5 and the proportion of variation explained by the first principal component is <span class="math inline">\(\frac{3.616}{5}=0.723\)</span>. The first PC is the eigenvector corresponding to the largest eigenvalue <span class="math inline">\(\lambda_1=3.616\)</span>,
+<span class="math display">\[
+\begin{aligned}
+Y_1&amp;=0.452X_1+0.462X_2+0.451X_3+0.471X_4+0.398X_5\\
+&amp;\approx \mbox{constant}\times \frac{1}{5}(X_1+X_2+X_3+X_4+X_5)\\
+&amp;=\mbox{constant}\times \mbox{average of the $X$&#39;s}
+\end{aligned}
+\]</span>
+The coefficients of the variables are nearly equal and about 72.3% of the variation in the data due to the overall size of the birds. This also explains why we could not find a subspace with one or two variables that distinguishes the survivors and non-survivors. Figure @ref{fig:birdpc} is the index plot of the two groups of birds using the first two PCs as the axes.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb129-1"><a href="principal-component-analysis.html#cb129-1" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb129-2"><a href="principal-component-analysis.html#cb129-2" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb129-3"><a href="principal-component-analysis.html#cb129-3" tabindex="-1"></a></span>
+<span id="cb129-4"><a href="principal-component-analysis.html#cb129-4" tabindex="-1"></a><span class="co"># dataset</span></span>
+<span id="cb129-5"><a href="principal-component-analysis.html#cb129-5" tabindex="-1"></a>bird <span class="op">=</span> pd.read_csv(<span class="st">&quot;data/bumpus.txt&quot;</span>, sep<span class="op">=</span><span class="vs">r&quot;\s+&quot;</span>)</span>
+<span id="cb129-6"><a href="principal-component-analysis.html#cb129-6" tabindex="-1"></a><span class="bu">print</span>(bird[:<span class="dv">2</span>])</span></code></pre></div>
+<pre><code>##    ID   X1   X2    X3    X4    X5
+## 0   1  156  245  31.6  18.5  20.5
+## 1   2  154  240  30.4  17.9  19.6</code></pre>
+<div class="sourceCode" id="cb131"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb131-1"><a href="principal-component-analysis.html#cb131-1" tabindex="-1"></a>bird.iloc[:, <span class="dv">1</span>:] <span class="op">=</span> bird.iloc[:, <span class="dv">1</span>:].<span class="bu">apply</span>(pd.to_numeric, errors<span class="op">=</span><span class="st">&quot;coerce&quot;</span>)</span>
+<span id="cb131-2"><a href="principal-component-analysis.html#cb131-2" tabindex="-1"></a></span>
+<span id="cb131-3"><a href="principal-component-analysis.html#cb131-3" tabindex="-1"></a><span class="co"># standardizing</span></span>
+<span id="cb131-4"><a href="principal-component-analysis.html#cb131-4" tabindex="-1"></a>X <span class="op">=</span> bird.iloc[:, <span class="dv">1</span>:]</span>
+<span id="cb131-5"><a href="principal-component-analysis.html#cb131-5" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span>
+<span id="cb131-6"><a href="principal-component-analysis.html#cb131-6" tabindex="-1"></a></span>
+<span id="cb131-7"><a href="principal-component-analysis.html#cb131-7" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb131-8"><a href="principal-component-analysis.html#cb131-8" tabindex="-1"></a>pc <span class="op">=</span> pca.fit_transform(X_scaled)</span>
+<span id="cb131-9"><a href="principal-component-analysis.html#cb131-9" tabindex="-1"></a></span>
+<span id="cb131-10"><a href="principal-component-analysis.html#cb131-10" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb131-11"><a href="principal-component-analysis.html#cb131-11" tabindex="-1"></a>plt.scatter(pc[:<span class="dv">21</span>, <span class="dv">0</span>], pc[:<span class="dv">21</span>, <span class="dv">1</span>], marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)  <span class="co"># survivors</span></span>
+<span id="cb131-12"><a href="principal-component-analysis.html#cb131-12" tabindex="-1"></a>plt.scatter(pc[<span class="dv">21</span>:, <span class="dv">0</span>], pc[<span class="dv">21</span>:, <span class="dv">1</span>], marker<span class="op">=</span><span class="st">&#39;+&#39;</span>)  <span class="co"># non-survivors</span></span>
+<span id="cb131-13"><a href="principal-component-analysis.html#cb131-13" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;First PC&quot;</span>)</span>
+<span id="cb131-14"><a href="principal-component-analysis.html#cb131-14" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Second PC&quot;</span>)</span>
+<span id="cb131-15"><a href="principal-component-analysis.html#cb131-15" tabindex="-1"></a>plt.title(<span class="st">&quot;PCA Index Scatter Plot of Birds Data&quot;</span>)</span>
+<span id="cb131-16"><a href="principal-component-analysis.html#cb131-16" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb131-17"><a href="principal-component-analysis.html#cb131-17" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:birdpc"></span>
+<img src="Plots/birdpc-3.png" alt="Index scatter plot of the birds data on the first two principal components. Black circle: survivors; red plus: non-survivors" width="65%" />
+<p class="caption">
+Figure 5.2: Index scatter plot of the birds data on the first two principal components. Black circle: survivors; red plus: non-survivors
+</p>
+</div>
+<p><span class="math inline">\(\textbf{Example}: \text{PCA of Iris Data}\)</span></p>
+<p>Iris flowers data. Four measurements, the correlation matrix is given</p>
+<p><span class="math display">\[
+\begin{array}{c|rrrr}
+\hline
+&amp; \text{Sepal.Length}&amp; \text{Sepal.Width}&amp; \text{Petal.Length} &amp;\text{Petal.Width}\\
+\hline
+\text{Sepal.Length} &amp;       1.000  &amp;    -0.118&amp;        0.872 &amp;      0.818\\
+\text{Sepal.Width}    &amp;    -0.118    &amp;   1.000  &amp;     -0.428   &amp;   -0.366\\
+\text{Petal.Length}   &amp;     0.872     &amp; -0.428   &amp;     1.000   &amp;    0.963\\
+\text{Petal.Width}      &amp;   0.818     &amp; -0.366     &amp;   0.963     &amp;  1.000\\
+\hline
+\end{array}
+\]</span></p>
+<p>We can tell that Petal.Length and Petal.Width are highly correlated, the correlation between Sepal.Length and Petal.Length is also quite strong; correlation between Septal.Length and Septal.Width is weak, and between Sepal.Length and Petal.Width is moderate.</p>
+<p>The eigenvalues and unit eigenvectors of the are given by</p>
+<p><span class="math display">\[
+\begin{array}{c|rrrrr}
+\hline
+\text{Eigenvalue}&amp;2.918&amp; 0.914&amp; 0.147&amp; 0.021\\
+\hline
+\text{Components}&amp; PC1 &amp;   PC2&amp;    PC3 &amp;   PC4\\
+\hline
+\text{Sepal.Length}&amp;  0.521&amp; -0.377&amp;  0.720&amp;  0.261\\
+\text{Sepal.Width} &amp; -0.269 &amp;-0.923 &amp;-0.244 &amp;-0.124\\
+\text{Petal.Length}&amp;  0.580 &amp;-0.024 &amp;-0.142 &amp;-0.801\\
+\text{Petal.Width}  &amp; 0.565 &amp;-0.067 &amp;-0.634 &amp; 0.524\\
+\hline
+\end{array}
+\]</span></p>
+<p>The largest eigenvalue is <span class="math inline">\(\lambda_1=2.918\)</span> and the first PC is
+<span class="math display">\[
+Y_1=0.521Sepal.Length-0.269Sepal.Width+0.580Petal.Length+0.565Petal.Width
+\]</span>
+Compared to other variables, the magnitude of Sepal.Width is relatively small and hence contributes less in the first PC. Moreover, the sign of its coefficient is opposite of the other three variables. The first PC accounts for <span class="math inline">\(\frac{2.918}{2.918+0.914+0.147+0.021}=72.95\%\)</span> total variation, the second PC accounts for <span class="math inline">\(\frac{0.914}{2.918+0.914+0.147+0.021}=22.85\%\)</span>, the third PC explains <span class="math inline">\(\frac{0.147}{2.918+0.914+0.147+0.021}=3.675\%\)</span>, and the fourth PC explains <span class="math inline">\(\frac{0.021}{2.918+0.914+0.147+0.021}=0.525\%\)</span>. The first two PCs together explain 95.81% of the total variation. Therefore, we can reduce the dimensionality from 4 to 2.</p>
+<p>In order to determine the number of PCs required to capture most of the data variation, we can plot the cumulative variance versus the number of PCs (see right panel of Figure <span class="math inline">\(\ref{fig:pcnumber}\)</span>), and the number of PCs should be the one from which the curve becomes flat. From the right panel of Figure <span class="math inline">\(\ref{fig:pcnumber}\)</span>, we need the first two PCs in order to capture at least 80% of the total variation of the data; however, we only need the first PC in order to capture at least 70% of the total variation.</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb132-1"><a href="principal-component-analysis.html#cb132-1" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</span>
+<span id="cb132-2"><a href="principal-component-analysis.html#cb132-2" tabindex="-1"></a>iris <span class="op">=</span> load_iris(as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb132-3"><a href="principal-component-analysis.html#cb132-3" tabindex="-1"></a>X <span class="op">=</span> StandardScaler().fit_transform(iris.data)</span>
+<span id="cb132-4"><a href="principal-component-analysis.html#cb132-4" tabindex="-1"></a></span>
+<span id="cb132-5"><a href="principal-component-analysis.html#cb132-5" tabindex="-1"></a><span class="co"># PCA</span></span>
+<span id="cb132-6"><a href="principal-component-analysis.html#cb132-6" tabindex="-1"></a>pca <span class="op">=</span> PCA()</span>
+<span id="cb132-7"><a href="principal-component-analysis.html#cb132-7" tabindex="-1"></a>pca.fit(X)</span></code></pre></div>
+<style>#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: #000;
+  --sklearn-color-text-muted: #666;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-1 pre {
+  padding: 0;
+}
+
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+#sk-container-id-1 label.sk-toggleable__label .caption {
+  font-size: 0.6rem;
+  font-weight: lighter;
+  color: var(--sklearn-color-text-muted);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  display: none;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 0.5em;
+  text-align: center;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+
+.estimator-table summary {
+    padding: .5rem;
+    font-family: monospace;
+    cursor: pointer;
+}
+
+.estimator-table details[open] {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    padding-bottom: 0.3rem;
+}
+
+.estimator-table .parameters-table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.estimator-table .parameters-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.estimator-table .parameters-table tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+
+.estimator-table .parameters-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+.estimator-table table td {
+    border: 1px solid rgba(106, 105, 104, 0.232);
+}
+
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left;
+}
+
+.user-set td.value pre {
+    color:rgb(255, 94, 0) !important;
+    background-color: transparent !important;
+}
+
+.default td {
+    color: black;
+    text-align: left;
+}
+
+.user-set td i,
+.default td i {
+    color: black;
+}
+
+.copy-paste-icon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    background-position: 0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>PCA()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>PCA</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.decomposition.PCA.html">?<span>Documentation for PCA</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+        <div class="estimator-table">
+            <details>
+                <summary>Parameters</summary>
+                <table class="parameters-table">
+                  <tbody>
+                    
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('n_components',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">n_components&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('copy',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">copy&nbsp;</td>
+            <td class="value">True</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('whiten',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">whiten&nbsp;</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('svd_solver',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">svd_solver&nbsp;</td>
+            <td class="value">&#x27;auto&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('tol',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">tol&nbsp;</td>
+            <td class="value">0.0</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('iterated_power',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">iterated_power&nbsp;</td>
+            <td class="value">&#x27;auto&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('n_oversamples',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">n_oversamples&nbsp;</td>
+            <td class="value">10</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('power_iteration_normalizer',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">power_iteration_normalizer&nbsp;</td>
+            <td class="value">&#x27;auto&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('random_state',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">random_state&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+    
+                  </tbody>
+                </table>
+            </details>
+        </div>
+    </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    // Get the parameter prefix from the closest toggleable content
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+    const originalStyle = element.style;
+    const computedStyle = window.getComputedStyle(element);
+    const originalWidth = computedStyle.width;
+    const originalHTML = element.innerHTML.replace('Copied!', '');
+
+    navigator.clipboard.writeText(fullParamName)
+        .then(() => {
+            element.style.width = originalWidth;
+            element.style.color = 'green';
+            element.innerHTML = "Copied!";
+
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy:', err);
+            element.style.color = 'red';
+            element.innerHTML = "Failed!";
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        });
+    return false;
+}
+
+document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const paramName = element.parentElement.nextElementSibling.textContent.trim();
+    const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+    element.setAttribute('title', fullParamName);
+});
+</script></body>
+<div class="sourceCode" id="cb133"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb133-1"><a href="principal-component-analysis.html#cb133-1" tabindex="-1"></a>explained_var <span class="op">=</span> pca.explained_variance_</span>
+<span id="cb133-2"><a href="principal-component-analysis.html#cb133-2" tabindex="-1"></a>cumulative_var <span class="op">=</span> pca.explained_variance_ratio_.cumsum()</span>
+<span id="cb133-3"><a href="principal-component-analysis.html#cb133-3" tabindex="-1"></a></span>
+<span id="cb133-4"><a href="principal-component-analysis.html#cb133-4" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb133-5"><a href="principal-component-analysis.html#cb133-5" tabindex="-1"></a></span>
+<span id="cb133-6"><a href="principal-component-analysis.html#cb133-6" tabindex="-1"></a><span class="co"># Left: Scree plot</span></span>
+<span id="cb133-7"><a href="principal-component-analysis.html#cb133-7" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(explained_var) <span class="op">+</span> <span class="dv">1</span>), explained_var, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)</span>
+<span id="cb133-8"><a href="principal-component-analysis.html#cb133-8" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">&quot;irisPC&quot;</span>)</span>
+<span id="cb133-9"><a href="principal-component-analysis.html#cb133-9" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">&quot;Principal Component&quot;</span>)</span>
+<span id="cb133-10"><a href="principal-component-analysis.html#cb133-10" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">&quot;Variance&quot;</span>)</span>
+<span id="cb133-11"><a href="principal-component-analysis.html#cb133-11" tabindex="-1"></a></span>
+<span id="cb133-12"><a href="principal-component-analysis.html#cb133-12" tabindex="-1"></a><span class="co"># Right: Cumulative variance</span></span>
+<span id="cb133-13"><a href="principal-component-analysis.html#cb133-13" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(cumulative_var) <span class="op">+</span> <span class="dv">1</span>), cumulative_var, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)</span>
+<span id="cb133-14"><a href="principal-component-analysis.html#cb133-14" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">&quot;Cumulative Variance Explained&quot;</span>)</span>
+<span id="cb133-15"><a href="principal-component-analysis.html#cb133-15" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">&quot;Number of PCs&quot;</span>)</span>
+<span id="cb133-16"><a href="principal-component-analysis.html#cb133-16" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">&quot;Cumulative Proportion of Variance&quot;</span>)</span>
+<span id="cb133-17"><a href="principal-component-analysis.html#cb133-17" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## (0.0, 1.0)</code></pre>
+<div class="sourceCode" id="cb135"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb135-1"><a href="principal-component-analysis.html#cb135-1" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb135-2"><a href="principal-component-analysis.html#cb135-2" tabindex="-1"></a>plt.subplots_adjust(wspace<span class="op">=</span><span class="fl">0.3</span>)  <span class="co"># spacing width of the 2 plots</span></span>
+<span id="cb135-3"><a href="principal-component-analysis.html#cb135-3" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:pcnumber"></span>
+<img src="Plots/pcnumber-5.png" alt=" Left: PC variance versus number of PCs; Right: cumulative PC variance versus number of PCs" width="80%" />
+<p class="caption">
+Figure 5.3:  Left: PC variance versus number of PCs; Right: cumulative PC variance versus number of PCs
+</p>
+</div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb136-1"><a href="principal-component-analysis.html#cb136-1" tabindex="-1"></a>plt.close()</span></code></pre></div>
+<p>Figure @ref{fig:pciris} is a biplot that plots two sets of information in one plot: a scatter plot of the data and a scatter plot of the first two PCs. We can tell from the biplot that both petal length and petal width are mainly only related to the first PC, sepal length is related to both the first two PCs, sepal width is mainly related to the second PC.</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb137-1"><a href="principal-component-analysis.html#cb137-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb137-2"><a href="principal-component-analysis.html#cb137-2" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</span>
+<span id="cb137-3"><a href="principal-component-analysis.html#cb137-3" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb137-4"><a href="principal-component-analysis.html#cb137-4" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb137-5"><a href="principal-component-analysis.html#cb137-5" tabindex="-1"></a></span>
+<span id="cb137-6"><a href="principal-component-analysis.html#cb137-6" tabindex="-1"></a>iris <span class="op">=</span> load_iris(as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb137-7"><a href="principal-component-analysis.html#cb137-7" tabindex="-1"></a>X <span class="op">=</span> iris.data</span>
+<span id="cb137-8"><a href="principal-component-analysis.html#cb137-8" tabindex="-1"></a>y <span class="op">=</span> iris.target</span>
+<span id="cb137-9"><a href="principal-component-analysis.html#cb137-9" tabindex="-1"></a>target_names <span class="op">=</span> iris.target_names</span>
+<span id="cb137-10"><a href="principal-component-analysis.html#cb137-10" tabindex="-1"></a>features <span class="op">=</span> X.columns</span>
+<span id="cb137-11"><a href="principal-component-analysis.html#cb137-11" tabindex="-1"></a></span>
+<span id="cb137-12"><a href="principal-component-analysis.html#cb137-12" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span>
+<span id="cb137-13"><a href="principal-component-analysis.html#cb137-13" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb137-14"><a href="principal-component-analysis.html#cb137-14" tabindex="-1"></a>principalComponents <span class="op">=</span> pca.fit_transform(X_scaled)</span>
+<span id="cb137-15"><a href="principal-component-analysis.html#cb137-15" tabindex="-1"></a></span>
+<span id="cb137-16"><a href="principal-component-analysis.html#cb137-16" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
+<span id="cb137-17"><a href="principal-component-analysis.html#cb137-17" tabindex="-1"></a></span>
+<span id="cb137-18"><a href="principal-component-analysis.html#cb137-18" tabindex="-1"></a><span class="co"># scatterplot</span></span>
+<span id="cb137-19"><a href="principal-component-analysis.html#cb137-19" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">&#39;red&#39;</span>, <span class="st">&#39;green&#39;</span>, <span class="st">&#39;cornflowerblue&#39;</span>]</span>
+<span id="cb137-20"><a href="principal-component-analysis.html#cb137-20" tabindex="-1"></a><span class="cf">for</span> i, target_name <span class="kw">in</span> <span class="bu">enumerate</span>(target_names):</span>
+<span id="cb137-21"><a href="principal-component-analysis.html#cb137-21" tabindex="-1"></a>    plt.scatter(</span>
+<span id="cb137-22"><a href="principal-component-analysis.html#cb137-22" tabindex="-1"></a>        principalComponents[y <span class="op">==</span> i, <span class="dv">0</span>],</span>
+<span id="cb137-23"><a href="principal-component-analysis.html#cb137-23" tabindex="-1"></a>        principalComponents[y <span class="op">==</span> i, <span class="dv">1</span>],</span>
+<span id="cb137-24"><a href="principal-component-analysis.html#cb137-24" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb137-25"><a href="principal-component-analysis.html#cb137-25" tabindex="-1"></a>        label<span class="op">=</span>target_name,</span>
+<span id="cb137-26"><a href="principal-component-analysis.html#cb137-26" tabindex="-1"></a>        color<span class="op">=</span>colors[i]</span>
+<span id="cb137-27"><a href="principal-component-analysis.html#cb137-27" tabindex="-1"></a>    )</span>
+<span id="cb137-28"><a href="principal-component-analysis.html#cb137-28" tabindex="-1"></a></span>
+<span id="cb137-29"><a href="principal-component-analysis.html#cb137-29" tabindex="-1"></a><span class="co"># loadings&#39; arrows</span></span>
+<span id="cb137-30"><a href="principal-component-analysis.html#cb137-30" tabindex="-1"></a>loadings <span class="op">=</span> pca.components_.T <span class="op">*</span> np.sqrt(pca.explained_variance_)</span>
+<span id="cb137-31"><a href="principal-component-analysis.html#cb137-31" tabindex="-1"></a><span class="cf">for</span> i, feature <span class="kw">in</span> <span class="bu">enumerate</span>(features):</span>
+<span id="cb137-32"><a href="principal-component-analysis.html#cb137-32" tabindex="-1"></a>    plt.arrow(<span class="dv">0</span>, <span class="dv">0</span>, loadings[i, <span class="dv">0</span>], loadings[i, <span class="dv">1</span>],</span>
+<span id="cb137-33"><a href="principal-component-analysis.html#cb137-33" tabindex="-1"></a>              color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, head_width<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb137-34"><a href="principal-component-analysis.html#cb137-34" tabindex="-1"></a>    plt.text(loadings[i, <span class="dv">0</span>] <span class="op">*</span> <span class="fl">1.15</span>, loadings[i, <span class="dv">1</span>] <span class="op">*</span> <span class="fl">1.15</span>,</span>
+<span id="cb137-35"><a href="principal-component-analysis.html#cb137-35" tabindex="-1"></a>             feature, color<span class="op">=</span><span class="st">&#39;red&#39;</span>, ha<span class="op">=</span><span class="st">&#39;center&#39;</span>, va<span class="op">=</span><span class="st">&#39;center&#39;</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb137-36"><a href="principal-component-analysis.html#cb137-36" tabindex="-1"></a></span>
+<span id="cb137-37"><a href="principal-component-analysis.html#cb137-37" tabindex="-1"></a>pc1_var <span class="op">=</span> pca.explained_variance_ratio_[<span class="dv">0</span>] <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb137-38"><a href="principal-component-analysis.html#cb137-38" tabindex="-1"></a>pc2_var <span class="op">=</span> pca.explained_variance_ratio_[<span class="dv">1</span>] <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb137-39"><a href="principal-component-analysis.html#cb137-39" tabindex="-1"></a>plt.xlabel(<span class="ss">f&quot;PC1 (</span><span class="sc">{</span>pc1_var<span class="sc">:.2f}</span><span class="ss">%)&quot;</span>)</span>
+<span id="cb137-40"><a href="principal-component-analysis.html#cb137-40" tabindex="-1"></a>plt.ylabel(<span class="ss">f&quot;PC2 (</span><span class="sc">{</span>pc2_var<span class="sc">:.2f}</span><span class="ss">%)&quot;</span>)</span>
+<span id="cb137-41"><a href="principal-component-analysis.html#cb137-41" tabindex="-1"></a></span>
+<span id="cb137-42"><a href="principal-component-analysis.html#cb137-42" tabindex="-1"></a>plt.legend()</span>
+<span id="cb137-43"><a href="principal-component-analysis.html#cb137-43" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb137-44"><a href="principal-component-analysis.html#cb137-44" tabindex="-1"></a>plt.title(<span class="st">&quot;Biplot of the Iris Dataset&quot;</span>)</span>
+<span id="cb137-45"><a href="principal-component-analysis.html#cb137-45" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb137-46"><a href="principal-component-analysis.html#cb137-46" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:pciris"></span>
+<img src="Plots/pciris-7.png" alt="Biplot of the Iris flowers data on the first two principal components" width="70%" />
+<p class="caption">
+Figure 5.4: Biplot of the Iris flowers data on the first two principal components
+</p>
+</div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb138-1"><a href="principal-component-analysis.html#cb138-1" tabindex="-1"></a>plt.close()</span></code></pre></div>
+<p>We can use the first two PCs to cluster the flowers into three species and the result is shown in Figure @ref{fig:cluster}.</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb139-1"><a href="principal-component-analysis.html#cb139-1" tabindex="-1"></a>iris <span class="op">=</span> load_iris()</span>
+<span id="cb139-2"><a href="principal-component-analysis.html#cb139-2" tabindex="-1"></a>X <span class="op">=</span> iris.data</span>
+<span id="cb139-3"><a href="principal-component-analysis.html#cb139-3" tabindex="-1"></a>y <span class="op">=</span> iris.target</span>
+<span id="cb139-4"><a href="principal-component-analysis.html#cb139-4" tabindex="-1"></a>species <span class="op">=</span> pd.Series(iris.target_names[y], name<span class="op">=</span><span class="st">&quot;Species&quot;</span>)</span>
+<span id="cb139-5"><a href="principal-component-analysis.html#cb139-5" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span>
+<span id="cb139-6"><a href="principal-component-analysis.html#cb139-6" tabindex="-1"></a></span>
+<span id="cb139-7"><a href="principal-component-analysis.html#cb139-7" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb139-8"><a href="principal-component-analysis.html#cb139-8" tabindex="-1"></a>X_pca <span class="op">=</span> pca.fit_transform(X_scaled)</span>
+<span id="cb139-9"><a href="principal-component-analysis.html#cb139-9" tabindex="-1"></a></span>
+<span id="cb139-10"><a href="principal-component-analysis.html#cb139-10" tabindex="-1"></a>df_pca <span class="op">=</span> pd.DataFrame(X_pca, columns<span class="op">=</span>[<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>])</span>
+<span id="cb139-11"><a href="principal-component-analysis.html#cb139-11" tabindex="-1"></a>df_pca[<span class="st">&quot;Species&quot;</span>] <span class="op">=</span> species</span>
+<span id="cb139-12"><a href="principal-component-analysis.html#cb139-12" tabindex="-1"></a></span>
+<span id="cb139-13"><a href="principal-component-analysis.html#cb139-13" tabindex="-1"></a><span class="co"># ellipse</span></span>
+<span id="cb139-14"><a href="principal-component-analysis.html#cb139-14" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">6</span>))</span>
+<span id="cb139-15"><a href="principal-component-analysis.html#cb139-15" tabindex="-1"></a>sns.<span class="bu">set</span>(style<span class="op">=</span><span class="st">&quot;whitegrid&quot;</span>)</span>
+<span id="cb139-16"><a href="principal-component-analysis.html#cb139-16" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>df_pca, x<span class="op">=</span><span class="st">&quot;PC1&quot;</span>, y<span class="op">=</span><span class="st">&quot;PC2&quot;</span>, hue<span class="op">=</span><span class="st">&quot;Species&quot;</span>, style<span class="op">=</span><span class="st">&quot;Species&quot;</span>,</span>
+<span id="cb139-17"><a href="principal-component-analysis.html#cb139-17" tabindex="-1"></a>                edgecolor<span class="op">=</span><span class="st">&quot;black&quot;</span>, s<span class="op">=</span><span class="dv">60</span>)</span>
+<span id="cb139-18"><a href="principal-component-analysis.html#cb139-18" tabindex="-1"></a></span>
+<span id="cb139-19"><a href="principal-component-analysis.html#cb139-19" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Ellipse</span>
+<span id="cb139-20"><a href="principal-component-analysis.html#cb139-20" tabindex="-1"></a><span class="im">import</span> matplotlib.transforms <span class="im">as</span> transforms</span>
+<span id="cb139-21"><a href="principal-component-analysis.html#cb139-21" tabindex="-1"></a></span>
+<span id="cb139-22"><a href="principal-component-analysis.html#cb139-22" tabindex="-1"></a><span class="kw">def</span> confidence_ellipse(x, y, ax, n_std<span class="op">=</span><span class="fl">2.0</span>, <span class="op">**</span>kwargs):</span>
+<span id="cb139-23"><a href="principal-component-analysis.html#cb139-23" tabindex="-1"></a>    <span class="cf">if</span> x.size <span class="op">&lt;=</span> <span class="dv">1</span>:</span>
+<span id="cb139-24"><a href="principal-component-analysis.html#cb139-24" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb139-25"><a href="principal-component-analysis.html#cb139-25" tabindex="-1"></a>    cov <span class="op">=</span> np.cov(x, y)</span>
+<span id="cb139-26"><a href="principal-component-analysis.html#cb139-26" tabindex="-1"></a>    mean <span class="op">=</span> [np.mean(x), np.mean(y)]</span>
+<span id="cb139-27"><a href="principal-component-analysis.html#cb139-27" tabindex="-1"></a>    lambda_, v <span class="op">=</span> np.linalg.eigh(cov)</span>
+<span id="cb139-28"><a href="principal-component-analysis.html#cb139-28" tabindex="-1"></a>    lambda_ <span class="op">=</span> np.sqrt(lambda_)</span>
+<span id="cb139-29"><a href="principal-component-analysis.html#cb139-29" tabindex="-1"></a>    ell <span class="op">=</span> Ellipse(xy<span class="op">=</span>mean,</span>
+<span id="cb139-30"><a href="principal-component-analysis.html#cb139-30" tabindex="-1"></a>                  width<span class="op">=</span>lambda_[<span class="dv">0</span>]<span class="op">*</span>n_std<span class="op">*</span><span class="dv">2</span>, height<span class="op">=</span>lambda_[<span class="dv">1</span>]<span class="op">*</span>n_std<span class="op">*</span><span class="dv">2</span>,</span>
+<span id="cb139-31"><a href="principal-component-analysis.html#cb139-31" tabindex="-1"></a>                  angle<span class="op">=</span>np.rad2deg(np.arccos(v[<span class="dv">0</span>, <span class="dv">0</span>])),</span>
+<span id="cb139-32"><a href="principal-component-analysis.html#cb139-32" tabindex="-1"></a>                  <span class="op">**</span>kwargs)</span>
+<span id="cb139-33"><a href="principal-component-analysis.html#cb139-33" tabindex="-1"></a>    ax.add_patch(ell)</span>
+<span id="cb139-34"><a href="principal-component-analysis.html#cb139-34" tabindex="-1"></a></span>
+<span id="cb139-35"><a href="principal-component-analysis.html#cb139-35" tabindex="-1"></a>ax <span class="op">=</span> plt.gca()</span>
+<span id="cb139-36"><a href="principal-component-analysis.html#cb139-36" tabindex="-1"></a><span class="cf">for</span> label <span class="kw">in</span> df_pca[<span class="st">&quot;Species&quot;</span>].unique():</span>
+<span id="cb139-37"><a href="principal-component-analysis.html#cb139-37" tabindex="-1"></a>    group <span class="op">=</span> df_pca[df_pca[<span class="st">&quot;Species&quot;</span>] <span class="op">==</span> label]</span>
+<span id="cb139-38"><a href="principal-component-analysis.html#cb139-38" tabindex="-1"></a>    confidence_ellipse(group[<span class="st">&quot;PC1&quot;</span>], group[<span class="st">&quot;PC2&quot;</span>], ax, edgecolor<span class="op">=</span><span class="st">&#39;black&#39;</span>, facecolor<span class="op">=</span><span class="st">&#39;none&#39;</span>)</span>
+<span id="cb139-39"><a href="principal-component-analysis.html#cb139-39" tabindex="-1"></a></span>
+<span id="cb139-40"><a href="principal-component-analysis.html#cb139-40" tabindex="-1"></a>plt.title(<span class="st">&quot;Clustering Iris Flowers Based on the First Two PCs&quot;</span>)</span>
+<span id="cb139-41"><a href="principal-component-analysis.html#cb139-41" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb139-42"><a href="principal-component-analysis.html#cb139-42" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:cluster"></span>
+<img src="Plots/cluster-9.png" alt="Clustering Iris flowers based on the first two PCs" width="70%" />
+<p class="caption">
+Figure 5.5: Clustering Iris flowers based on the first two PCs
+</p>
+</div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb140-1"><a href="principal-component-analysis.html#cb140-1" tabindex="-1"></a>plt.close()</span></code></pre></div>
+</div>
+<div id="further-reading" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Further Reading<a href="principal-component-analysis.html#further-reading" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>Independent principal component analysis (IPCA): the resulting principle components are independent. Applications: de-noise, separate the signals into several independent sources.</li>
+<li>Kernel principal component analysis (KPCA): map the data into a high dimension such that the principal components can be non-linear functions of the original variables through the kernel trick.</li>
+</ul>
+</div>
+<div id="revisit-the-learning-outcomes-3" class="section level2 unnumbered hasAnchor">
+<h2>Revisit the Learning Outcomes<a href="principal-component-analysis.html#revisit-the-learning-outcomes-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After finishing this note, students should be able to</p>
+<ul>
+<li>Explain the advantages and limitations of principal components analysis.</li>
+<li>Prove the two important results for principal component analysis:</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>The <span class="math inline">\(i\)</span>th principal component is given by
+<span class="math display">\[
+Y_i=\mathbf{e}_i^{T}\mathbf{X}=e_{i1}X_1+e_{i2}X_2+\cdots+e_{ip}X_p, i=1, 2, \cdots, p
+\]</span>
+where <span class="math inline">\(\mathbf{e}_i\)</span> is the unit eigenvector corresponding to the <span class="math inline">\(i\)</span>th largest eigenvalue of <span class="math inline">\(\mathbf{\Sigma}\)</span>.</li>
+<li>The total variance
+<span class="math display">\[
+\sigma_{11}+\sigma_{22}+\cdots+\sigma_{pp}=\sum_{i=1}^p Var(X_i)=\lambda_1+\lambda_2+\cdots+\lambda_p=\sum_{i=1}^p Var(Y_i)
+\]</span></li>
+</ol>
+<ul>
+<li>Determine the number of principal components, <span class="math inline">\(k\)</span>, needed to capture a given percentage of variation of the data. And find the first <span class="math inline">\(k\)</span> corresponding principal components.</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="hypothesis-tests-on-mean-vectors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="factor-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

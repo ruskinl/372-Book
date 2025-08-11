@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>8 Clustering Analysis | STAT 372 Open Textbook (Python)</title>
+  <meta name="description" content="This is an open textbook resource for the STAT372 course at MacEwan University, an introduction to Multivariate Statistics and Machine Learning." />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="8 Clustering Analysis | STAT 372 Open Textbook (Python)" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is an open textbook resource for the STAT372 course at MacEwan University, an introduction to Multivariate Statistics and Machine Learning." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="8 Clustering Analysis | STAT 372 Open Textbook (Python)" />
+  
+  <meta name="twitter:description" content="This is an open textbook resource for the STAT372 course at MacEwan University, an introduction to Multivariate Statistics and Machine Learning." />
+  
+
+<meta name="author" content="Dr. Wanhua Su" />
+
+
+<meta name="date" content="2025-08-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="discriminant-analysis-and-classification.html"/>
+<link rel="next" href="canonical-correlation-analysis.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#some-examples"><i class="fa fa-check"></i><b>1.2</b> Some Examples</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#example-1-storm-survival-of-sparrows"><i class="fa fa-check"></i>Example 1: Storm Survival of Sparrows</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#example-2-spam-or-e-mail"><i class="fa fa-check"></i>Example 2: Spam or E-mail?</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#example-3-classification-of-iris"><i class="fa fa-check"></i>Example 3: Classification of Iris</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#multivariate-methods-covered-in-stat-372"><i class="fa fa-check"></i><b>1.3</b> Multivariate Methods Covered in STAT 372</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#review-univariate-analysis"><i class="fa fa-check"></i><b>1.4</b> Review: Univariate Analysis</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="intro.html"><a href="intro.html#random-variable-and-its-distribution"><i class="fa fa-check"></i><b>1.4.1</b> Random Variable and Its Distribution</a></li>
+<li class="chapter" data-level="1.4.2" data-path="intro.html"><a href="intro.html#properties-of-expectation-and-variance"><i class="fa fa-check"></i><b>1.4.2</b> Properties of Expectation and Variance</a></li>
+<li class="chapter" data-level="1.4.3" data-path="intro.html"><a href="intro.html#continuous-random-variables"><i class="fa fa-check"></i><b>1.4.3</b> Continuous Random Variables</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#revisit-learning-learning-outcomes"><i class="fa fa-check"></i>Revisit Learning Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="matrix-algebra.html"><a href="matrix-algebra.html"><i class="fa fa-check"></i><b>2</b> Matrix Algebra</a>
+<ul>
+<li class="chapter" data-level="" data-path="matrix-algebra.html"><a href="matrix-algebra.html#learning-outcomes-1"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="2.1" data-path="matrix-algebra.html"><a href="matrix-algebra.html#vectors"><i class="fa fa-check"></i><b>2.1</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="matrix-algebra.html"><a href="matrix-algebra.html#some-basic-operations-on-vectors"><i class="fa fa-check"></i><b>2.1.1</b> Some Basic Operations on Vectors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="matrix-algebra.html"><a href="matrix-algebra.html#matrices"><i class="fa fa-check"></i><b>2.2</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="matrix-algebra.html"><a href="matrix-algebra.html#basic-operations-on-matrix"><i class="fa fa-check"></i><b>2.2.1</b> Basic Operations on Matrix</a></li>
+<li class="chapter" data-level="2.2.2" data-path="matrix-algebra.html"><a href="matrix-algebra.html#eigenvalues-and-eigenvectors"><i class="fa fa-check"></i><b>2.2.2</b> Eigenvalues and Eigenvectors</a></li>
+<li class="chapter" data-level="2.2.3" data-path="matrix-algebra.html"><a href="matrix-algebra.html#spectral-eigen-decomposition"><i class="fa fa-check"></i><b>2.2.3</b> Spectral (Eigen) Decomposition</a></li>
+<li class="chapter" data-level="2.2.4" data-path="matrix-algebra.html"><a href="matrix-algebra.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.2.4</b> Singular-Value Decomposition</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="matrix-algebra.html"><a href="matrix-algebra.html#mean-vectors-and-covariance-matrices"><i class="fa fa-check"></i><b>2.3</b> Mean Vectors and Covariance Matrices</a></li>
+<li class="chapter" data-level="2.4" data-path="matrix-algebra.html"><a href="matrix-algebra.html#sample-mean-vector-and-covariance-matrix"><i class="fa fa-check"></i><b>2.4</b> Sample Mean Vector and Covariance Matrix</a></li>
+<li class="chapter" data-level="2.5" data-path="matrix-algebra.html"><a href="matrix-algebra.html#review-exercises"><i class="fa fa-check"></i><b>2.5</b> Review Exercises</a></li>
+<li class="chapter" data-level="" data-path="matrix-algebra.html"><a href="matrix-algebra.html#revisit-the-learning-outcomes"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html"><i class="fa fa-check"></i><b>3</b> Displaying Multivariate Data and Measures of Distance</a>
+<ul>
+<li class="chapter" data-level="" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#learning-outcomes-2"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="3.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#display-multivariate-data"><i class="fa fa-check"></i><b>3.1</b> Display Multivariate Data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#scatterplot"><i class="fa fa-check"></i><b>3.1.1</b> Scatterplot</a></li>
+<li class="chapter" data-level="3.1.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#graphs-of-growth-curves"><i class="fa fa-check"></i><b>3.1.2</b> Graphs of Growth Curves</a></li>
+<li class="chapter" data-level="3.1.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#star-plots"><i class="fa fa-check"></i><b>3.1.3</b> Star Plots</a></li>
+<li class="chapter" data-level="3.1.4" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#chernoff-faces-plot"><i class="fa fa-check"></i><b>3.1.4</b> Chernoff Faces Plot</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distance-in-multivariate-analysis"><i class="fa fa-check"></i><b>3.2</b> Distance in Multivariate Analysis</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distances-for-quantitative-variables"><i class="fa fa-check"></i><b>3.2.1</b> Distances for Quantitative Variables</a></li>
+<li class="chapter" data-level="3.2.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distance-for-categorical-variables"><i class="fa fa-check"></i><b>3.2.2</b> Distance for Categorical Variables</a></li>
+<li class="chapter" data-level="3.2.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distance-for-mixed-variable-types"><i class="fa fa-check"></i><b>3.2.3</b> Distance for Mixed Variable Types</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#multivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3</b> Multivariate Normal Distribution</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#properties-of-multivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3.1</b> Properties of Multivariate Normal Distribution</a></li>
+<li class="chapter" data-level="3.3.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#bivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3.2</b> Bivariate Normal Distribution</a></li>
+<li class="chapter" data-level="3.3.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#contour-of-multivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3.3</b> Contour of Multivariate Normal Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#the-sampling-distribution-of-mathbfbar-x-and-boldsymbols"><i class="fa fa-check"></i><b>3.4</b> The Sampling Distribution of <span class="math inline">\(\mathbf{\bar X}\)</span> and <span class="math inline">\(\boldsymbol{S}\)</span></a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distributions-related-to-normal-distribution"><i class="fa fa-check"></i><b>3.4.1</b> Distributions Related to Normal Distribution</a></li>
+<li class="chapter" data-level="3.4.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#applications-to-distributions-related-to-sample-means"><i class="fa fa-check"></i><b>3.4.2</b> Applications to Distributions Related to Sample Means</a></li>
+<li class="chapter" data-level="3.4.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#generalize-to-multivariate-cases"><i class="fa fa-check"></i><b>3.4.3</b> Generalize to Multivariate Cases</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#review-exercises-1"><i class="fa fa-check"></i><b>3.5</b> Review Exercises</a></li>
+<li class="chapter" data-level="" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#revisit-the-learning-outcomes-1"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Tests on Mean Vectors</a>
+<ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#learning-outcomes-3"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="4.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#hypothesis-test-for-one-mean-vector"><i class="fa fa-check"></i><b>4.1</b> Hypothesis Test for one Mean Vector</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case"><i class="fa fa-check"></i><b>4.1.1</b> Univariate Case</a></li>
+<li class="chapter" data-level="4.1.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case"><i class="fa fa-check"></i><b>4.1.2</b> Multivariate Case</a></li>
+<li class="chapter" data-level="4.1.3" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#evaluating-multivariate-normality"><i class="fa fa-check"></i><b>4.1.3</b> Evaluating Multivariate Normality</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#hypothesis-test-for-two-mean-vectors"><i class="fa fa-check"></i><b>4.2</b> Hypothesis Test for Two Mean Vectors</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case-based-on-two-independent-samples"><i class="fa fa-check"></i><b>4.2.1</b> Univariate Case Based on Two Independent Samples</a></li>
+<li class="chapter" data-level="4.2.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case-based-on-two-independent-samples"><i class="fa fa-check"></i><b>4.2.2</b> Multivariate Case Based on Two Independent Samples</a></li>
+<li class="chapter" data-level="4.2.3" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#two-sample-non-pooled-hotellings-t2-test"><i class="fa fa-check"></i><b>4.2.3</b> Two-sample Non-pooled Hotelling’s <span class="math inline">\(T^2\)</span> Test</a></li>
+<li class="chapter" data-level="4.2.4" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#two-sample-hotellings-t2-confidence-interval"><i class="fa fa-check"></i><b>4.2.4</b> Two-sample Hotelling’s <span class="math inline">\(T^2\)</span> Confidence Interval</a></li>
+<li class="chapter" data-level="4.2.5" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case-based-on-a-paired-sample"><i class="fa fa-check"></i><b>4.2.5</b> Univariate Case Based on a Paired Sample</a></li>
+<li class="chapter" data-level="4.2.6" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case-based-on-a-paired-sample"><i class="fa fa-check"></i><b>4.2.6</b> Multivariate Case Based on a Paired Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#hypothesis-test-for-several-mean-vectors"><i class="fa fa-check"></i><b>4.3</b> Hypothesis Test for Several Mean Vectors</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case-one-way-anova-f-test"><i class="fa fa-check"></i><b>4.3.1</b> Univariate Case: One-Way ANOVA F Test</a></li>
+<li class="chapter" data-level="4.3.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case-one-way-manova"><i class="fa fa-check"></i><b>4.3.2</b> Multivariate Case: One-Way MANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#revisit-the-learning-outcomes-2"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html"><i class="fa fa-check"></i><b>5</b> Principal Component Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#learning-outcomes-4"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="5.1" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#finding-the-principal-components"><i class="fa fa-check"></i><b>5.1</b> Finding the Principal Components</a></li>
+<li class="chapter" data-level="5.2" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#scaling-in-principal-component-analysis"><i class="fa fa-check"></i><b>5.2</b> Scaling in Principal Component Analysis</a></li>
+<li class="chapter" data-level="5.3" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#limitations-of-principal-component-analysis"><i class="fa fa-check"></i><b>5.3</b> Limitations of Principal Component Analysis</a></li>
+<li class="chapter" data-level="5.4" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#further-reading"><i class="fa fa-check"></i><b>5.4</b> Further Reading</a></li>
+<li class="chapter" data-level="" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#revisit-the-learning-outcomes-3"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="factor-analysis.html"><a href="factor-analysis.html"><i class="fa fa-check"></i><b>6</b> Factor Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#learning-outcomes-5"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="6.1" data-path="factor-analysis.html"><a href="factor-analysis.html#model-of-factor-analysis"><i class="fa fa-check"></i><b>6.1</b> Model of Factor Analysis</a></li>
+<li class="chapter" data-level="6.2" data-path="factor-analysis.html"><a href="factor-analysis.html#estimating-factor-loadings-l_ij-and-specific-variance-psi_i"><i class="fa fa-check"></i><b>6.2</b> Estimating Factor Loadings <span class="math inline">\(l_{ij}\)</span> and Specific Variance <span class="math inline">\(\psi_i\)</span></a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#the-principle-component-method"><i class="fa fa-check"></i><b>6.2.1</b> The Principle Component Method</a></li>
+<li class="chapter" data-level="6.2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#the-maximum-likelihood-method"><i class="fa fa-check"></i><b>6.2.2</b> The Maximum Likelihood Method</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="factor-analysis.html"><a href="factor-analysis.html#factor-rotation"><i class="fa fa-check"></i><b>6.3</b> Factor Rotation</a></li>
+<li class="chapter" data-level="6.4" data-path="factor-analysis.html"><a href="factor-analysis.html#factor-scores"><i class="fa fa-check"></i><b>6.4</b> Factor Scores</a></li>
+<li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#revisit-the-learning-outcomes-4"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html"><i class="fa fa-check"></i><b>7</b> Discriminant Analysis and Classification</a>
+<ul>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#learning-outcomes-6"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="7.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#introduction-1"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#performance-measure"><i class="fa fa-check"></i><b>7.2</b> Performance Measure</a></li>
+<li class="chapter" data-level="7.3" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#overfitting-and-cross-validation"><i class="fa fa-check"></i><b>7.3</b> Overfitting and Cross Validation</a></li>
+<li class="chapter" data-level="7.4" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#classification-models"><i class="fa fa-check"></i><b>7.4</b> Classification Models</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>7.4.1</b> <span class="math inline">\(K\)</span> Nearest Neighbors</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#logistic-regression-for-binary-response"><i class="fa fa-check"></i><b>7.5</b> Logistic Regression for Binary Response</a>
+<ul>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#interpretation-of-beta_i"><i class="fa fa-check"></i>Interpretation of <span class="math inline">\(\beta_i\)</span></a></li>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#estimation-of-beta_i"><i class="fa fa-check"></i>Estimation of <span class="math inline">\(\beta_i\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#logistic-regression-for-multi-class-nominal-data"><i class="fa fa-check"></i><b>7.6</b> Logistic Regression for Multi-class Nominal Data</a></li>
+<li class="chapter" data-level="7.7" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#cumulative-logit-model-for-multi-class-ordinal-data"><i class="fa fa-check"></i><b>7.7</b> Cumulative Logit Model for Multi-class Ordinal Data</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#cumulative-logit-models-with-proportional-odds"><i class="fa fa-check"></i><b>7.7.1</b> Cumulative Logit Models with Proportional Odds</a></li>
+<li class="chapter" data-level="7.7.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#model-probability-of-each-category"><i class="fa fa-check"></i><b>7.7.2</b> Model Probability of Each Category</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#model-selection-for-logistic-regression"><i class="fa fa-check"></i><b>7.8</b> Model Selection for Logistic Regression</a>
+<ul>
+<li class="chapter" data-level="7.8.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#aic-and-bic"><i class="fa fa-check"></i><b>7.8.1</b> AIC and BIC</a></li>
+<li class="chapter" data-level="7.8.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#forward-selection"><i class="fa fa-check"></i><b>7.8.2</b> Forward Selection</a></li>
+<li class="chapter" data-level="7.8.3" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#backward-elimination"><i class="fa fa-check"></i><b>7.8.3</b> Backward Elimination</a></li>
+</ul></li>
+<li class="chapter" data-level="7.9" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#model-checking"><i class="fa fa-check"></i><b>7.9</b> Model Checking</a>
+<ul>
+<li class="chapter" data-level="7.9.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#residual-analysis"><i class="fa fa-check"></i><b>7.9.1</b> Residual Analysis</a></li>
+<li class="chapter" data-level="7.9.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#preditive-power-accuracy-and-roc-curve"><i class="fa fa-check"></i><b>7.9.2</b> Preditive Power: Accuracy and ROC Curve</a></li>
+</ul></li>
+<li class="chapter" data-level="7.10" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#classification-tree-recursive-partitioning"><i class="fa fa-check"></i><b>7.10</b> Classification Tree (Recursive Partitioning)</a></li>
+<li class="chapter" data-level="7.11" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#regression-tree"><i class="fa fa-check"></i><b>7.11</b> Regression Tree</a></li>
+<li class="chapter" data-level="7.12" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#random-forest"><i class="fa fa-check"></i><b>7.12</b> Random Forest</a></li>
+<li class="chapter" data-level="7.13" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#support-vector-machines"><i class="fa fa-check"></i><b>7.13</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="7.14" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#neural-networks"><i class="fa fa-check"></i><b>7.14</b> Neural Networks</a></li>
+<li class="chapter" data-level="7.15" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#classical-methods"><i class="fa fa-check"></i><b>7.15</b> Classical Methods</a>
+<ul>
+<li class="chapter" data-level="7.15.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#mahalanobis-distance-method"><i class="fa fa-check"></i><b>7.15.1</b> Mahalanobis Distance Method</a></li>
+<li class="chapter" data-level="7.15.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#bayes-posterior"><i class="fa fa-check"></i><b>7.15.2</b> Bayes Posterior</a></li>
+<li class="chapter" data-level="7.15.3" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#fishers-discriminant-analysis"><i class="fa fa-check"></i><b>7.15.3</b> Fisher’s Discriminant Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="7.16" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#summary"><i class="fa fa-check"></i><b>7.16</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#revisit-learning-outcomes"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="clustering-analysis.html"><a href="clustering-analysis.html"><i class="fa fa-check"></i><b>8</b> Clustering Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="clustering-analysis.html"><a href="clustering-analysis.html#learning-outcomes-7"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="8.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#introduction-2"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#clustering-methods"><i class="fa fa-check"></i><b>8.2</b> Clustering Methods</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#hierarchical-method"><i class="fa fa-check"></i><b>8.2.1</b> Hierarchical Method</a></li>
+<li class="chapter" data-level="8.2.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#k-means"><i class="fa fa-check"></i><b>8.2.2</b> K-Means</a></li>
+<li class="chapter" data-level="8.2.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#model-based-clustering"><i class="fa fa-check"></i><b>8.2.3</b> Model-Based Clustering</a></li>
+<li class="chapter" data-level="8.2.4" data-path="clustering-analysis.html"><a href="clustering-analysis.html#pros-and-cons-of-clustering-methods"><i class="fa fa-check"></i><b>8.2.4</b> Pros and Cons of Clustering Methods</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#determine-k-number-of-clusters"><i class="fa fa-check"></i><b>8.3</b> Determine <span class="math inline">\(K\)</span>: Number of Clusters</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#the-elbow-plot-method"><i class="fa fa-check"></i><b>8.3.1</b> The Elbow Plot Method</a></li>
+<li class="chapter" data-level="8.3.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#the-silhouette-score"><i class="fa fa-check"></i><b>8.3.2</b> The Silhouette Score</a></li>
+<li class="chapter" data-level="8.3.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#gap-statistics"><i class="fa fa-check"></i><b>8.3.3</b> Gap Statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="clustering-analysis.html"><a href="clustering-analysis.html#side-note-on-the-em-algorithm"><i class="fa fa-check"></i>Side-Note on the EM Algorithm</a></li>
+<li class="chapter" data-level="" data-path="clustering-analysis.html"><a href="clustering-analysis.html#revisit-learning-outcomes-1"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html"><i class="fa fa-check"></i><b>9</b> Canonical Correlation Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#learning-outcomes-8"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="9.1" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#objective"><i class="fa fa-check"></i><b>9.1</b> Objective</a></li>
+<li class="chapter" data-level="9.2" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#obtain-the-canonical-variates-pairs"><i class="fa fa-check"></i><b>9.2</b> Obtain the Canonical Variates Pairs</a></li>
+<li class="chapter" data-level="9.3" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#interpretation"><i class="fa fa-check"></i><b>9.3</b> Interpretation</a></li>
+<li class="chapter" data-level="9.4" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#testing-mathbfsigma_120"><i class="fa fa-check"></i><b>9.4</b> Testing <span class="math inline">\(\mathbf{\Sigma}_{12}=0\)</span></a></li>
+<li class="chapter" data-level="" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#revisit-learning-outcomes-2"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html"><i class="fa fa-check"></i><b>10</b> Multidimensional Scaling</a>
+<ul>
+<li class="chapter" data-level="" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#learning-outcomes-9"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="10.1" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#objective-1"><i class="fa fa-check"></i><b>10.1</b> Objective</a></li>
+<li class="chapter" data-level="10.2" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#methods"><i class="fa fa-check"></i><b>10.2</b> Methods</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#classical-scaling"><i class="fa fa-check"></i><b>10.2.1</b> Classical Scaling</a></li>
+<li class="chapter" data-level="10.2.2" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#metric-scaling"><i class="fa fa-check"></i><b>10.2.2</b> Metric Scaling</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#example"><i class="fa fa-check"></i><b>10.3</b> Example</a></li>
+<li class="chapter" data-level="" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#revisit-learning-outcomes-3"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">STAT 372 Open Textbook (Python)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="clustering-analysis" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> Clustering Analysis<a href="clustering-analysis.html#clustering-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="learning-outcomes-7" class="section level2 unnumbered hasAnchor">
+<h2>Learning Outcomes<a href="clustering-analysis.html#learning-outcomes-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After finishing this chapter, students should be able to</p>
+<ul>
+<li>Explain the differences between classification and cluster problems.</li>
+<li>Describe briefly the main idea and procedure of hierarchical clustering, <span class="math inline">\(K\)</span>-means, and model-based clustering methods.</li>
+<li>Conduct a clustering analysis using hierarchical clustering method, <span class="math inline">\(K\)</span>-means, and model-based clustering in R.</li>
+<li>Interpret the R computer outputs of hierarchical clustering, <span class="math inline">\(K\)</span>-means, and model-based clustering methods.</li>
+</ul>
+</div>
+<div id="introduction-2" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Introduction<a href="clustering-analysis.html#introduction-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We have already introduced multivariate data analysis and classification. This note introduces another major application in machine learning: clustering.</p>
+<p>The main difference between a clustering problem and a classification problem is that the class labels are unknown for clustering. The objectives of a clustering problem are</p>
+<ul>
+<li>Determine the proper number of clusters <span class="math inline">\(K\)</span>.</li>
+<li>Group the observations into <span class="math inline">\(K\)</span> clusters.</li>
+<li>Allocate new observations to one of those <span class="math inline">\(K\)</span> clusters.</li>
+</ul>
+</div>
+<div id="clustering-methods" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Clustering Methods<a href="clustering-analysis.html#clustering-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Hierarchical clustering method, <span class="math inline">\(K\)</span>-means, and model-based clustering will be covered.</p>
+<div id="hierarchical-method" class="section level3 hasAnchor" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> Hierarchical Method<a href="clustering-analysis.html#hierarchical-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Like the forward selection and backward elimination model selection methods in multiple regression, either merging (start with one observation as one group) or division (start with all observation in one cluster) can be used in hierarchical methods. Suppose there are <span class="math inline">\(n\)</span> observations, we can calculate the <span class="math inline">\(n\times n\)</span> pairwise distance matrix using Euclidean, Manhattan, Mahalanobis, Hamming, and Gower’s distance. Steps to conduct a hierarchical clustering are as follows:</p>
+<ol style="list-style-type: decimal">
+<li>One observation one group</li>
+<li>Merge the two groups with the smallest distance or largest similarity</li>
+<li>Repeat step 2 until all observations are in one group.</li>
+</ol>
+<p>There are three way to measure the distance <strong>between</strong> two groups <span class="math inline">\(G_i\)</span> and <span class="math inline">\(G_j\)</span>, <span class="math inline">\(d(G_i, G_j)\)</span>.</p>
+<ul>
+<li>single linkage: <span class="math inline">\(d(G_i, G_j)=\min_{p\in G_i, q\in G_j} d(p,q)\)</span>.The distance between the closest pair of objects belonging to two different groups.</li>
+<li>complete linkage: <span class="math inline">\(d(G_i, G_j)=\max_{p\in G_i, q\in G_j} d(p,q)\)</span>.The distance between the furthest pair of objects belonging to two different groups.</li>
+<li>average linkage:<span class="math inline">\(d(G_i, G_j)=\text{average}_{p\in G_i, q\in G_j} d(p,q)\)</span>.The average distance of all between-group pairs.</li>
+</ul>
+<div id="example-hierarchical-clustering" class="section level4 unnumbered hasAnchor">
+<h4>Example: Hierarchical Clustering<a href="clustering-analysis.html#example-hierarchical-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Let <span class="math inline">\(x_1=5, x_2=3, x_3=9, x_4=6, x_5=1\)</span>.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Find the distance matrix.</li>
+</ol>
+<div class="sourceCode" id="cb381"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb381-1"><a href="clustering-analysis.html#cb381-1" tabindex="-1"></a><span class="co"># R does it much better</span></span>
+<span id="cb381-2"><a href="clustering-analysis.html#cb381-2" tabindex="-1"></a></span>
+<span id="cb381-3"><a href="clustering-analysis.html#cb381-3" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb381-4"><a href="clustering-analysis.html#cb381-4" tabindex="-1"></a><span class="im">from</span> scipy.spatial.distance <span class="im">import</span> pdist</span>
+<span id="cb381-5"><a href="clustering-analysis.html#cb381-5" tabindex="-1"></a></span>
+<span id="cb381-6"><a href="clustering-analysis.html#cb381-6" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">9</span>, <span class="dv">6</span>, <span class="dv">1</span>]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb381-7"><a href="clustering-analysis.html#cb381-7" tabindex="-1"></a>dists <span class="op">=</span> pdist(x, metric<span class="op">=</span><span class="st">&#39;euclidean&#39;</span>)</span>
+<span id="cb381-8"><a href="clustering-analysis.html#cb381-8" tabindex="-1"></a></span>
+<span id="cb381-9"><a href="clustering-analysis.html#cb381-9" tabindex="-1"></a><span class="co"># formatting like R&#39;s dist() printout</span></span>
+<span id="cb381-10"><a href="clustering-analysis.html#cb381-10" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb381-11"><a href="clustering-analysis.html#cb381-11" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(x)</span>
+<span id="cb381-12"><a href="clustering-analysis.html#cb381-12" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n):</span>
+<span id="cb381-13"><a href="clustering-analysis.html#cb381-13" tabindex="-1"></a>    row <span class="op">=</span> []</span>
+<span id="cb381-14"><a href="clustering-analysis.html#cb381-14" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(i):</span>
+<span id="cb381-15"><a href="clustering-analysis.html#cb381-15" tabindex="-1"></a>        row.append(<span class="ss">f&quot;</span><span class="sc">{</span>dists[k]<span class="sc">:&gt;4.1f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb381-16"><a href="clustering-analysis.html#cb381-16" tabindex="-1"></a>        k <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb381-17"><a href="clustering-analysis.html#cb381-17" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot; &quot;</span>.join(row))</span></code></pre></div>
+<pre><code>##  2.0
+##  4.0  1.0
+##  4.0  6.0  3.0
+##  2.0  3.0  8.0  5.0</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Conduct a hierarchical clustering with single linkage.</li>
+</ol>
+We first merge <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_4\)</span> which pair has the shortest distance 1. Update the distance matrix using the single linkage.
+<p><span class="math display">\[  
+\begin{aligned}
+d_{(1,4), 2}&amp;=\min\{d_{12}, d_{42}\}=\min\{2, 3\}=2\\
+d_{(1,4), 3}&amp;=\min\{d_{13}, d_{43}\}=\min\{4, 3\}=3\\
+d_{(1,4), 5}&amp;=\min\{d_{15}, d_{45}\}=\min\{4, 5\}=4\\
+\end{aligned}
+\]</span></p>
+<p>We can either merge <span class="math inline">\(\{x_1, x_4\}\)</span> with <span class="math inline">\(x_2\)</span> or <span class="math inline">\(x_2\)</span> with <span class="math inline">\(x_5\)</span>, both of which have distance 2. I prefer to keep the group size smaller; therefore, I merge <span class="math inline">\(x_2\)</span> and <span class="math inline">\(x_5\)</span>. Update the distance matrix.</p>
+<p><span class="math display">\[
+\begin{aligned}
+d_{(1,4), (2,5)}&amp;=\min\{d_{(1,4),2}, d_{(1,4),5}\}=\min\{2, 4\}=2\\
+d_{(2,5), 3}&amp;=\min\{d_{23}, d_{53}\}=\min\{6, 8\}=6\\
+\end{aligned}
+\]</span></p>
+<p>We merge <span class="math inline">\(\{x_1, x_4\}\)</span> and <span class="math inline">\(\{x_2, x_5\}\)</span>. Lastly, we merger <span class="math inline">\(\{x_1, x_4, x_2, x_5\}\)</span> and <span class="math inline">\(x_3\)</span> with distance
+<span class="math display">\[
+d_{(1,4,2,5),3}=\min\{d_{(1,4),3}, d_{(2,5),3}\}=\min\{3, 6\}=3
+\]</span>
+As a result, the cluster dendrogram is as follows:</p>
+<div class="sourceCode" id="cb383"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb383-1"><a href="clustering-analysis.html#cb383-1" tabindex="-1"></a><span class="im">from</span> scipy.cluster.hierarchy <span class="im">import</span> linkage, dendrogram</span>
+<span id="cb383-2"><a href="clustering-analysis.html#cb383-2" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb383-3"><a href="clustering-analysis.html#cb383-3" tabindex="-1"></a></span>
+<span id="cb383-4"><a href="clustering-analysis.html#cb383-4" tabindex="-1"></a>linked <span class="op">=</span> linkage(x, method<span class="op">=</span><span class="st">&#39;single&#39;</span>, metric<span class="op">=</span><span class="st">&#39;euclidean&#39;</span>)</span>
+<span id="cb383-5"><a href="clustering-analysis.html#cb383-5" tabindex="-1"></a></span>
+<span id="cb383-6"><a href="clustering-analysis.html#cb383-6" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span></code></pre></div>
+<pre><code>## &lt;Figure size 600x400 with 0 Axes&gt;</code></pre>
+<div class="sourceCode" id="cb385"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb385-1"><a href="clustering-analysis.html#cb385-1" tabindex="-1"></a>dendrogram(linked,</span>
+<span id="cb385-2"><a href="clustering-analysis.html#cb385-2" tabindex="-1"></a>           labels<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>],</span>
+<span id="cb385-3"><a href="clustering-analysis.html#cb385-3" tabindex="-1"></a>           orientation<span class="op">=</span><span class="st">&#39;top&#39;</span>,</span>
+<span id="cb385-4"><a href="clustering-analysis.html#cb385-4" tabindex="-1"></a>           distance_sort<span class="op">=</span><span class="st">&#39;ascending&#39;</span>)</span></code></pre></div>
+<pre><code>## {&#39;icoord&#39;: [[35.0, 35.0, 45.0, 45.0], [25.0, 25.0, 40.0, 40.0], [15.0, 15.0, 32.5, 32.5], [5.0, 5.0, 23.75, 23.75]], &#39;dcoord&#39;: [[0.0, np.float64(1.0), np.float64(1.0), 0.0], [0.0, np.float64(2.0), np.float64(2.0), np.float64(1.0)], [0.0, np.float64(2.0), np.float64(2.0), np.float64(2.0)], [0.0, np.float64(3.0), np.float64(3.0), np.float64(2.0)]], &#39;ivl&#39;: [3, 5, 2, 1, 4], &#39;leaves&#39;: [2, 4, 1, 0, 3], &#39;color_list&#39;: [&#39;C1&#39;, &#39;C1&#39;, &#39;C1&#39;, &#39;C0&#39;], &#39;leaves_color_list&#39;: [&#39;C0&#39;, &#39;C1&#39;, &#39;C1&#39;, &#39;C1&#39;, &#39;C1&#39;]}</code></pre>
+<div class="sourceCode" id="cb387"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb387-1"><a href="clustering-analysis.html#cb387-1" tabindex="-1"></a>plt.title(<span class="st">&quot;Cluster Dendrogram&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 1.0, &#39;Cluster Dendrogram&#39;)</code></pre>
+<div class="sourceCode" id="cb389"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb389-1"><a href="clustering-analysis.html#cb389-1" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Variables&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 0, &#39;Variables&#39;)</code></pre>
+<div class="sourceCode" id="cb391"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb391-1"><a href="clustering-analysis.html#cb391-1" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Distance&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0, 0.5, &#39;Distance&#39;)</code></pre>
+<div class="sourceCode" id="cb393"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb393-1"><a href="clustering-analysis.html#cb393-1" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb393-2"><a href="clustering-analysis.html#cb393-2" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p><img src="Plots/dendro1-1.png" width="65%" /></p>
+<div class="sourceCode" id="cb394"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb394-1"><a href="clustering-analysis.html#cb394-1" tabindex="-1"></a>plt.close()</span></code></pre></div>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Conduct a hierarchical clustering with complete linkage.</li>
+</ol>
+<p>Again, we first merge <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_4\)</span> and update the distance matrix using the complete linkage.</p>
+<p><span class="math display">\[
+\begin{aligned}
+d_{(1,4), 2}&amp;=\max\{d_{12}, d_{42}\}=\max\{2, 3\}=3\\
+d_{(1,4), 3}&amp;=\max\{d_{13}, d_{43}\}=\max\{4, 3\}=4\\
+d_{(1,4), 5}&amp;=\max\{d_{15}, d_{45}\}=\max\{4, 5\}=5\\
+\end{aligned}
+\]</span></p>
+<p>Next, we merge <span class="math inline">\(x_2\)</span> and <span class="math inline">\(x_5\)</span> and update the distance matrix.</p>
+<p><span class="math display">\[
+\begin{aligned}
+d_{(1,4), (2,5)}&amp;=\max\{d_{(1,4),2}, d_{(1,4),5}\}=\max\{3, 5\}=5\\
+d_{(2,5), 3}&amp;=\max\{d_{23}, d_{53}\}=\max\{6, 8\}=8\\
+\end{aligned}
+\]</span>
+We merge <span class="math inline">\(\{x_1, x_4\}\)</span> and <span class="math inline">\(x_3\)</span>. Lastly, we merger <span class="math inline">\(\{x_1, x_4, x_3\}\)</span> and <span class="math inline">\(\{x_2, x-5\}\)</span> with distance
+<span class="math display">\[
+d_{(1,4,3),(2,5)}=\max\{d_{(1,4),(2,5)}, d_{3,(2,5)}\}=\max\{5, 8\}=8
+\]</span>
+As a result, the cluster dendrogram is as follows:</p>
+<div class="sourceCode" id="cb395"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb395-1"><a href="clustering-analysis.html#cb395-1" tabindex="-1"></a>linked_complete <span class="op">=</span> linkage(x, method<span class="op">=</span><span class="st">&#39;complete&#39;</span>, metric<span class="op">=</span><span class="st">&#39;euclidean&#39;</span>)</span>
+<span id="cb395-2"><a href="clustering-analysis.html#cb395-2" tabindex="-1"></a></span>
+<span id="cb395-3"><a href="clustering-analysis.html#cb395-3" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span></code></pre></div>
+<pre><code>## &lt;Figure size 600x400 with 0 Axes&gt;</code></pre>
+<div class="sourceCode" id="cb397"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb397-1"><a href="clustering-analysis.html#cb397-1" tabindex="-1"></a>dendrogram(linked_complete,</span>
+<span id="cb397-2"><a href="clustering-analysis.html#cb397-2" tabindex="-1"></a>           labels<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>],  <span class="co"># Match R labels</span></span>
+<span id="cb397-3"><a href="clustering-analysis.html#cb397-3" tabindex="-1"></a>           orientation<span class="op">=</span><span class="st">&#39;top&#39;</span>,</span>
+<span id="cb397-4"><a href="clustering-analysis.html#cb397-4" tabindex="-1"></a>           distance_sort<span class="op">=</span><span class="st">&#39;ascending&#39;</span>)</span></code></pre></div>
+<pre><code>## {&#39;icoord&#39;: [[5.0, 5.0, 15.0, 15.0], [35.0, 35.0, 45.0, 45.0], [25.0, 25.0, 40.0, 40.0], [10.0, 10.0, 32.5, 32.5]], &#39;dcoord&#39;: [[0.0, np.float64(2.0), np.float64(2.0), 0.0], [0.0, np.float64(1.0), np.float64(1.0), 0.0], [0.0, np.float64(4.0), np.float64(4.0), np.float64(1.0)], [np.float64(2.0), np.float64(8.0), np.float64(8.0), np.float64(4.0)]], &#39;ivl&#39;: [2, 5, 3, 1, 4], &#39;leaves&#39;: [1, 4, 2, 0, 3], &#39;color_list&#39;: [&#39;C1&#39;, &#39;C2&#39;, &#39;C2&#39;, &#39;C0&#39;], &#39;leaves_color_list&#39;: [&#39;C1&#39;, &#39;C1&#39;, &#39;C2&#39;, &#39;C2&#39;, &#39;C2&#39;]}</code></pre>
+<div class="sourceCode" id="cb399"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb399-1"><a href="clustering-analysis.html#cb399-1" tabindex="-1"></a>plt.title(<span class="st">&quot;Cluster Dendrogram&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 1.0, &#39;Cluster Dendrogram&#39;)</code></pre>
+<div class="sourceCode" id="cb401"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb401-1"><a href="clustering-analysis.html#cb401-1" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Variables&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 0, &#39;Variables&#39;)</code></pre>
+<div class="sourceCode" id="cb403"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb403-1"><a href="clustering-analysis.html#cb403-1" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Distance&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0, 0.5, &#39;Distance&#39;)</code></pre>
+<div class="sourceCode" id="cb405"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb405-1"><a href="clustering-analysis.html#cb405-1" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb405-2"><a href="clustering-analysis.html#cb405-2" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p><img src="Plots/dendro2-3.png" width="65%" /></p>
+<div class="sourceCode" id="cb406"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb406-1"><a href="clustering-analysis.html#cb406-1" tabindex="-1"></a>plt.close()</span></code></pre></div>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Conduct a hierarchical clustering with average linkage.</li>
+</ol>
+<p>Again, we first merge <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_4\)</span> and update the distance matrix using the average linkage.
+[</p>
+<span class="math display">\[\begin{array}{c|ccc}
+&amp;(1, 4)&amp;2&amp;3\\
+\hline
+2&amp;2.5&amp;&amp;\\
+3&amp;3.5&amp;6&amp;\\
+5&amp;4.5&amp;2&amp;8\\
+\end{array}\]</span>
+<p>]</p>
+<p><span class="math display">\[
+\begin{aligned}
+d_{(1,4), 2}&amp;=\frac{d_{12}+d_{42}}{2}=\frac{2+3}{2}=2.5\\
+d_{(1,4), 3}&amp;=\frac{d_{13}+d_{43}}{2}=\frac{4+3}{2}=3.5\\
+d_{(1,4), 5}&amp;=\frac{d_{15}+d_{45}}{2}=\frac{4+5}{2}=4.5\\
+\end{aligned}
+\]</span></p>
+<p>Next, we merge <span class="math inline">\(x_2\)</span> and <span class="math inline">\(x_5\)</span> and update the distance matrix.</p>
+[
+<span class="math display">\[\begin{array}{c|cc}
+&amp;(1, 4)&amp;(2, 5)\\
+\hline
+(2, 5)&amp;3.5&amp;\\
+3&amp;3.5&amp;7\\
+\end{array}\]</span>
+<p>]</p>
+<p><span class="math display">\[
+\begin{aligned}
+d_{(1,4), (2,5)}&amp;=\frac{d_{(1,4),2}+d_{(1,4),5}}{2}=\frac{2.5+4.5}{2}=3.5\\
+d_{(2,5), 3}&amp;=\frac{d_{23}+d_{53}}{2}=\frac{6+8}{2}=7\\
+\end{aligned}
+\]</span></p>
+<p>We merge <span class="math inline">\(\{x_1, x_4\}\)</span> and <span class="math inline">\(\{x_2, x_5\}\)</span>. Lastly, we merger <span class="math inline">\(\{x_1, x_4, x_2, x_5\}\)</span> and <span class="math inline">\(x_3\)</span> with distance
+<span class="math display">\[
+d_{(1,4,2,5),3}=\frac{d_{(1,4),3}+d_{(2,5),3}}{2}=\frac{3.5+7}{2}=5.25
+\]</span>
+As a result, the cluster dendrogram is as follows:</p>
+<div class="sourceCode" id="cb407"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb407-1"><a href="clustering-analysis.html#cb407-1" tabindex="-1"></a>linked_avg <span class="op">=</span> linkage(x, method<span class="op">=</span><span class="st">&#39;average&#39;</span>, metric<span class="op">=</span><span class="st">&#39;euclidean&#39;</span>)</span>
+<span id="cb407-2"><a href="clustering-analysis.html#cb407-2" tabindex="-1"></a></span>
+<span id="cb407-3"><a href="clustering-analysis.html#cb407-3" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span></code></pre></div>
+<pre><code>## &lt;Figure size 600x400 with 0 Axes&gt;</code></pre>
+<div class="sourceCode" id="cb409"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb409-1"><a href="clustering-analysis.html#cb409-1" tabindex="-1"></a>dendrogram(linked_avg,</span>
+<span id="cb409-2"><a href="clustering-analysis.html#cb409-2" tabindex="-1"></a>           labels<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>],  <span class="co"># Match R labels</span></span>
+<span id="cb409-3"><a href="clustering-analysis.html#cb409-3" tabindex="-1"></a>           orientation<span class="op">=</span><span class="st">&#39;top&#39;</span>,</span>
+<span id="cb409-4"><a href="clustering-analysis.html#cb409-4" tabindex="-1"></a>           distance_sort<span class="op">=</span><span class="st">&#39;ascending&#39;</span>)</span></code></pre></div>
+<pre><code>## {&#39;icoord&#39;: [[5.0, 5.0, 15.0, 15.0], [35.0, 35.0, 45.0, 45.0], [25.0, 25.0, 40.0, 40.0], [10.0, 10.0, 32.5, 32.5]], &#39;dcoord&#39;: [[0.0, np.float64(2.0), np.float64(2.0), 0.0], [0.0, np.float64(1.0), np.float64(1.0), 0.0], [0.0, np.float64(3.5), np.float64(3.5), np.float64(1.0)], [np.float64(2.0), np.float64(4.666666666666667), np.float64(4.666666666666667), np.float64(3.5)]], &#39;ivl&#39;: [2, 5, 3, 1, 4], &#39;leaves&#39;: [1, 4, 2, 0, 3], &#39;color_list&#39;: [&#39;C1&#39;, &#39;C2&#39;, &#39;C0&#39;, &#39;C0&#39;], &#39;leaves_color_list&#39;: [&#39;C1&#39;, &#39;C1&#39;, &#39;C0&#39;, &#39;C2&#39;, &#39;C2&#39;]}</code></pre>
+<div class="sourceCode" id="cb411"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb411-1"><a href="clustering-analysis.html#cb411-1" tabindex="-1"></a>plt.title(<span class="st">&quot;Cluster Dendrogram&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 1.0, &#39;Cluster Dendrogram&#39;)</code></pre>
+<div class="sourceCode" id="cb413"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb413-1"><a href="clustering-analysis.html#cb413-1" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Variables&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 0, &#39;Variables&#39;)</code></pre>
+<div class="sourceCode" id="cb415"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb415-1"><a href="clustering-analysis.html#cb415-1" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Distance&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0, 0.5, &#39;Distance&#39;)</code></pre>
+<div class="sourceCode" id="cb417"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb417-1"><a href="clustering-analysis.html#cb417-1" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb417-2"><a href="clustering-analysis.html#cb417-2" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p><img src="Plots/dendro3-5.png" width="65%" /></p>
+<div class="sourceCode" id="cb418"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb418-1"><a href="clustering-analysis.html#cb418-1" tabindex="-1"></a>plt.close()</span></code></pre></div>
+<p>This dendrogram tells us that cutting at distance=5 results in two clusters <span class="math inline">\(\{x_3\}, \{x_1,x_4,x_2,x_5\}\)</span>; cutting at distance=3 results in three clusters <span class="math inline">\(\{x_3\}, \{x_1,x_4\}, \{x_2,x_5\}\)</span>.</p>
+</div>
+</div>
+<div id="k-means" class="section level3 hasAnchor" number="8.2.2">
+<h3><span class="header-section-number">8.2.2</span> K-Means<a href="clustering-analysis.html#k-means" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Compared to the hierarchical clustering, <span class="math inline">\(K\)</span>-mean is much more efficient in computation. The algorithm of <span class="math inline">\(K\)</span>-mean is as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Arbitrarily pick the centers of the <span class="math inline">\(K\)</span> clusters <span class="math inline">\(\mathbf{m}_1^{(\mbox{old})}, \mathbf{m}_2^{(\mbox{old})},\cdots, \mathbf{m}_K^{(\mbox{old})}\)</span>.</li>
+<li>Assign each object to one and only one of the clusters, choose the one with the shortest distance from the object to the group center. That is <span class="math inline">\(Y=\mbox{argmin}_j d(\mathbf{x},\mathbf{m}_j)\)</span>.</li>
+<li>Update the group (cluster) centers
+<span class="math display">\[
+\mathbf{m}_i^{(\mbox{new})}=\frac{1}{n_i}\displaystyle\sum_{\mathbf{x}\in G_i} \mathbf{x}, i=1, 2, \cdots, K, \quad \mbox{$n_i$ is the number of objects in group $i$}
+\]</span></li>
+<li>Repeat steps (2) and (3) until convergence, i.e., the centers won’t change anymore.</li>
+</ol>
+<p>Here is an illustration adopted from Dr. Jeffrey L. Andrews’s notes. Twenty-five observations were generated from bivariate normal distributions with mean vectors <span class="math inline">\(\mathbf{\mu}_1=(0, 0)^T\)</span> and <span class="math inline">\(\mathbf{\mu}_2=(5, -5)^T\)</span>, and covariance matrix
+<span class="math display">\[
+\mathbf{\Sigma}_1=\mathbf{\Sigma}_2=\left[
+\begin{array}{cc}
+1&amp;0\\
+0&amp;1
+\end{array}
+\right].
+\]</span></p>
+<p>The K-means method converges in three iterations, i.e., the labels of observation don’t change after three rounds.</p>
+<pre><code>## &lt;IPython.core.display.Image object&gt;</code></pre>
+<p><strong>Note</strong>: The result of <span class="math inline">\(K\)</span>-means will be affected by the initial value, it is important to run the algorithm multiple times from different random initial configurations.</p>
+<p>Let’s revisit the simple example.</p>
+<div id="example-k-means-clustering" class="section level4 unnumbered hasAnchor">
+<h4>Example: K-Means Clustering<a href="clustering-analysis.html#example-k-means-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Let <span class="math inline">\(x_1=5, x_2=3, x_3=9, x_4=6, x_5=1\)</span>. Assume <span class="math inline">\(K=2\)</span> clusters.</p>
+<ul>
+<li>[(a)] If we set the initial centers <span class="math inline">\(\mathbf{m}_1^{(0)}=0, \mathbf{m}_2^{(0)}=11\)</span>.</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Allocation. Group 1: <span class="math inline">\(\{x_5, x_2, x_1\}\)</span>; group 2: <span class="math inline">\(\{x_4, x_3\}\)</span>.</li>
+<li>Recalculate the centers.
+<span class="math display">\[
+\mathbf{m}_1^{(1)}=\frac{1+3+5}{3}=3, \mathbf{m}_2^{(1)}=\frac{6+9}{2}=7.5
+\]</span></li>
+<li>Re-allocate. Group 1: <span class="math inline">\(\{x_5, x_2, x_1\}\)</span>; group 2: <span class="math inline">\(\{x_4, x_3\}\)</span>. The centers are the same as the previous step. Algorithm converges. The final grouping is group 1: <span class="math inline">\(\{x_5, x_2, x_1\}\)</span> and group 2: <span class="math inline">\(\{x_4, x_3\}\)</span> with centers 3 and 7.5 respectively.</li>
+</ol>
+<ul>
+<li>[(b)] If we set the initial centers <span class="math inline">\(\mathbf{m}_1^{(0)}=4, \mathbf{m}_2^{(0)}=5\)</span>.</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Allocation. Group 1: <span class="math inline">\(\{x_5, x_2\}\)</span>; group 2: <span class="math inline">\(\{x_1, x_4, x_3\}\)</span>.</li>
+<li>Recalculate the centers.
+<span class="math display">\[
+\mathbf{m}_1^{(1)}=\frac{1+3}{2}=2, \mathbf{m}_2^{(1)}=\frac{5+6+9}{3}=6.667
+\]</span></li>
+<li>Re-allocate. Group 1: <span class="math inline">\(\{x_5, x_2\}\)</span>; group 2: <span class="math inline">\(\{x_1, x_4, x_3\}\)</span>. The centers are the same as the previous step. Algorithm converges. The final grouping is group 1: <span class="math inline">\(\{x_5, x_2\}\)</span> and group 2: <span class="math inline">\(\{x_1, x_4, x_3\}\)</span> with centers 2 and 6.667 respectively.</li>
+</ol>
+</div>
+</div>
+<div id="model-based-clustering" class="section level3 hasAnchor" number="8.2.3">
+<h3><span class="header-section-number">8.2.3</span> Model-Based Clustering<a href="clustering-analysis.html#model-based-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The model-based clustering method models the joint distribution of the data using a mixture model of <span class="math inline">\(K\)</span> components
+<span class="math display">\[
+f(\mathbf{x})=\displaystyle\sum_{i=1}^K p_if_i(\mathbf{x}), \quad \mbox{ with component proportions  $p_i\ge 0$ and $\sum p_i=1$.}
+\]</span>
+A popular choice of the components is <span class="math inline">\(f_i(\mathbf{x})\sim \mbox{MVN}(\mathbf{\mu}_i, \mathbf{\Sigma}_i)\)</span>, which results in a multivariate normal mixture model. Suppose there are <span class="math inline">\(n\)</span> independent observations <span class="math inline">\(\mathbf{x}_1, \mathbf{x}_2, \cdots, \mathbf{x}_n\)</span>, the likelihood function of the multivariate normal mixture is
+<span class="math display">\[
+L(p_i, \mathbf{\mu}_i, \mathbf{\Sigma}_i)=\prod_{j=1}^n f(\mathbf{x}_j)=\prod_{j=1}^n \left(\sum_{i=1}^K p_i f_i(\mathbf{x}_j) \right)=\prod_{j=1}^n \left(\sum_{i=1}^K p_i \frac{1}{(2\pi)^{p/2}|\mathbf{\Sigma}_i|^{1/2}}\exp\{-\frac{1}{2}(\mathbf{x}_j-\mathbf{\mu}_i)^T\mathbf{\Sigma}_i^{-1}(\mathbf{x}_j-\mathbf{\mu}_i)\} \right).
+\]</span>
+There are a lot of unknown parameters in the above model:</p>
+<ul>
+<li>The mixture proportions <span class="math inline">\(p_1, p_2, \cdots, p_K\)</span> with the constraint <span class="math inline">\(\sum p_i=1 \Longrightarrow K-1\)</span> parameters.</li>
+<li>The mean vectors <span class="math inline">\(\mathbf{\mu}_i, i=1, \cdots, K\)</span>, each mean vector is a <span class="math inline">\(p\times 1\)</span> vector <span class="math inline">\(\Longrightarrow p\times K\)</span> parameters.
+-The covariance matrices <span class="math inline">\(\mathbf{\Sigma}_i, i=1, \cdots, K\)</span>. A covariance matrix is symmetric with <span class="math inline">\(\mbox{Var}(X_i), i=1, \cdots, p\)</span> as the diagonal elements and covariance <span class="math inline">\(\mbox{Cov}(X_i, X_j), i&lt;j , i,j=1, \cdots, p\)</span>. Therefore, each covariance matrix consists of <span class="math inline">\(
+\left(
+\begin{array}{@{ }c@{ }}
+    p\\2
+    \end{array}
+    \right)
+    +p=\frac{p(p+1)}{2}\)</span> parameters. There are <span class="math inline">\(K\)</span> covariance matrices <span class="math inline">\(\Longrightarrow \frac{p(p+1)}{2}\times K\)</span> parameters.</li>
+</ul>
+<p>As a result, the full model has <span class="math inline">\((k-1)+pK+\frac{p(p+1)}{2}\times K\)</span> parameters. Take the Iris data for example, with <span class="math inline">\(K=3, p=4\)</span>, the number of parameters of the mixture model ends up to be 44. When <span class="math inline">\(p\)</span> is large, the following reduced models can be considered:</p>
+[
+<span class="math display">\[\begin{array}{c|c}
+\hline
+\text{Covariance structure}&amp;\text{Total # of parameters}\\
+\hline
+\mathbf{\Sigma}_i=\eta \mathbf{I}&amp;(k-1)+pK+1\\
+\mathbf{\Sigma}_i=\eta_i \mathbf{I}&amp;(k-1)+pK+K\\
+\mathbf{\Sigma}_i=\eta_i \mbox{diag}(\lambda_1, \lambda_2, \cdots, \lambda_p)&amp;(k-1)+pK+K+p\\
+\hline
+\end{array}\]</span>
+<p>]</p>
+<p>Maximum likelihood method can be used to estimate the values of the parameters. The main idea of maximum likelihood estimate (MLE) is to find the values of the parameters such that the likelihood function <span class="math inline">\(L_{\mbox{max}}\)</span> is maximized. The Akaike Information criterion (AIC) and the Bayesian Information criterion (BIC) are two popular model selection criterion. We select a model that gives the largest AIC or BIC which are given by
+<span class="math display">\[
+\mbox{AIC}=2\ln L_{\mbox{max}}-2(\mbox{\# of free parameters}); \quad \mbox{BIC}=2\ln L_{\mbox{max}}-\ln (n) (\mbox{\# of free parameters})
+\]</span>
+where <span class="math inline">\(n\)</span> is the number of observations. BIC is more stringent on the number of parameters than AIC, since <span class="math inline">\(\ln (n)&gt;2\)</span> for all <span class="math inline">\(n\ge 8\)</span></p>
+<div id="em-algorithm" class="section level4 unnumbered hasAnchor">
+<h4>EM Algorithm<a href="clustering-analysis.html#em-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In order to solve the MLE of the mixture model, membership information (each object belongs to which group) is required. The membership information; however, is missing. Therefore, the <em>Expectation-Maximization</em> (EM) algorithm is used to find the MLE. The EM algorithm is a very popular method handling missing values.</p>
+<p>In order to capture the membership information, we introduce a vector of <span class="math inline">\(K\)</span> binary (unobserved) variables <span class="math inline">\(\mathbf{Z}_i^T=[Z_{i1}, Z_{i2}, \cdots, Z_{iK}]\)</span> for each object <span class="math inline">\(\mathbf{x}_i\)</span>, where <span class="math inline">\(z_{ij}=1, z_{il}=0, l\ne j\)</span> if object <span class="math inline">\(i\)</span> belongs to group <span class="math inline">\(j\)</span>. Then the membership weight of <span class="math inline">\(\mathbf{x}_i\)</span> in group <span class="math inline">\(j\)</span> is
+<span class="math display">\[
+w_{ij}=P(Z_{ij}=1|\mathbf{x}_i)=\mbox{E}(Z_{ij}|\mathbf{x}_i)=P(Z_{ij}=1|\mathbf{x}_i)=\frac{f_j(\mathbf{x}_i)p_j}{\displaystyle\sum_{m=1}^K f_m(\mathbf{x}_i)p_m}, \quad i=1, 2, \cdots, n, \quad j=1, 2,\cdots, K
+\]</span>
+For each <span class="math inline">\(\mathbf{x}_i\)</span>, <span class="math inline">\(\displaystyle\sum_{j=1}^K w_{ij}=1\)</span>. As a result, we have a <span class="math inline">\(n\times K\)</span> membership matrix with each row sum equal to 1.</p>
+<p>The steps of the EM algorithm are as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Set the initial values for the parameters <span class="math inline">\(p_1, \cdots, p_K; \mathbf{\mu}_1, \cdots, \mathbf{\mu}_K; \mathbf{\Sigma}_1, \cdots, \mathbf{\Sigma}_K\)</span>.</li>
+<li>E-step. Update the membership weight <span class="math inline">\(w_{ij}=\mbox{E}(Z_{ij})\)</span>:
+<span class="math display">\[
+w_{ij}=\frac{f_j(\mathbf{x}_i)p_j}{\displaystyle\sum_{m=1}^K f_m(\mathbf{x}_i)p_m}, \quad i=1, 2, \cdots, n, \quad j=1, 2,\cdots, K
+\]</span></li>
+<li>M-step. Update the parameters
+<span class="math display">\[
+p_j^{\mbox{new}}=\frac{n_j}{n}, \quad \mbox{with } \quad n_j=\displaystyle\sum_{i=1}^n w_{ij} \quad (\mbox{sum of $j$ column of the membership weight matrix})
+\]</span>
+<span class="math display">\[
+\mathbf{\mu}_j^{\mbox{new}}=\frac{1}{n_j}\displaystyle\sum_{i=1}^n w_{ij}\mathbf{x}_i, \quad \mathbf{\Sigma}_j^{\mbox{new}}=\frac{1}{n_j}\displaystyle\sum_{i=1}^n w_{ij}(\mathbf{x}_i-\mathbf{\mu}_j^{\mbox{new}})(\mathbf{x}_i-\mathbf{\mu}_j^{\mbox{new}})^T
+\]</span></li>
+<li>Repeat steps (2) &amp; (3) until convergence (no change).</li>
+</ol>
+<p>Note: the <span class="math inline">\(K\)</span>-means algorithm can be regarded as a special of the multivariate normal mixture model by letting <span class="math inline">\(\mathbf{\Sigma}_i=\mathbf{I}\)</span> and the membership weight be 1 for the group with the largest posterior probability and 0 for all the other groups, i.e.,
+<span class="math display">\[
+w_{ij}=\left\{
+\begin{array}{ll}
+1&amp;\mbox{if group $j$ has the largest posterior probability},\\
+0&amp;\mbox{otherwise}.
+\end{array}
+\right.
+\]</span></p>
+</div>
+<div id="example-model-based-clustering" class="section level4 hasAnchor" number="8.2.3.1">
+<h4><span class="header-section-number">8.2.3.1</span> Example: Model-based Clustering<a href="clustering-analysis.html#example-model-based-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb420"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb420-1"><a href="clustering-analysis.html#cb420-1" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb420-2"><a href="clustering-analysis.html#cb420-2" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb420-3"><a href="clustering-analysis.html#cb420-3" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</span>
+<span id="cb420-4"><a href="clustering-analysis.html#cb420-4" tabindex="-1"></a><span class="im">from</span> sklearn.mixture <span class="im">import</span> GaussianMixture</span>
+<span id="cb420-5"><a href="clustering-analysis.html#cb420-5" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb420-6"><a href="clustering-analysis.html#cb420-6" tabindex="-1"></a></span>
+<span id="cb420-7"><a href="clustering-analysis.html#cb420-7" tabindex="-1"></a>iris <span class="op">=</span> load_iris()</span>
+<span id="cb420-8"><a href="clustering-analysis.html#cb420-8" tabindex="-1"></a>X <span class="op">=</span> iris.data</span>
+<span id="cb420-9"><a href="clustering-analysis.html#cb420-9" tabindex="-1"></a>y <span class="op">=</span> iris.target  <span class="co"># Not used in modeling</span></span>
+<span id="cb420-10"><a href="clustering-analysis.html#cb420-10" tabindex="-1"></a></span>
+<span id="cb420-11"><a href="clustering-analysis.html#cb420-11" tabindex="-1"></a><span class="co"># Gaussian Mixture Model (same as Mclust&#39;s default)</span></span>
+<span id="cb420-12"><a href="clustering-analysis.html#cb420-12" tabindex="-1"></a>gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">3</span>, covariance_type<span class="op">=</span><span class="st">&#39;full&#39;</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb420-13"><a href="clustering-analysis.html#cb420-13" tabindex="-1"></a>gmm.fit(X)</span></code></pre></div>
+<pre><code>## GaussianMixture(n_components=3, random_state=0)</code></pre>
+<div class="sourceCode" id="cb422"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb422-1"><a href="clustering-analysis.html#cb422-1" tabindex="-1"></a>labels <span class="op">=</span> gmm.predict(X)</span>
+<span id="cb422-2"><a href="clustering-analysis.html#cb422-2" tabindex="-1"></a></span>
+<span id="cb422-3"><a href="clustering-analysis.html#cb422-3" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb422-4"><a href="clustering-analysis.html#cb422-4" tabindex="-1"></a>X_pca <span class="op">=</span> pca.fit_transform(X)</span>
+<span id="cb422-5"><a href="clustering-analysis.html#cb422-5" tabindex="-1"></a></span>
+<span id="cb422-6"><a href="clustering-analysis.html#cb422-6" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span></code></pre></div>
+<pre><code>## &lt;Figure size 800x500 with 0 Axes&gt;</code></pre>
+<div class="sourceCode" id="cb424"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb424-1"><a href="clustering-analysis.html#cb424-1" tabindex="-1"></a>sns.scatterplot(x<span class="op">=</span>X_pca[:, <span class="dv">0</span>], y<span class="op">=</span>X_pca[:, <span class="dv">1</span>], hue<span class="op">=</span>labels, palette<span class="op">=</span><span class="st">&quot;Set1&quot;</span>, s<span class="op">=</span><span class="dv">50</span>, edgecolor<span class="op">=</span><span class="st">&#39;k&#39;</span>)</span></code></pre></div>
+<pre><code>## &lt;Axes: &gt;</code></pre>
+<div class="sourceCode" id="cb426"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb426-1"><a href="clustering-analysis.html#cb426-1" tabindex="-1"></a>plt.title(<span class="st">&quot;Gaussian Mixture Model Classification (EM Algorithm)&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 1.0, &#39;Gaussian Mixture Model Classification (EM Algorithm)&#39;)</code></pre>
+<div class="sourceCode" id="cb428"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb428-1"><a href="clustering-analysis.html#cb428-1" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;PC1&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 0, &#39;PC1&#39;)</code></pre>
+<div class="sourceCode" id="cb430"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb430-1"><a href="clustering-analysis.html#cb430-1" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;PC2&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0, 0.5, &#39;PC2&#39;)</code></pre>
+<div class="sourceCode" id="cb432"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb432-1"><a href="clustering-analysis.html#cb432-1" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">&quot;Cluster&quot;</span>)</span></code></pre></div>
+<pre><code>## &lt;matplotlib.legend.Legend object at 0x2b8c61a90&gt;</code></pre>
+<div class="sourceCode" id="cb434"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb434-1"><a href="clustering-analysis.html#cb434-1" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb434-2"><a href="clustering-analysis.html#cb434-2" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p><img src="Plots/modelbasediris-7.png" width="65%" /></p>
+<div class="sourceCode" id="cb435"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb435-1"><a href="clustering-analysis.html#cb435-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Cluster assignments for each observation:</span><span class="ch">\n</span><span class="st">&quot;</span>, labels)</span></code></pre></div>
+<pre><code>## Cluster assignments for each observation:
+##  [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 2 0 2 0
+##  0 0 0 2 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 2 2 2 2 2 2 2
+##  2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+##  2 2]</code></pre>
+<p>If <span class="math inline">\(\verb`VVV`\)</span> (varying volume, shape, and orientation) model is used, the optimal number of clusters is 2 based on the computer output. As we know that versicolor and virginica are more difficult to separate. The model-based clustering method classifies setosa as one cluster and versicolor and virginica as another cluster. If we use only the <span class="math inline">\(\verb`Petal.Length`\)</span> and <span class="math inline">\(\verb`Petal.Width`\)</span> as predictors, the optimal number of clusters is three which is correct.</p>
+<div class="sourceCode" id="cb437"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb437-1"><a href="clustering-analysis.html#cb437-1" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Ellipse</span>
+<span id="cb437-2"><a href="clustering-analysis.html#cb437-2" tabindex="-1"></a></span>
+<span id="cb437-3"><a href="clustering-analysis.html#cb437-3" tabindex="-1"></a>X <span class="op">=</span> pd.DataFrame(iris.data, columns<span class="op">=</span>iris.feature_names)</span>
+<span id="cb437-4"><a href="clustering-analysis.html#cb437-4" tabindex="-1"></a>X_petal <span class="op">=</span> X[[<span class="st">&#39;petal length (cm)&#39;</span>, <span class="st">&#39;petal width (cm)&#39;</span>]].values</span>
+<span id="cb437-5"><a href="clustering-analysis.html#cb437-5" tabindex="-1"></a>gmm.fit(X_petal)</span></code></pre></div>
+<pre><code>## GaussianMixture(n_components=3, random_state=0)</code></pre>
+<div class="sourceCode" id="cb439"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb439-1"><a href="clustering-analysis.html#cb439-1" tabindex="-1"></a>labels <span class="op">=</span> gmm.predict(X_petal)</span>
+<span id="cb439-2"><a href="clustering-analysis.html#cb439-2" tabindex="-1"></a></span>
+<span id="cb439-3"><a href="clustering-analysis.html#cb439-3" tabindex="-1"></a><span class="kw">def</span> plot_ellipses(gmm, X, labels):</span>
+<span id="cb439-4"><a href="clustering-analysis.html#cb439-4" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb439-5"><a href="clustering-analysis.html#cb439-5" tabindex="-1"></a>    colors <span class="op">=</span> [<span class="st">&#39;blue&#39;</span>, <span class="st">&#39;red&#39;</span>, <span class="st">&#39;green&#39;</span>]</span>
+<span id="cb439-6"><a href="clustering-analysis.html#cb439-6" tabindex="-1"></a>    markers <span class="op">=</span> [<span class="st">&#39;o&#39;</span>, <span class="st">&#39;s&#39;</span>, <span class="st">&#39;^&#39;</span>]</span>
+<span id="cb439-7"><a href="clustering-analysis.html#cb439-7" tabindex="-1"></a></span>
+<span id="cb439-8"><a href="clustering-analysis.html#cb439-8" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb439-9"><a href="clustering-analysis.html#cb439-9" tabindex="-1"></a>        cluster <span class="op">=</span> X[labels <span class="op">==</span> i]</span>
+<span id="cb439-10"><a href="clustering-analysis.html#cb439-10" tabindex="-1"></a>        plt.scatter(cluster[:, <span class="dv">0</span>], cluster[:, <span class="dv">1</span>], </span>
+<span id="cb439-11"><a href="clustering-analysis.html#cb439-11" tabindex="-1"></a>                    label<span class="op">=</span><span class="ss">f&#39;Cluster </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">&#39;</span>, </span>
+<span id="cb439-12"><a href="clustering-analysis.html#cb439-12" tabindex="-1"></a>                    s<span class="op">=</span><span class="dv">40</span>, edgecolor<span class="op">=</span><span class="st">&#39;k&#39;</span>, </span>
+<span id="cb439-13"><a href="clustering-analysis.html#cb439-13" tabindex="-1"></a>                    marker<span class="op">=</span>markers[i], </span>
+<span id="cb439-14"><a href="clustering-analysis.html#cb439-14" tabindex="-1"></a>                    color<span class="op">=</span>colors[i])</span>
+<span id="cb439-15"><a href="clustering-analysis.html#cb439-15" tabindex="-1"></a></span>
+<span id="cb439-16"><a href="clustering-analysis.html#cb439-16" tabindex="-1"></a>        <span class="co"># Ellipse parameters</span></span>
+<span id="cb439-17"><a href="clustering-analysis.html#cb439-17" tabindex="-1"></a>        mean <span class="op">=</span> gmm.means_[i]</span>
+<span id="cb439-18"><a href="clustering-analysis.html#cb439-18" tabindex="-1"></a>        cov <span class="op">=</span> gmm.covariances_[i]</span>
+<span id="cb439-19"><a href="clustering-analysis.html#cb439-19" tabindex="-1"></a>        vals, vecs <span class="op">=</span> np.linalg.eigh(cov)</span>
+<span id="cb439-20"><a href="clustering-analysis.html#cb439-20" tabindex="-1"></a>        angle <span class="op">=</span> np.degrees(np.arctan2(<span class="op">*</span>vecs[:, <span class="dv">0</span>][::<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb439-21"><a href="clustering-analysis.html#cb439-21" tabindex="-1"></a>        width, height <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.sqrt(vals)</span>
+<span id="cb439-22"><a href="clustering-analysis.html#cb439-22" tabindex="-1"></a></span>
+<span id="cb439-23"><a href="clustering-analysis.html#cb439-23" tabindex="-1"></a>        ellipse <span class="op">=</span> Ellipse(xy<span class="op">=</span>mean, width<span class="op">=</span>width, height<span class="op">=</span>height, angle<span class="op">=</span>angle,</span>
+<span id="cb439-24"><a href="clustering-analysis.html#cb439-24" tabindex="-1"></a>                          edgecolor<span class="op">=</span><span class="st">&#39;k&#39;</span>, facecolor<span class="op">=</span><span class="st">&#39;none&#39;</span>, lw<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb439-25"><a href="clustering-analysis.html#cb439-25" tabindex="-1"></a>        plt.gca().add_patch(ellipse)</span>
+<span id="cb439-26"><a href="clustering-analysis.html#cb439-26" tabindex="-1"></a>        plt.plot(mean[<span class="dv">0</span>], mean[<span class="dv">1</span>], <span class="st">&#39;k*&#39;</span>, markersize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb439-27"><a href="clustering-analysis.html#cb439-27" tabindex="-1"></a></span>
+<span id="cb439-28"><a href="clustering-analysis.html#cb439-28" tabindex="-1"></a>    plt.xlabel(<span class="st">&#39;Petal.Length&#39;</span>)</span>
+<span id="cb439-29"><a href="clustering-analysis.html#cb439-29" tabindex="-1"></a>    plt.ylabel(<span class="st">&#39;Petal.Width&#39;</span>)</span>
+<span id="cb439-30"><a href="clustering-analysis.html#cb439-30" tabindex="-1"></a>    plt.title(<span class="st">&#39;Model-based Clustering (VVV)&#39;</span>)</span>
+<span id="cb439-31"><a href="clustering-analysis.html#cb439-31" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb439-32"><a href="clustering-analysis.html#cb439-32" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb439-33"><a href="clustering-analysis.html#cb439-33" tabindex="-1"></a>    plt.show()</span>
+<span id="cb439-34"><a href="clustering-analysis.html#cb439-34" tabindex="-1"></a>    plt.close()</span>
+<span id="cb439-35"><a href="clustering-analysis.html#cb439-35" tabindex="-1"></a></span>
+<span id="cb439-36"><a href="clustering-analysis.html#cb439-36" tabindex="-1"></a>plot_ellipses(gmm, X_petal, labels)</span></code></pre></div>
+<p><img src="Plots/vvviris-9.png" width="65%" /></p>
+<p>The <span class="math inline">\(\texttt{modelNames}\)</span> parameter in the <span class="math inline">\(\texttt{Mclust}\)</span> function allows us to specify the type of model to fit. It is a character vector that can take different values representing combinations of component and covariance structures. Type <span class="math inline">\(\texttt{?mclustModelNames}\)</span> in the R console to retrieve the information on the available model names. The following models are available in package <span class="math inline">\(\texttt{mclust}\)</span>.</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\textbf{Univariate Mixture}\)</span>
+-“E”: equal variance (one-dimensional)
+-“V”: varying/unequal variance (one-dimensional)</li>
+</ol>
+<p>2.<span class="math inline">\(\textbf{Multivariate Mixture}\)</span></p>
+<ul>
+<li>“EII”: Spherical, equal volume (variance).</li>
+<li>“VII”: Spherical, varying/unequal volume (variance).</li>
+<li>“EEI”: Diagonal, equal volume and shape.</li>
+<li>“VEI”: Diagonal, varying volume, equal shape</li>
+<li>“EVI”: Diagonal, equal volume, varying shape.</li>
+<li>“VVI”: Diagonal, varying volume and shape.</li>
+<li>“EEE”: Ellipsoidal, equal volume, shape, and orientation.</li>
+<li>“VEE”: Ellipsoidal, equal shape and orientation.</li>
+<li>“EVE”: Ellipsoidal, equal volume and orientation.</li>
+<li>“VVE”: Ellipsoidal, equal orientation.</li>
+<li>“EEV”: Ellipsoidal, equal volume and equal shape.</li>
+<li>“VEV”: Ellipsoidal, equal shape.</li>
+<li>“EVV”: Ellipsoidal, equal volume.</li>
+<li>“VVV”: Ellipsoidal, varying volume, shape, and orientation.</li>
+</ul>
+<p>3.<span class="math inline">\(\textbf{Single Component}\)</span></p>
+<ul>
+<li>“X”: univariate normal</li>
+<li>“XII”: spherical multivariate normal</li>
+<li>“XII”: diagonal multivariate normal</li>
+<li>“XXX”: ellipsoidal multivariate normal</li>
+</ul>
+</div>
+</div>
+<div id="pros-and-cons-of-clustering-methods" class="section level3 hasAnchor" number="8.2.4">
+<h3><span class="header-section-number">8.2.4</span> Pros and Cons of Clustering Methods<a href="clustering-analysis.html#pros-and-cons-of-clustering-methods" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The following table summarizes some of the pros and cons of hierarchical clustering, <span class="math inline">\(K\)</span>-means and model-based clustering methods.
+<span class="math display">\[
+\begin{array}{c|c|c}
+\hline
+\text{Methods}&amp;\text{Pros}&amp;\text{Cons}\\
+\hline
+\text{Hierarchical}&amp;\text{no need to specify $K$}; &amp;\text{generally unique solution}\\
+&amp;\text{dendrogram easy to interpret}; &amp;\text{expensive computation}\\
+\hline
+\text{$K$-means}&amp;\text{low computation cost}; &amp;\text{solution depends on initial value}\\
+&amp;\text{intuitive}; &amp; \text{large variation}\\
+\hline
+\text{Model-Based}&amp;\text{MLE has good properties}; &amp;\text{results not valid if data do not} \\
+&amp;\text{simultaneously determine $K$ and the centers of the clusters}&amp;\text{follow multivariate normal distribution}\\
+\hline
+\end{array}
+\]</span></p>
+</div>
+</div>
+<div id="determine-k-number-of-clusters" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Determine <span class="math inline">\(K\)</span>: Number of Clusters<a href="clustering-analysis.html#determine-k-number-of-clusters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The optimal number of clusters can be determined by several methods.</p>
+<div id="the-elbow-plot-method" class="section level3 hasAnchor" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> The Elbow Plot Method<a href="clustering-analysis.html#the-elbow-plot-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We use the <span class="math inline">\(\verb`elbow plot`\)</span> (scree plot) to help identify the most proper value of <span class="math inline">\(K\)</span>. Recall the decomposition of the total variation of the observations (SST) into between-group variation (SSB) and within-group variation (SSW), i.e., <span class="math inline">\(SST=SSB+SSW\)</span>. If all objects are in one group, then <span class="math inline">\(SSW=SST\)</span>. The within-group variation drops when number of clusters <span class="math inline">\(K\)</span> increases. The <span class="math inline">\(\verb`elbow plot`\)</span> plots SSW versus # of groups, we choose the value of <span class="math inline">\(K\)</span> at where the plot starts flat. Recall the resulting dendrogram of clustering the observations <span class="math inline">\(x_1=5, x_2=3, x_3=9, x_4=6, x_5=1\)</span> using hierarchical clustering with average linkage is</p>
+<pre><code>## &lt;Figure size 700x500 with 0 Axes&gt;</code></pre>
+<pre><code>## {&#39;icoord&#39;: [[5.0, 5.0, 15.0, 15.0], [35.0, 35.0, 45.0, 45.0], [25.0, 25.0, 40.0, 40.0], [10.0, 10.0, 32.5, 32.5]], &#39;dcoord&#39;: [[0.0, np.float64(2.0), np.float64(2.0), 0.0], [0.0, np.float64(1.0), np.float64(1.0), 0.0], [0.0, np.float64(3.5), np.float64(3.5), np.float64(1.0)], [np.float64(2.0), np.float64(4.666666666666667), np.float64(4.666666666666667), np.float64(3.5)]], &#39;ivl&#39;: [2, 5, 3, 1, 4], &#39;leaves&#39;: [1, 4, 2, 0, 3], &#39;color_list&#39;: [&#39;C1&#39;, &#39;C2&#39;, &#39;C0&#39;, &#39;C0&#39;], &#39;leaves_color_list&#39;: [&#39;C1&#39;, &#39;C1&#39;, &#39;C0&#39;, &#39;C2&#39;, &#39;C2&#39;]}</code></pre>
+<pre><code>## Text(0.5, 1.0, &#39;Cluster Dendrogram&#39;)</code></pre>
+<pre><code>## Text(0.5, 0, &#39;Variables&#39;)</code></pre>
+<pre><code>## Text(0, 0.5, &#39;Distance&#39;)</code></pre>
+<p><img src="Plots/elbowplot-11.png" width="65%" /></p>
+<p>To draw the scree plot, we calculate the within-cluster variation SSW for different values of <span class="math inline">\(K\)</span>:</p>
+<ul>
+<li>When <span class="math inline">\(K=2\)</span>, the two clusters are <span class="math inline">\(\{x_1, x_4, x_2, x_5\}\)</span> and <span class="math inline">\(\{x_3\}\)</span>. The centers for the two groups are <span class="math inline">\(m_1=\frac{5+6+3+1}{4}=3.75\)</span> and <span class="math inline">\(m_2=9\)</span>. And the
+<span class="math display">\[
+SSW=[(5-3.75)^2+(6-3.75)^2+(3-3.75)^2+(1-3.75)^2]+0=14.75
+\]</span></li>
+<li>When <span class="math inline">\(K=3\)</span>, the three clusters are <span class="math inline">\(\{x_1, x_4\}\)</span>,<span class="math inline">\(\{x_2, x_5\}\)</span> and <span class="math inline">\(\{x_3\}\)</span>. The centers for the three groups are <span class="math inline">\(m_1=\frac{5+6}{2}=5.5, m_2=\frac{3+1}{2}=2\)</span> and <span class="math inline">\(m_3=9\)</span>. And the
+<span class="math display">\[
+SSW=[(5-5.5)^2+(6-5.5)^2]+[(3-2)^2+(1-2)^2]+0=2.5
+\]</span></li>
+<li>When <span class="math inline">\(K=4\)</span>, the four clusters are <span class="math inline">\(\{x_1, x_4\}, \{x_2\}, \{x_5\}\)</span> and <span class="math inline">\(\{x_3\}\)</span>. The centers for the four groups are <span class="math inline">\(m_1=\frac{5+6}{2}=5.5, m_2=3, m_3=1\)</span> and <span class="math inline">\(m_4=9\)</span>. And the
+<span class="math display">\[
+SSW=[(5-5.5)^2+(6-5.5)^2]+0+0+0=0.5
+\]</span></li>
+</ul>
+<p>The scree plot is given by</p>
+<div class="sourceCode" id="cb445"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb445-1"><a href="clustering-analysis.html#cb445-1" tabindex="-1"></a>k_values <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]</span>
+<span id="cb445-2"><a href="clustering-analysis.html#cb445-2" tabindex="-1"></a>SSW_values <span class="op">=</span> [<span class="fl">14.75</span>, <span class="fl">2.5</span>, <span class="fl">0.5</span>]</span>
+<span id="cb445-3"><a href="clustering-analysis.html#cb445-3" tabindex="-1"></a></span>
+<span id="cb445-4"><a href="clustering-analysis.html#cb445-4" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">4.5</span>))</span></code></pre></div>
+<pre><code>## &lt;Figure size 700x450 with 0 Axes&gt;</code></pre>
+<div class="sourceCode" id="cb447"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb447-1"><a href="clustering-analysis.html#cb447-1" tabindex="-1"></a>plt.plot(k_values, SSW_values, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>, linestyle<span class="op">=</span><span class="st">&#39;-&#39;</span>)</span></code></pre></div>
+<pre><code>## [&lt;matplotlib.lines.Line2D object at 0x2b8dc5450&gt;]</code></pre>
+<div class="sourceCode" id="cb449"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb449-1"><a href="clustering-analysis.html#cb449-1" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;K: # of Groups&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 0, &#39;K: # of Groups&#39;)</code></pre>
+<div class="sourceCode" id="cb451"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb451-1"><a href="clustering-analysis.html#cb451-1" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;SSW: Within Sum of Squares&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0, 0.5, &#39;SSW: Within Sum of Squares&#39;)</code></pre>
+<div class="sourceCode" id="cb453"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb453-1"><a href="clustering-analysis.html#cb453-1" tabindex="-1"></a>plt.title(<span class="st">&quot;Scree Plot (Elbow Method)&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 1.0, &#39;Scree Plot (Elbow Method)&#39;)</code></pre>
+<div class="sourceCode" id="cb455"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb455-1"><a href="clustering-analysis.html#cb455-1" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb455-2"><a href="clustering-analysis.html#cb455-2" tabindex="-1"></a>plt.xticks(k_values)</span></code></pre></div>
+<pre><code>## ([&lt;matplotlib.axis.XTick object at 0x2b8d87110&gt;, &lt;matplotlib.axis.XTick object at 0x2b8dc5590&gt;, &lt;matplotlib.axis.XTick object at 0x2b8dc5d10&gt;], [Text(2, 0, &#39;2&#39;), Text(3, 0, &#39;3&#39;), Text(4, 0, &#39;4&#39;)])</code></pre>
+<div class="sourceCode" id="cb457"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb457-1"><a href="clustering-analysis.html#cb457-1" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb457-2"><a href="clustering-analysis.html#cb457-2" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p><img src="Plots/scree-13.png" width="65%" /></p>
+<div class="sourceCode" id="cb458"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb458-1"><a href="clustering-analysis.html#cb458-1" tabindex="-1"></a>plt.close()</span></code></pre></div>
+<p>The scree plot shows that curve becomes flat at <span class="math inline">\(K=3\)</span>; therefore, <span class="math inline">\(K=3\)</span> is a proper number of clusters. We can calculate the within-group sum of squares using K-means:</p>
+<div class="sourceCode" id="cb459"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb459-1"><a href="clustering-analysis.html#cb459-1" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb459-2"><a href="clustering-analysis.html#cb459-2" tabindex="-1"></a></span>
+<span id="cb459-3"><a href="clustering-analysis.html#cb459-3" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">9</span>, <span class="dv">6</span>, <span class="dv">1</span>]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb459-4"><a href="clustering-analysis.html#cb459-4" tabindex="-1"></a>k_values <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]</span>
+<span id="cb459-5"><a href="clustering-analysis.html#cb459-5" tabindex="-1"></a>wss <span class="op">=</span> []</span>
+<span id="cb459-6"><a href="clustering-analysis.html#cb459-6" tabindex="-1"></a></span>
+<span id="cb459-7"><a href="clustering-analysis.html#cb459-7" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> k_values:</span>
+<span id="cb459-8"><a href="clustering-analysis.html#cb459-8" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="st">&#39;auto&#39;</span>)</span>
+<span id="cb459-9"><a href="clustering-analysis.html#cb459-9" tabindex="-1"></a>    kmeans.fit(x)</span>
+<span id="cb459-10"><a href="clustering-analysis.html#cb459-10" tabindex="-1"></a>    wss.append(kmeans.inertia_)  <span class="co"># inertia_ is the total within-cluster sum of squares</span></span></code></pre></div>
+<pre><code>## KMeans(n_clusters=2, random_state=42)
+## KMeans(n_clusters=3, random_state=42)
+## KMeans(n_clusters=4, random_state=42)</code></pre>
+<div class="sourceCode" id="cb461"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb461-1"><a href="clustering-analysis.html#cb461-1" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">4.5</span>))</span></code></pre></div>
+<pre><code>## &lt;Figure size 700x450 with 0 Axes&gt;</code></pre>
+<div class="sourceCode" id="cb463"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb463-1"><a href="clustering-analysis.html#cb463-1" tabindex="-1"></a>plt.plot(k_values, wss, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>, linestyle<span class="op">=</span><span class="st">&#39;-&#39;</span>)</span></code></pre></div>
+<pre><code>## [&lt;matplotlib.lines.Line2D object at 0x2b8e3dbd0&gt;]</code></pre>
+<div class="sourceCode" id="cb465"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb465-1"><a href="clustering-analysis.html#cb465-1" tabindex="-1"></a>plt.title(<span class="st">&quot;Elbow Method&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 1.0, &#39;Elbow Method&#39;)</code></pre>
+<div class="sourceCode" id="cb467"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb467-1"><a href="clustering-analysis.html#cb467-1" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Number of Clusters&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 0, &#39;Number of Clusters&#39;)</code></pre>
+<div class="sourceCode" id="cb469"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb469-1"><a href="clustering-analysis.html#cb469-1" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Within-cluster Sum of Squares&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0, 0.5, &#39;Within-cluster Sum of Squares&#39;)</code></pre>
+<div class="sourceCode" id="cb471"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb471-1"><a href="clustering-analysis.html#cb471-1" tabindex="-1"></a>plt.xticks(k_values)</span></code></pre></div>
+<pre><code>## ([&lt;matplotlib.axis.XTick object at 0x2b8e0b890&gt;, &lt;matplotlib.axis.XTick object at 0x2b8e3dd10&gt;, &lt;matplotlib.axis.XTick object at 0x2b8e3e490&gt;], [Text(2, 0, &#39;2&#39;), Text(3, 0, &#39;3&#39;), Text(4, 0, &#39;4&#39;)])</code></pre>
+<div class="sourceCode" id="cb473"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb473-1"><a href="clustering-analysis.html#cb473-1" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb473-2"><a href="clustering-analysis.html#cb473-2" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb473-3"><a href="clustering-analysis.html#cb473-3" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p><img src="Plots/kscree2-15.png" width="65%" /></p>
+<div class="sourceCode" id="cb474"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb474-1"><a href="clustering-analysis.html#cb474-1" tabindex="-1"></a>plt.close()</span></code></pre></div>
+</div>
+<div id="the-silhouette-score" class="section level3 hasAnchor" number="8.3.2">
+<h3><span class="header-section-number">8.3.2</span> The Silhouette Score<a href="clustering-analysis.html#the-silhouette-score" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The silhouette score is a measure of how similar an object is to its own cluster (cohesion) compared to other clusters (separation). It ranges from -1 to 1, where a high value indicates that the object is well matched to its own cluster and poorly matched to neighboring clusters. The formula for the silhouette score for a single data point ii is given by:
+<span class="math display">\[
+S(i)=\frac{b(i)-a(i)}{\max\{a(i), b(i)\}}
+\]</span>
+where <span class="math inline">\(a(i)\)</span> is the average distance from the th data point to the other data points in the same cluster (cohesion), <span class="math inline">\(b(i)\)</span> is the smallest average distance from the th data point to data points in a different cluster, minimized over clusters (separation). The overall silhouette score for the clustering is the average of the silhouette scores for all data points. If the silhouette score is close to 1, it indicates that the object is well matched to its own cluster and poorly matched to neighboring clusters. If it’s close to -1, it suggests that the object is poorly matched to its own cluster and well matched to neighboring clusters.</p>
+<div class="sourceCode" id="cb475"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb475-1"><a href="clustering-analysis.html#cb475-1" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> silhouette_score</span>
+<span id="cb475-2"><a href="clustering-analysis.html#cb475-2" tabindex="-1"></a>sil_scores <span class="op">=</span> []</span>
+<span id="cb475-3"><a href="clustering-analysis.html#cb475-3" tabindex="-1"></a></span>
+<span id="cb475-4"><a href="clustering-analysis.html#cb475-4" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> k_values:</span>
+<span id="cb475-5"><a href="clustering-analysis.html#cb475-5" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb475-6"><a href="clustering-analysis.html#cb475-6" tabindex="-1"></a>    labels <span class="op">=</span> kmeans.fit_predict(x)</span>
+<span id="cb475-7"><a href="clustering-analysis.html#cb475-7" tabindex="-1"></a>    score <span class="op">=</span> silhouette_score(x, labels)</span>
+<span id="cb475-8"><a href="clustering-analysis.html#cb475-8" tabindex="-1"></a>    sil_scores.append(score)</span>
+<span id="cb475-9"><a href="clustering-analysis.html#cb475-9" tabindex="-1"></a></span>
+<span id="cb475-10"><a href="clustering-analysis.html#cb475-10" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">4.5</span>))</span></code></pre></div>
+<pre><code>## &lt;Figure size 700x450 with 0 Axes&gt;</code></pre>
+<div class="sourceCode" id="cb477"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb477-1"><a href="clustering-analysis.html#cb477-1" tabindex="-1"></a>plt.plot(k_values, sil_scores, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>, linestyle<span class="op">=</span><span class="st">&#39;-&#39;</span>)</span></code></pre></div>
+<pre><code>## [&lt;matplotlib.lines.Line2D object at 0x2b8ea5bd0&gt;]</code></pre>
+<div class="sourceCode" id="cb479"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb479-1"><a href="clustering-analysis.html#cb479-1" tabindex="-1"></a>plt.title(<span class="st">&quot;Silhouette Method&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 1.0, &#39;Silhouette Method&#39;)</code></pre>
+<div class="sourceCode" id="cb481"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb481-1"><a href="clustering-analysis.html#cb481-1" tabindex="-1"></a>plt.xlabel(<span class="st">&quot;Number of Clusters&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0.5, 0, &#39;Number of Clusters&#39;)</code></pre>
+<div class="sourceCode" id="cb483"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb483-1"><a href="clustering-analysis.html#cb483-1" tabindex="-1"></a>plt.ylabel(<span class="st">&quot;Average Silhouette Width&quot;</span>)</span></code></pre></div>
+<pre><code>## Text(0, 0.5, &#39;Average Silhouette Width&#39;)</code></pre>
+<div class="sourceCode" id="cb485"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb485-1"><a href="clustering-analysis.html#cb485-1" tabindex="-1"></a>plt.xticks(k_values)</span></code></pre></div>
+<pre><code>## ([&lt;matplotlib.axis.XTick object at 0x2b8e77890&gt;, &lt;matplotlib.axis.XTick object at 0x2b8e74190&gt;, &lt;matplotlib.axis.XTick object at 0x2b8e74550&gt;], [Text(2, 0, &#39;2&#39;), Text(3, 0, &#39;3&#39;), Text(4, 0, &#39;4&#39;)])</code></pre>
+<div class="sourceCode" id="cb487"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb487-1"><a href="clustering-analysis.html#cb487-1" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb487-2"><a href="clustering-analysis.html#cb487-2" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb487-3"><a href="clustering-analysis.html#cb487-3" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p><img src="Plots/silho-17.png" width="65%" /></p>
+<div class="sourceCode" id="cb488"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb488-1"><a href="clustering-analysis.html#cb488-1" tabindex="-1"></a>plt.close()</span></code></pre></div>
+<p>Since <span class="math inline">\(K=2\)</span> gives the largest silhouette score, the optimal number of clusters is two.</p>
+</div>
+<div id="gap-statistics" class="section level3 hasAnchor" number="8.3.3">
+<h3><span class="header-section-number">8.3.3</span> Gap Statistics<a href="clustering-analysis.html#gap-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Gap statistics compare the clustering performance of the actual data with that of a reference dataset with no inherent clustering structure. It can be calculate as
+<span class="math display">\[
+\text{Gap}(k)=\frac{1}{B}\sum_{b=1}^B \log (W_b)-\log(W_k)
+\]</span>
+where <span class="math inline">\(W_k\)</span> is the total intra-cluster variation for the clustering solution with <span class="math inline">\(k\)</span> clusters, <span class="math inline">\(B\)</span> is the number of bootstrap samples drawn from the reference dataset, <span class="math inline">\(W_b\)</span> is the total intra-cluster variation for the <span class="math inline">\(\texttt{b}\)</span>th bootstrap sample.</p>
+<p>The optimal number of clusters is often chosen as the value of <span class="math inline">\(k\)</span> that maximizes the Gap Statistics. The idea is that if the clustering solution for the actual data is better than the clustering solutions for random data, then the Gap Statistics will be positive, indicating a meaningful structure in the data for the chosen number of clusters.</p>
+<p>Two built-in functions in R can be used to determine the optimal number of clusters:</p>
+<ul>
+<li><span class="math inline">\(\verb`fviz.nbclust`\)</span> function from package <span class="math inline">\(\verb`factoextra`\)</span>: using Elbow, Silhouhette and Gap statistic methods.</li>
+<li><span class="math inline">\(\verb`NbClust`\)</span> function: voting of 30 indices for choosing the best number of clusters.</li>
+</ul>
+<p>Take the Iris data for example. We standardize the features before conducting clustering analysis.</p>
+<div class="sourceCode" id="cb489"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb489-1"><a href="clustering-analysis.html#cb489-1" tabindex="-1"></a><span class="co"># from gap_stat import OptimalK</span></span>
+<span id="cb489-2"><a href="clustering-analysis.html#cb489-2" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb489-3"><a href="clustering-analysis.html#cb489-3" tabindex="-1"></a><span class="co"># data = load_iris()</span></span>
+<span id="cb489-4"><a href="clustering-analysis.html#cb489-4" tabindex="-1"></a><span class="co"># X = StandardScaler().fit_transform(data.data)</span></span>
+<span id="cb489-5"><a href="clustering-analysis.html#cb489-5" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb489-6"><a href="clustering-analysis.html#cb489-6" tabindex="-1"></a><span class="co"># k_values = range(2, 11)</span></span>
+<span id="cb489-7"><a href="clustering-analysis.html#cb489-7" tabindex="-1"></a><span class="co"># wss = []</span></span>
+<span id="cb489-8"><a href="clustering-analysis.html#cb489-8" tabindex="-1"></a><span class="co"># silhouette_scores = []</span></span>
+<span id="cb489-9"><a href="clustering-analysis.html#cb489-9" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb489-10"><a href="clustering-analysis.html#cb489-10" tabindex="-1"></a><span class="co"># for k in k_values:</span></span>
+<span id="cb489-11"><a href="clustering-analysis.html#cb489-11" tabindex="-1"></a><span class="co">#     kmeans = KMeans(n_clusters=k, n_init=10, random_state=42)</span></span>
+<span id="cb489-12"><a href="clustering-analysis.html#cb489-12" tabindex="-1"></a><span class="co">#     kmeans.fit(X)</span></span>
+<span id="cb489-13"><a href="clustering-analysis.html#cb489-13" tabindex="-1"></a><span class="co">#     wss.append(kmeans.inertia_)</span></span>
+<span id="cb489-14"><a href="clustering-analysis.html#cb489-14" tabindex="-1"></a><span class="co">#     silhouette_scores.append(silhouette_score(X, kmeans.labels_))</span></span>
+<span id="cb489-15"><a href="clustering-analysis.html#cb489-15" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb489-16"><a href="clustering-analysis.html#cb489-16" tabindex="-1"></a><span class="co"># # elbow</span></span>
+<span id="cb489-17"><a href="clustering-analysis.html#cb489-17" tabindex="-1"></a><span class="co"># plt.figure(figsize=(7,4))</span></span>
+<span id="cb489-18"><a href="clustering-analysis.html#cb489-18" tabindex="-1"></a><span class="co"># plt.plot(k_values, wss, &#39;o-&#39;, label=&#39;Within Sum of Squares&#39;)</span></span>
+<span id="cb489-19"><a href="clustering-analysis.html#cb489-19" tabindex="-1"></a><span class="co"># plt.axvline(x=4, linestyle=&#39;--&#39;, color=&#39;black&#39;)</span></span>
+<span id="cb489-20"><a href="clustering-analysis.html#cb489-20" tabindex="-1"></a><span class="co"># plt.title(&#39;Elbow Method&#39;)</span></span>
+<span id="cb489-21"><a href="clustering-analysis.html#cb489-21" tabindex="-1"></a><span class="co"># plt.xlabel(&#39;Number of clusters k&#39;)</span></span>
+<span id="cb489-22"><a href="clustering-analysis.html#cb489-22" tabindex="-1"></a><span class="co"># plt.ylabel(&#39;Total Within Sum of Squares&#39;)</span></span>
+<span id="cb489-23"><a href="clustering-analysis.html#cb489-23" tabindex="-1"></a><span class="co"># plt.show()</span></span>
+<span id="cb489-24"><a href="clustering-analysis.html#cb489-24" tabindex="-1"></a><span class="co"># plt.close()</span></span>
+<span id="cb489-25"><a href="clustering-analysis.html#cb489-25" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb489-26"><a href="clustering-analysis.html#cb489-26" tabindex="-1"></a><span class="co"># # silhouette</span></span>
+<span id="cb489-27"><a href="clustering-analysis.html#cb489-27" tabindex="-1"></a><span class="co"># plt.figure(figsize=(7,4))</span></span>
+<span id="cb489-28"><a href="clustering-analysis.html#cb489-28" tabindex="-1"></a><span class="co"># plt.plot(k_values, silhouette_scores, &#39;o-&#39;, label=&#39;Silhouette Score&#39;)</span></span>
+<span id="cb489-29"><a href="clustering-analysis.html#cb489-29" tabindex="-1"></a><span class="co"># plt.axvline(x=2, linestyle=&#39;--&#39;, color=&#39;skyblue&#39;)</span></span>
+<span id="cb489-30"><a href="clustering-analysis.html#cb489-30" tabindex="-1"></a><span class="co"># plt.title(&#39;Silhouette Method&#39;)</span></span>
+<span id="cb489-31"><a href="clustering-analysis.html#cb489-31" tabindex="-1"></a><span class="co"># plt.xlabel(&#39;Number of clusters k&#39;)</span></span>
+<span id="cb489-32"><a href="clustering-analysis.html#cb489-32" tabindex="-1"></a><span class="co"># plt.ylabel(&#39;Average silhouette width&#39;)</span></span>
+<span id="cb489-33"><a href="clustering-analysis.html#cb489-33" tabindex="-1"></a><span class="co"># plt.show()</span></span>
+<span id="cb489-34"><a href="clustering-analysis.html#cb489-34" tabindex="-1"></a><span class="co"># plt.close()</span></span>
+<span id="cb489-35"><a href="clustering-analysis.html#cb489-35" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb489-36"><a href="clustering-analysis.html#cb489-36" tabindex="-1"></a><span class="co"># #gap</span></span>
+<span id="cb489-37"><a href="clustering-analysis.html#cb489-37" tabindex="-1"></a><span class="co"># optimalK = OptimalK(parallel_backend=&#39;joblib&#39;)</span></span>
+<span id="cb489-38"><a href="clustering-analysis.html#cb489-38" tabindex="-1"></a><span class="co"># n_clusters = optimalK(X, cluster_array=np.arange(1, 11))</span></span>
+<span id="cb489-39"><a href="clustering-analysis.html#cb489-39" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb489-40"><a href="clustering-analysis.html#cb489-40" tabindex="-1"></a><span class="co"># plt.figure(figsize=(7,4))</span></span>
+<span id="cb489-41"><a href="clustering-analysis.html#cb489-41" tabindex="-1"></a><span class="co"># plt.plot(optimalK.gap_df.n_clusters, optimalK.gap_df.gap_value, marker=&#39;o&#39;)</span></span>
+<span id="cb489-42"><a href="clustering-analysis.html#cb489-42" tabindex="-1"></a><span class="co"># plt.axvline(x=n_clusters, linestyle=&#39;--&#39;, color=&#39;skyblue&#39;)</span></span>
+<span id="cb489-43"><a href="clustering-analysis.html#cb489-43" tabindex="-1"></a><span class="co"># plt.title(&#39;Gap Statistic Method&#39;)</span></span>
+<span id="cb489-44"><a href="clustering-analysis.html#cb489-44" tabindex="-1"></a><span class="co"># plt.xlabel(&#39;Number of clusters k&#39;)</span></span>
+<span id="cb489-45"><a href="clustering-analysis.html#cb489-45" tabindex="-1"></a><span class="co"># plt.ylabel(&#39;Gap statistic&#39;)</span></span>
+<span id="cb489-46"><a href="clustering-analysis.html#cb489-46" tabindex="-1"></a><span class="co"># plt.show()</span></span>
+<span id="cb489-47"><a href="clustering-analysis.html#cb489-47" tabindex="-1"></a><span class="co"># plt.close()</span></span></code></pre></div>
+<p>Again, the optimal number of clusters is two when using all four predictors while the optimal number of clusters is either two or three when using only and .</p>
+</div>
+</div>
+<div id="side-note-on-the-em-algorithm" class="section level2 unnumbered hasAnchor">
+<h2>Side-Note on the EM Algorithm<a href="clustering-analysis.html#side-note-on-the-em-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The main idea underlying the EM algorithm is as follows. Suppose we observe data partially. Let <span class="math inline">\(Y\)</span> presents the data we observed and <span class="math inline">\(Z\)</span> the missing data. Together, we have the complete data <span class="math inline">\(X=(Y, Z)\)</span>. Let <span class="math inline">\(g(y, z\mid \theta)\)</span> be the density function based on the complete data and <span class="math inline">\(f(y\mid \theta)\)</span> be the density function based on the observed data. Since <span class="math inline">\(z\)</span> is unobserved/latent, we cannot evaluate <span class="math inline">\(g(y, z\mid \theta)\)</span> using the regular maximum likelihood method. However, the density function based on the observed data can be calculated as
+<span class="math display">\[
+f(y\mid \theta)=\int g(y, z\mid \theta)dz,
+\]</span>
+and then it is straightforward to apply the MLE method to <span class="math inline">\(f(y\mid \theta)\)</span>.</p>
+<p>Given this setup, the basic steps of the EM algorithm works as follows:</p>
+<ol style="list-style-type: decimal">
+<li>E-step: Compute the expected value of the latent variables given the observed data (<span class="math inline">\(y\)</span>) and the current parameter estimates (<span class="math inline">\(\theta_t\)</span>) be the current estimate of <span class="math inline">\(\theta\)</span>. That is,
+<span class="math display">\[
+Q(\theta\mid\theta_t)=\mathbb{E}_Z\left[\log g(y,z\mid\theta)\mid y, \theta_t\right].
+\]</span>
+The expectation is taken with respect to the missing data density, i.e.,
+<span class="math display">\[
+h(z\mid y,\theta)=\frac{g(y,z\mid\theta)}{f(y\mid\theta)}.
+\]</span></li>
+<li>M-step: Maximize the expected log-likelihood <span class="math inline">\(Q(\theta\mid\theta_t)\)</span> with respect to <span class="math inline">\(\theta\)</span> to get the next value of <span class="math inline">\(\theta_{t+1}\)</span>.</li>
+<li>Repeat the E-step and M-step until the parameters converge or until a predefined number of iterations is reached.</li>
+</ol>
+<p>One appealing property of the EM algorithm is that the likelihood function based on the observed data <span class="math inline">\(\log f(y|\theta)\)</span> always increases with each iteration, i.e.,
+<span class="math display">\[
+\log f(y|\theta_{t+1})-\log f(y|\theta_t)\ge 0.
+\]</span></p>
+<p><span class="math inline">\(\textbf{Proof}:\)</span>
+<span class="math display">\[\begin{align*}
+\log f(y\mid\theta_{t+1})-\log f(y\mid\theta_t)&amp; =
+\log\int g(y,z\mid\theta_{t+1})dz - \log\int g(y,z\mid\theta_t)dz=\log\frac{\int g(y,z\mid\theta_{t+1})dz}{\int g(y,z\mid\theta_t)dz}\\
+&amp; =\log\frac{\int g(y,z\mid\theta_{t})\frac{g(y,z\mid\theta_{t+1})}{g(y,z\mid\theta_t)}dz}{\int g(y,z\mid\theta_t)dz}=\log \int\frac{g(y,z\mid\theta_{t})}{\int g(y,z\mid\theta_{t})}\frac{g(y,z\mid\theta_{t+1})}{g(y,z\mid\theta_t)}dz\\
+&amp;=\log \int \frac{g(y,z\mid\theta_{t+1})}{g(y,z\mid\theta_t)}h(z\mid y, \theta_t)dz=\log\mathbb{E}_{Z}\left [\frac{g(y,z\mid\theta_{t+1})}{g(y,z\mid\theta_t)}\right]\\
+&amp;\ge \mathbb{E}\left[\log \frac{g(y,z\mid\theta_{t+1})}{g(y,z\mid\theta_t)} \right]=\mathbb{E}_{Z}\left[\log g(y,z\mid\theta_{t+1}\right]-\mathbb{E}_{Z}\left[\log g(y,z\mid\theta_{t}\right]\\
+&amp;=Q(\theta_{t+1}\mid \theta_t)-Q(\theta_t\mid \theta_t)\ge 0.
+\end{align*}\]</span></p>
+<p>Here are several methods and techniques to diagnose convergence of the EM algorithm:</p>
+<ul>
+<li>Monitor the log-likelihood values across iterations. In the EM algorithm, the log-likelihood should increase for each iteration. If the log-likelihood stops increasing or becomes flat, it might indicate convergence. Set a tolerance threshold for the change in log-likelihood or parameter estimates. If the change falls below this threshold, consider the algorithm converged.</li>
+<li>Use information criteria such as the Akaike Information Criterion (AIC) or the Bayesian Information Criterion (BIC) to assess model fit. Lower values indicate better fit, and a stabilized or minimal change may indicate convergence.
+<span class="math display">\[
+\text{AIC}=-2\log(L)+2k; \quad \text{BIC}=-2\log(L)+k\log(n)
+\]</span>
+where <span class="math inline">\(L\)</span> is the maximum likelihood of the model, <span class="math inline">\(k\)</span> is the number of estimated parameters in the model, and <span class="math inline">\(n\)</span> is the sample size.</li>
+<li>If applicable, run the EM algorithm with multiple initial values or chains. Compare the results across different runs to ensure consistency and convergence.</li>
+</ul>
+<p><span class="math inline">\(\textbf{Example}\)</span>: EM Algorithm for Gaussian Mixture Models</p>
+<p>Suppose <span class="math inline">\(y_1, \cdots, y_n\)</span> are sampled independently from a mixture of two normal distributions with density:
+<span class="math display">\[
+f(y\mid\theta)=\lambda f_1(y\mid\mu_1,\sigma_1^2) + (1-\lambda)f_2(y\mid\mu_2,\sigma_2^2).
+\]</span></p>
+<ol style="list-style-type: decimal">
+<li>Suppose <span class="math inline">\(\lambda=0.4, \mu_1=0, \sigma_1=1, \mu_2=3, \sigma_2=1\)</span>, generate <span class="math inline">\(n=1000\)</span> observations from the Gaussian mixture model. Create a data frame with <span class="math inline">\(x\)</span> as the values and <span class="math inline">\(y\)</span> as the class label <span class="math inline">\(\{1, 2\}\)</span>.</li>
+<li>Suppose we don’t know the class label, we can use the EM algorithm to estimate the parameters, i.e., <span class="math inline">\(\lambda, \mu_i, \sigma_1=i, i=1, 2\)</span>.</li>
+</ol>
+<ul>
+<li><p>[(2a)] If the class label is unknown, we need to introduce a latent variable <span class="math inline">\(Z\)</span> to indicate the class label: <span class="math inline">\(z=1\)</span> for class 1 and <span class="math inline">\(z=0\)</span> for class 2. The latent variable <span class="math inline">\(Z\)</span> can be modeled by a Bernoulli distribution, <span class="math inline">\(Z\sim \text{Bernoulli}(\lambda)\)</span>. Given the data <span class="math inline">\(x_1, \cdots, x_n\)</span> and class label <span class="math inline">\(z_1, \cdots, z_n\)</span>, write down the likelihood function of the completed data.
+<span class="math display">\[
+g(x,z\mid\theta)=
+[f_1(x\mid\mu_1,\sigma_1^2)]^{z}[f_2(x\mid\mu_2,\sigma^2_2)]^{1-z}\lambda^z(1-\lambda)^{1-z}, \quad \text{with }z=0, 1.
+\]</span>
+It can be shown that the likelihood function based on the observed data is
+<span class="math display">\[
+f(x\mid\theta)=\sum _{z=0}^1[f_1(x\mid\mu_1,\sigma_1^2)]^{z}[f_2(x\mid\mu_2,\sigma^2_2)]^{1-z}\lambda^z(1-\lambda)^{1-z}.
+\]</span>
+And then the log-likelihood function based on the completed data is
+<span class="math display">\[
+\log g(x, z\mid\theta) =
+\sum_{i=1}^n
+[z_i\log f_1(x_i\mid\mu_1,\sigma^2_1) +
+(1-z_i)\log f_2(x_i\mid\mu_2,\sigma^2_2) +
+z_i\log\lambda +
+(1-z_i)\log(1-\lambda)].
+\]</span></p></li>
+<li><p>[(2b)] E-step of the EM algorithm: calculate
+\begin{align*}
+Q()&amp;=<em>Z[g(x, z)]\
+&amp;=\
+&amp;=</em>{i=1}^n \
+&amp;=_{i=1}^n
+_if_1(x_i_1,_1^2)</p></li>
+<li><p>(1-_i) f_2(x_i_2,_2^2)</p></li>
+<li><p>_i</p></li>
+<li><p>(1-<em>i)(1-)\
+&amp; = </em>{i=1}^n
+_i</p></li>
+<li><p>(1-_i)+ _i\
+&amp;+ (1-_i)(1-).
+\end{align*}
+Note that the conditional distribution of <span class="math inline">\(Z\)</span>
+<span class="math display">\[
+h(z\mid x,\theta) \propto [\lambda f_1(x\mid\mu_1,\sigma_1^2)]^z[(1-\lambda)f_2(x\mid\mu_2,\sigma_2^2)]^{1-z}\sim \text{Bernoulli}\left(\frac{\lambda f_1(x\mid\mu_1,\sigma_1^2)}{\lambda f_1(x\mid\mu_1,\sigma_1^2)+ (1-\lambda)f_2(x\mid\mu_2,\sigma_2^2)}
+\right).
+\]</span>
+Therefore,
+<span class="math display">\[
+\pi_i=\mathbb{E}[z_i\mid x_i, \theta]=\frac{\lambda f_1(x\mid\mu_1,\sigma_1^2)}{\lambda f_1(x_i\mid\mu_1,\sigma_1^2)+ (1-\lambda)f_2(x_i\mid\mu_2,\sigma_2^2)}
+\]</span></p></li>
+<li><p>[(2c)] M-step of the EM algorithm: find the values of <span class="math inline">\(\theta\)</span> such that
+<span class="math display">\[
+Q(\theta)=\sum_{i=1}^n\pi_i\left[
+-\frac{1}{2}\log 2\pi\sigma_1^2-\frac{1}{2\sigma_1^2}(x_i-\mu_1)^2
+\right]+(1-\pi_i)\left[-\frac{1}{2}\log 2\pi\sigma_2^2-\frac{1}{2\sigma_2^2}(x_i-\mu_2)^2\right]+\pi_i\log\lambda+(1-\pi_i)\log(1-\lambda)
+\]</span>
+is maximized. Take the derivatives with respect to <span class="math inline">\(\lambda, \mu_1, \mu_2, \sigma_1^2, \sigma_2^2\)</span>, we obtain</p></li>
+</ul>
+<p><span class="math display">\[\begin{align*}
+\frac{\partial Q}{\partial \lambda}&amp;=0\Longrightarrow \sum\left[\pi_i \frac{1}{\lambda}+(1-\pi_i)\frac{1}{1-\lambda}(-1)\right]\Longrightarrow \hat \lambda=\frac{\sum \pi_i}{n}\\
+\frac{\partial Q}{\partial \mu_1}&amp;=0\Longrightarrow \sum \left[\pi_i (-\frac{1}{2\sigma_1^2})2(x_i-\mu_1)(-1)\right]=0\Longrightarrow \hat \mu_1 =\frac{\sum \pi_i x_i}{\sum \pi_i}\\
+\frac{\partial Q}{\partial \mu_2}&amp;=0\Longrightarrow \sum \left[(1-\pi_i) (-\frac{1}{2\sigma_2^2})2(x_i-\mu_2)(-1)\right]=0\Longrightarrow \hat \mu_2 =\frac{\sum (1-\pi_i) x_i}{\sum (1-\pi_i)}\\
+\frac{\partial Q}{\partial \sigma_1^2}&amp;=0\Longrightarrow \sum \left[\pi_i (0-\frac{1}{\sigma_1^2})-\frac{1}{2(\sigma_1^2)^2}(-1)(x_i-\mu_1)^2\right]=0\Longrightarrow \hat \sigma^2_1=\frac{\sum\pi_i(x_i-\mu_1)^2}{\sum\pi_i}\\
+\frac{\partial Q}{\partial \sigma_2^2}&amp;=0\Longrightarrow \sum \left[(1-\pi_i) (0-\frac{1}{\sigma_2^2})-\frac{1}{2(\sigma_2^2)^2}(-1)(x_i-\mu_2)^2\right]=0\Longrightarrow \hat \sigma^2_2=\frac{\sum (1-\pi_i)(x_i-\mu_2)^2}{\sum(1-\pi_i)}
+\end{align*}\]</span></p>
+<p>\end{itemize}
+\end{enumerate}</p>
+<p>We first generate observations from a mixture of two univariate normal distributions.</p>
+<div class="sourceCode" id="cb490"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb490-1"><a href="clustering-analysis.html#cb490-1" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb490-2"><a href="clustering-analysis.html#cb490-2" tabindex="-1"></a>lambda_ <span class="op">=</span> <span class="fl">0.4</span></span>
+<span id="cb490-3"><a href="clustering-analysis.html#cb490-3" tabindex="-1"></a>mu1, mu2 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">3</span></span>
+<span id="cb490-4"><a href="clustering-analysis.html#cb490-4" tabindex="-1"></a>sigma1, sigma2 <span class="op">=</span> <span class="dv">1</span>, <span class="dv">1</span></span>
+<span id="cb490-5"><a href="clustering-analysis.html#cb490-5" tabindex="-1"></a>n1 <span class="op">=</span> <span class="bu">int</span>(n <span class="op">*</span> lambda_)</span>
+<span id="cb490-6"><a href="clustering-analysis.html#cb490-6" tabindex="-1"></a>n2 <span class="op">=</span> n <span class="op">-</span> n1</span>
+<span id="cb490-7"><a href="clustering-analysis.html#cb490-7" tabindex="-1"></a>np.random.seed(<span class="dv">4061</span>)</span>
+<span id="cb490-8"><a href="clustering-analysis.html#cb490-8" tabindex="-1"></a>x1 <span class="op">=</span> np.random.normal(mu1, sigma1, n1)</span>
+<span id="cb490-9"><a href="clustering-analysis.html#cb490-9" tabindex="-1"></a>x2 <span class="op">=</span> np.random.normal(mu2, sigma2, n2)</span>
+<span id="cb490-10"><a href="clustering-analysis.html#cb490-10" tabindex="-1"></a>x <span class="op">=</span> np.concatenate([x1, x2])</span>
+<span id="cb490-11"><a href="clustering-analysis.html#cb490-11" tabindex="-1"></a>y <span class="op">=</span> np.concatenate([np.ones(n1), np.full(n2, <span class="dv">2</span>)])</span>
+<span id="cb490-12"><a href="clustering-analysis.html#cb490-12" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">&#39;x&#39;</span>: x, <span class="st">&#39;y&#39;</span>: y})</span></code></pre></div>
+<p>We can also use the built-in R function.</p>
+<div class="sourceCode" id="cb491"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb491-1"><a href="clustering-analysis.html#cb491-1" tabindex="-1"></a>gmm_model <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb491-2"><a href="clustering-analysis.html#cb491-2" tabindex="-1"></a>gmm_model.fit(df[[<span class="st">&#39;x&#39;</span>]])</span></code></pre></div>
+<pre><code>## GaussianMixture(n_components=2, random_state=0)</code></pre>
+<div class="sourceCode" id="cb493"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb493-1"><a href="clustering-analysis.html#cb493-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Means:&quot;</span>, gmm_model.means_.flatten())</span></code></pre></div>
+<pre><code>## Means: [0.10768213 3.08212892]</code></pre>
+<div class="sourceCode" id="cb495"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb495-1"><a href="clustering-analysis.html#cb495-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Variances:&quot;</span>, gmm_model.covariances_.flatten())</span></code></pre></div>
+<pre><code>## Variances: [1.08884907 0.91708877]</code></pre>
+<div class="sourceCode" id="cb497"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb497-1"><a href="clustering-analysis.html#cb497-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Weights (mixing proportions):&quot;</span>, gmm_model.weights_)</span></code></pre></div>
+<pre><code>## Weights (mixing proportions): [0.42745858 0.57254142]</code></pre>
+<p>Here is another built-in R function to fit mixture Gaussian models.</p>
+<div class="sourceCode" id="cb499"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb499-1"><a href="clustering-analysis.html#cb499-1" tabindex="-1"></a>model_alt <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">2</span>, covariance_type<span class="op">=</span><span class="st">&#39;full&#39;</span>, max_iter<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb499-2"><a href="clustering-analysis.html#cb499-2" tabindex="-1"></a>model_alt.fit(df[[<span class="st">&#39;x&#39;</span>]])</span></code></pre></div>
+<pre><code>## GaussianMixture(n_components=2, random_state=0)</code></pre>
+<div class="sourceCode" id="cb501"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb501-1"><a href="clustering-analysis.html#cb501-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Alternative method</span><span class="ch">\n</span><span class="st">Means:&quot;</span>, model_alt.means_.flatten())</span></code></pre></div>
+<pre><code>## Alternative method
+## Means: [0.10768213 3.08212892]</code></pre>
+<div class="sourceCode" id="cb503"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb503-1"><a href="clustering-analysis.html#cb503-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Variances:&quot;</span>, model_alt.covariances_.flatten())</span></code></pre></div>
+<pre><code>## Variances: [1.08884907 0.91708877]</code></pre>
+<div class="sourceCode" id="cb505"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb505-1"><a href="clustering-analysis.html#cb505-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Weights:&quot;</span>, model_alt.weights_)</span></code></pre></div>
+<pre><code>## Weights: [0.42745858 0.57254142]</code></pre>
+</div>
+<div id="revisit-learning-outcomes-1" class="section level2 unnumbered hasAnchor">
+<h2>Revisit Learning Outcomes<a href="clustering-analysis.html#revisit-learning-outcomes-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After finishing this chapter, students should be able to</p>
+<ul>
+<li>Explain the differences between classification and cluster problems.</li>
+<li>Describe briefly the main idea and procedure of hierarchical clustering, <span class="math inline">\(K\)</span>-means, and model-based clustering methods.</li>
+<li>Conduct a clustering analysis using hierarchical clustering method, <span class="math inline">\(K\)</span>-means, and model-based clustering in R.</li>
+<li>Interpret the R computer outputs of hierarchical clustering, <span class="math inline">\(K\)</span>-means, and model-based clustering methods.</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="discriminant-analysis-and-classification.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="canonical-correlation-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

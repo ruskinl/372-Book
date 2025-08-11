@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>9 Canonical Correlation Analysis | STAT 372 Open Textbook (Python)</title>
+  <meta name="description" content="This is an open textbook resource for the STAT372 course at MacEwan University, an introduction to Multivariate Statistics and Machine Learning." />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="9 Canonical Correlation Analysis | STAT 372 Open Textbook (Python)" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is an open textbook resource for the STAT372 course at MacEwan University, an introduction to Multivariate Statistics and Machine Learning." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="9 Canonical Correlation Analysis | STAT 372 Open Textbook (Python)" />
+  
+  <meta name="twitter:description" content="This is an open textbook resource for the STAT372 course at MacEwan University, an introduction to Multivariate Statistics and Machine Learning." />
+  
+
+<meta name="author" content="Dr. Wanhua Su" />
+
+
+<meta name="date" content="2025-08-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="clustering-analysis.html"/>
+<link rel="next" href="multidimensional-scaling.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#some-examples"><i class="fa fa-check"></i><b>1.2</b> Some Examples</a>
+<ul>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#example-1-storm-survival-of-sparrows"><i class="fa fa-check"></i>Example 1: Storm Survival of Sparrows</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#example-2-spam-or-e-mail"><i class="fa fa-check"></i>Example 2: Spam or E-mail?</a></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#example-3-classification-of-iris"><i class="fa fa-check"></i>Example 3: Classification of Iris</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#multivariate-methods-covered-in-stat-372"><i class="fa fa-check"></i><b>1.3</b> Multivariate Methods Covered in STAT 372</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#review-univariate-analysis"><i class="fa fa-check"></i><b>1.4</b> Review: Univariate Analysis</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="intro.html"><a href="intro.html#random-variable-and-its-distribution"><i class="fa fa-check"></i><b>1.4.1</b> Random Variable and Its Distribution</a></li>
+<li class="chapter" data-level="1.4.2" data-path="intro.html"><a href="intro.html#properties-of-expectation-and-variance"><i class="fa fa-check"></i><b>1.4.2</b> Properties of Expectation and Variance</a></li>
+<li class="chapter" data-level="1.4.3" data-path="intro.html"><a href="intro.html#continuous-random-variables"><i class="fa fa-check"></i><b>1.4.3</b> Continuous Random Variables</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intro.html"><a href="intro.html#revisit-learning-learning-outcomes"><i class="fa fa-check"></i>Revisit Learning Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="matrix-algebra.html"><a href="matrix-algebra.html"><i class="fa fa-check"></i><b>2</b> Matrix Algebra</a>
+<ul>
+<li class="chapter" data-level="" data-path="matrix-algebra.html"><a href="matrix-algebra.html#learning-outcomes-1"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="2.1" data-path="matrix-algebra.html"><a href="matrix-algebra.html#vectors"><i class="fa fa-check"></i><b>2.1</b> Vectors</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="matrix-algebra.html"><a href="matrix-algebra.html#some-basic-operations-on-vectors"><i class="fa fa-check"></i><b>2.1.1</b> Some Basic Operations on Vectors</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="matrix-algebra.html"><a href="matrix-algebra.html#matrices"><i class="fa fa-check"></i><b>2.2</b> Matrices</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="matrix-algebra.html"><a href="matrix-algebra.html#basic-operations-on-matrix"><i class="fa fa-check"></i><b>2.2.1</b> Basic Operations on Matrix</a></li>
+<li class="chapter" data-level="2.2.2" data-path="matrix-algebra.html"><a href="matrix-algebra.html#eigenvalues-and-eigenvectors"><i class="fa fa-check"></i><b>2.2.2</b> Eigenvalues and Eigenvectors</a></li>
+<li class="chapter" data-level="2.2.3" data-path="matrix-algebra.html"><a href="matrix-algebra.html#spectral-eigen-decomposition"><i class="fa fa-check"></i><b>2.2.3</b> Spectral (Eigen) Decomposition</a></li>
+<li class="chapter" data-level="2.2.4" data-path="matrix-algebra.html"><a href="matrix-algebra.html#singular-value-decomposition"><i class="fa fa-check"></i><b>2.2.4</b> Singular-Value Decomposition</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="matrix-algebra.html"><a href="matrix-algebra.html#mean-vectors-and-covariance-matrices"><i class="fa fa-check"></i><b>2.3</b> Mean Vectors and Covariance Matrices</a></li>
+<li class="chapter" data-level="2.4" data-path="matrix-algebra.html"><a href="matrix-algebra.html#sample-mean-vector-and-covariance-matrix"><i class="fa fa-check"></i><b>2.4</b> Sample Mean Vector and Covariance Matrix</a></li>
+<li class="chapter" data-level="2.5" data-path="matrix-algebra.html"><a href="matrix-algebra.html#review-exercises"><i class="fa fa-check"></i><b>2.5</b> Review Exercises</a></li>
+<li class="chapter" data-level="" data-path="matrix-algebra.html"><a href="matrix-algebra.html#revisit-the-learning-outcomes"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html"><i class="fa fa-check"></i><b>3</b> Displaying Multivariate Data and Measures of Distance</a>
+<ul>
+<li class="chapter" data-level="" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#learning-outcomes-2"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="3.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#display-multivariate-data"><i class="fa fa-check"></i><b>3.1</b> Display Multivariate Data</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#scatterplot"><i class="fa fa-check"></i><b>3.1.1</b> Scatterplot</a></li>
+<li class="chapter" data-level="3.1.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#graphs-of-growth-curves"><i class="fa fa-check"></i><b>3.1.2</b> Graphs of Growth Curves</a></li>
+<li class="chapter" data-level="3.1.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#star-plots"><i class="fa fa-check"></i><b>3.1.3</b> Star Plots</a></li>
+<li class="chapter" data-level="3.1.4" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#chernoff-faces-plot"><i class="fa fa-check"></i><b>3.1.4</b> Chernoff Faces Plot</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distance-in-multivariate-analysis"><i class="fa fa-check"></i><b>3.2</b> Distance in Multivariate Analysis</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distances-for-quantitative-variables"><i class="fa fa-check"></i><b>3.2.1</b> Distances for Quantitative Variables</a></li>
+<li class="chapter" data-level="3.2.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distance-for-categorical-variables"><i class="fa fa-check"></i><b>3.2.2</b> Distance for Categorical Variables</a></li>
+<li class="chapter" data-level="3.2.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distance-for-mixed-variable-types"><i class="fa fa-check"></i><b>3.2.3</b> Distance for Mixed Variable Types</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#multivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3</b> Multivariate Normal Distribution</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#properties-of-multivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3.1</b> Properties of Multivariate Normal Distribution</a></li>
+<li class="chapter" data-level="3.3.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#bivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3.2</b> Bivariate Normal Distribution</a></li>
+<li class="chapter" data-level="3.3.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#contour-of-multivariate-normal-distribution"><i class="fa fa-check"></i><b>3.3.3</b> Contour of Multivariate Normal Distribution</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#the-sampling-distribution-of-mathbfbar-x-and-boldsymbols"><i class="fa fa-check"></i><b>3.4</b> The Sampling Distribution of <span class="math inline">\(\mathbf{\bar X}\)</span> and <span class="math inline">\(\boldsymbol{S}\)</span></a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#distributions-related-to-normal-distribution"><i class="fa fa-check"></i><b>3.4.1</b> Distributions Related to Normal Distribution</a></li>
+<li class="chapter" data-level="3.4.2" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#applications-to-distributions-related-to-sample-means"><i class="fa fa-check"></i><b>3.4.2</b> Applications to Distributions Related to Sample Means</a></li>
+<li class="chapter" data-level="3.4.3" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#generalize-to-multivariate-cases"><i class="fa fa-check"></i><b>3.4.3</b> Generalize to Multivariate Cases</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#review-exercises-1"><i class="fa fa-check"></i><b>3.5</b> Review Exercises</a></li>
+<li class="chapter" data-level="" data-path="displaying-multivariate-data-and-measures-of-distance.html"><a href="displaying-multivariate-data-and-measures-of-distance.html#revisit-the-learning-outcomes-1"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Tests on Mean Vectors</a>
+<ul>
+<li class="chapter" data-level="" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#learning-outcomes-3"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="4.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#hypothesis-test-for-one-mean-vector"><i class="fa fa-check"></i><b>4.1</b> Hypothesis Test for one Mean Vector</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case"><i class="fa fa-check"></i><b>4.1.1</b> Univariate Case</a></li>
+<li class="chapter" data-level="4.1.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case"><i class="fa fa-check"></i><b>4.1.2</b> Multivariate Case</a></li>
+<li class="chapter" data-level="4.1.3" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#evaluating-multivariate-normality"><i class="fa fa-check"></i><b>4.1.3</b> Evaluating Multivariate Normality</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#hypothesis-test-for-two-mean-vectors"><i class="fa fa-check"></i><b>4.2</b> Hypothesis Test for Two Mean Vectors</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case-based-on-two-independent-samples"><i class="fa fa-check"></i><b>4.2.1</b> Univariate Case Based on Two Independent Samples</a></li>
+<li class="chapter" data-level="4.2.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case-based-on-two-independent-samples"><i class="fa fa-check"></i><b>4.2.2</b> Multivariate Case Based on Two Independent Samples</a></li>
+<li class="chapter" data-level="4.2.3" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#two-sample-non-pooled-hotellings-t2-test"><i class="fa fa-check"></i><b>4.2.3</b> Two-sample Non-pooled Hotelling’s <span class="math inline">\(T^2\)</span> Test</a></li>
+<li class="chapter" data-level="4.2.4" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#two-sample-hotellings-t2-confidence-interval"><i class="fa fa-check"></i><b>4.2.4</b> Two-sample Hotelling’s <span class="math inline">\(T^2\)</span> Confidence Interval</a></li>
+<li class="chapter" data-level="4.2.5" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case-based-on-a-paired-sample"><i class="fa fa-check"></i><b>4.2.5</b> Univariate Case Based on a Paired Sample</a></li>
+<li class="chapter" data-level="4.2.6" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case-based-on-a-paired-sample"><i class="fa fa-check"></i><b>4.2.6</b> Multivariate Case Based on a Paired Sample</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#hypothesis-test-for-several-mean-vectors"><i class="fa fa-check"></i><b>4.3</b> Hypothesis Test for Several Mean Vectors</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#univariate-case-one-way-anova-f-test"><i class="fa fa-check"></i><b>4.3.1</b> Univariate Case: One-Way ANOVA F Test</a></li>
+<li class="chapter" data-level="4.3.2" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#multivariate-case-one-way-manova"><i class="fa fa-check"></i><b>4.3.2</b> Multivariate Case: One-Way MANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="hypothesis-tests-on-mean-vectors.html"><a href="hypothesis-tests-on-mean-vectors.html#revisit-the-learning-outcomes-2"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html"><i class="fa fa-check"></i><b>5</b> Principal Component Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#learning-outcomes-4"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="5.1" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#finding-the-principal-components"><i class="fa fa-check"></i><b>5.1</b> Finding the Principal Components</a></li>
+<li class="chapter" data-level="5.2" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#scaling-in-principal-component-analysis"><i class="fa fa-check"></i><b>5.2</b> Scaling in Principal Component Analysis</a></li>
+<li class="chapter" data-level="5.3" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#limitations-of-principal-component-analysis"><i class="fa fa-check"></i><b>5.3</b> Limitations of Principal Component Analysis</a></li>
+<li class="chapter" data-level="5.4" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#further-reading"><i class="fa fa-check"></i><b>5.4</b> Further Reading</a></li>
+<li class="chapter" data-level="" data-path="principal-component-analysis.html"><a href="principal-component-analysis.html#revisit-the-learning-outcomes-3"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="factor-analysis.html"><a href="factor-analysis.html"><i class="fa fa-check"></i><b>6</b> Factor Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#learning-outcomes-5"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="6.1" data-path="factor-analysis.html"><a href="factor-analysis.html#model-of-factor-analysis"><i class="fa fa-check"></i><b>6.1</b> Model of Factor Analysis</a></li>
+<li class="chapter" data-level="6.2" data-path="factor-analysis.html"><a href="factor-analysis.html#estimating-factor-loadings-l_ij-and-specific-variance-psi_i"><i class="fa fa-check"></i><b>6.2</b> Estimating Factor Loadings <span class="math inline">\(l_{ij}\)</span> and Specific Variance <span class="math inline">\(\psi_i\)</span></a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="factor-analysis.html"><a href="factor-analysis.html#the-principle-component-method"><i class="fa fa-check"></i><b>6.2.1</b> The Principle Component Method</a></li>
+<li class="chapter" data-level="6.2.2" data-path="factor-analysis.html"><a href="factor-analysis.html#the-maximum-likelihood-method"><i class="fa fa-check"></i><b>6.2.2</b> The Maximum Likelihood Method</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="factor-analysis.html"><a href="factor-analysis.html#factor-rotation"><i class="fa fa-check"></i><b>6.3</b> Factor Rotation</a></li>
+<li class="chapter" data-level="6.4" data-path="factor-analysis.html"><a href="factor-analysis.html#factor-scores"><i class="fa fa-check"></i><b>6.4</b> Factor Scores</a></li>
+<li class="chapter" data-level="" data-path="factor-analysis.html"><a href="factor-analysis.html#revisit-the-learning-outcomes-4"><i class="fa fa-check"></i>Revisit the Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html"><i class="fa fa-check"></i><b>7</b> Discriminant Analysis and Classification</a>
+<ul>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#learning-outcomes-6"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="7.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#introduction-1"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#performance-measure"><i class="fa fa-check"></i><b>7.2</b> Performance Measure</a></li>
+<li class="chapter" data-level="7.3" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#overfitting-and-cross-validation"><i class="fa fa-check"></i><b>7.3</b> Overfitting and Cross Validation</a></li>
+<li class="chapter" data-level="7.4" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#classification-models"><i class="fa fa-check"></i><b>7.4</b> Classification Models</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>7.4.1</b> <span class="math inline">\(K\)</span> Nearest Neighbors</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#logistic-regression-for-binary-response"><i class="fa fa-check"></i><b>7.5</b> Logistic Regression for Binary Response</a>
+<ul>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#interpretation-of-beta_i"><i class="fa fa-check"></i>Interpretation of <span class="math inline">\(\beta_i\)</span></a></li>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#estimation-of-beta_i"><i class="fa fa-check"></i>Estimation of <span class="math inline">\(\beta_i\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#logistic-regression-for-multi-class-nominal-data"><i class="fa fa-check"></i><b>7.6</b> Logistic Regression for Multi-class Nominal Data</a></li>
+<li class="chapter" data-level="7.7" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#cumulative-logit-model-for-multi-class-ordinal-data"><i class="fa fa-check"></i><b>7.7</b> Cumulative Logit Model for Multi-class Ordinal Data</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#cumulative-logit-models-with-proportional-odds"><i class="fa fa-check"></i><b>7.7.1</b> Cumulative Logit Models with Proportional Odds</a></li>
+<li class="chapter" data-level="7.7.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#model-probability-of-each-category"><i class="fa fa-check"></i><b>7.7.2</b> Model Probability of Each Category</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#model-selection-for-logistic-regression"><i class="fa fa-check"></i><b>7.8</b> Model Selection for Logistic Regression</a>
+<ul>
+<li class="chapter" data-level="7.8.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#aic-and-bic"><i class="fa fa-check"></i><b>7.8.1</b> AIC and BIC</a></li>
+<li class="chapter" data-level="7.8.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#forward-selection"><i class="fa fa-check"></i><b>7.8.2</b> Forward Selection</a></li>
+<li class="chapter" data-level="7.8.3" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#backward-elimination"><i class="fa fa-check"></i><b>7.8.3</b> Backward Elimination</a></li>
+</ul></li>
+<li class="chapter" data-level="7.9" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#model-checking"><i class="fa fa-check"></i><b>7.9</b> Model Checking</a>
+<ul>
+<li class="chapter" data-level="7.9.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#residual-analysis"><i class="fa fa-check"></i><b>7.9.1</b> Residual Analysis</a></li>
+<li class="chapter" data-level="7.9.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#preditive-power-accuracy-and-roc-curve"><i class="fa fa-check"></i><b>7.9.2</b> Preditive Power: Accuracy and ROC Curve</a></li>
+</ul></li>
+<li class="chapter" data-level="7.10" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#classification-tree-recursive-partitioning"><i class="fa fa-check"></i><b>7.10</b> Classification Tree (Recursive Partitioning)</a></li>
+<li class="chapter" data-level="7.11" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#regression-tree"><i class="fa fa-check"></i><b>7.11</b> Regression Tree</a></li>
+<li class="chapter" data-level="7.12" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#random-forest"><i class="fa fa-check"></i><b>7.12</b> Random Forest</a></li>
+<li class="chapter" data-level="7.13" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#support-vector-machines"><i class="fa fa-check"></i><b>7.13</b> Support Vector Machines</a></li>
+<li class="chapter" data-level="7.14" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#neural-networks"><i class="fa fa-check"></i><b>7.14</b> Neural Networks</a></li>
+<li class="chapter" data-level="7.15" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#classical-methods"><i class="fa fa-check"></i><b>7.15</b> Classical Methods</a>
+<ul>
+<li class="chapter" data-level="7.15.1" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#mahalanobis-distance-method"><i class="fa fa-check"></i><b>7.15.1</b> Mahalanobis Distance Method</a></li>
+<li class="chapter" data-level="7.15.2" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#bayes-posterior"><i class="fa fa-check"></i><b>7.15.2</b> Bayes Posterior</a></li>
+<li class="chapter" data-level="7.15.3" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#fishers-discriminant-analysis"><i class="fa fa-check"></i><b>7.15.3</b> Fisher’s Discriminant Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="7.16" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#summary"><i class="fa fa-check"></i><b>7.16</b> Summary</a></li>
+<li class="chapter" data-level="" data-path="discriminant-analysis-and-classification.html"><a href="discriminant-analysis-and-classification.html#revisit-learning-outcomes"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="clustering-analysis.html"><a href="clustering-analysis.html"><i class="fa fa-check"></i><b>8</b> Clustering Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="clustering-analysis.html"><a href="clustering-analysis.html#learning-outcomes-7"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="8.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#introduction-2"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#clustering-methods"><i class="fa fa-check"></i><b>8.2</b> Clustering Methods</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#hierarchical-method"><i class="fa fa-check"></i><b>8.2.1</b> Hierarchical Method</a></li>
+<li class="chapter" data-level="8.2.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#k-means"><i class="fa fa-check"></i><b>8.2.2</b> K-Means</a></li>
+<li class="chapter" data-level="8.2.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#model-based-clustering"><i class="fa fa-check"></i><b>8.2.3</b> Model-Based Clustering</a></li>
+<li class="chapter" data-level="8.2.4" data-path="clustering-analysis.html"><a href="clustering-analysis.html#pros-and-cons-of-clustering-methods"><i class="fa fa-check"></i><b>8.2.4</b> Pros and Cons of Clustering Methods</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#determine-k-number-of-clusters"><i class="fa fa-check"></i><b>8.3</b> Determine <span class="math inline">\(K\)</span>: Number of Clusters</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="clustering-analysis.html"><a href="clustering-analysis.html#the-elbow-plot-method"><i class="fa fa-check"></i><b>8.3.1</b> The Elbow Plot Method</a></li>
+<li class="chapter" data-level="8.3.2" data-path="clustering-analysis.html"><a href="clustering-analysis.html#the-silhouette-score"><i class="fa fa-check"></i><b>8.3.2</b> The Silhouette Score</a></li>
+<li class="chapter" data-level="8.3.3" data-path="clustering-analysis.html"><a href="clustering-analysis.html#gap-statistics"><i class="fa fa-check"></i><b>8.3.3</b> Gap Statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="clustering-analysis.html"><a href="clustering-analysis.html#side-note-on-the-em-algorithm"><i class="fa fa-check"></i>Side-Note on the EM Algorithm</a></li>
+<li class="chapter" data-level="" data-path="clustering-analysis.html"><a href="clustering-analysis.html#revisit-learning-outcomes-1"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html"><i class="fa fa-check"></i><b>9</b> Canonical Correlation Analysis</a>
+<ul>
+<li class="chapter" data-level="" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#learning-outcomes-8"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="9.1" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#objective"><i class="fa fa-check"></i><b>9.1</b> Objective</a></li>
+<li class="chapter" data-level="9.2" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#obtain-the-canonical-variates-pairs"><i class="fa fa-check"></i><b>9.2</b> Obtain the Canonical Variates Pairs</a></li>
+<li class="chapter" data-level="9.3" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#interpretation"><i class="fa fa-check"></i><b>9.3</b> Interpretation</a></li>
+<li class="chapter" data-level="9.4" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#testing-mathbfsigma_120"><i class="fa fa-check"></i><b>9.4</b> Testing <span class="math inline">\(\mathbf{\Sigma}_{12}=0\)</span></a></li>
+<li class="chapter" data-level="" data-path="canonical-correlation-analysis.html"><a href="canonical-correlation-analysis.html#revisit-learning-outcomes-2"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html"><i class="fa fa-check"></i><b>10</b> Multidimensional Scaling</a>
+<ul>
+<li class="chapter" data-level="" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#learning-outcomes-9"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="10.1" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#objective-1"><i class="fa fa-check"></i><b>10.1</b> Objective</a></li>
+<li class="chapter" data-level="10.2" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#methods"><i class="fa fa-check"></i><b>10.2</b> Methods</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#classical-scaling"><i class="fa fa-check"></i><b>10.2.1</b> Classical Scaling</a></li>
+<li class="chapter" data-level="10.2.2" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#metric-scaling"><i class="fa fa-check"></i><b>10.2.2</b> Metric Scaling</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#example"><i class="fa fa-check"></i><b>10.3</b> Example</a></li>
+<li class="chapter" data-level="" data-path="multidimensional-scaling.html"><a href="multidimensional-scaling.html#revisit-learning-outcomes-3"><i class="fa fa-check"></i>Revisit Learning Outcomes</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">STAT 372 Open Textbook (Python)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="canonical-correlation-analysis" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">9</span> Canonical Correlation Analysis<a href="canonical-correlation-analysis.html#canonical-correlation-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="learning-outcomes-8" class="section level2 unnumbered hasAnchor">
+<h2>Learning Outcomes<a href="canonical-correlation-analysis.html#learning-outcomes-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After finishing this chapter, students should be able to</p>
+<ul>
+<li>Understand the objective of canonical correlation analysis.</li>
+<li>Prove important results related to canonical correlation analysis.</li>
+<li>Conduct a canonical correlation analysis in R.</li>
+<li>Interpret the computer output of a canonical correlation analysis.</li>
+<li>Conduct a hypothesis test to test whether the canonical relations are significant.</li>
+<li>Determine the proper number of canonical variates pairs.</li>
+</ul>
+</div>
+<div id="objective" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Objective<a href="canonical-correlation-analysis.html#objective" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Consider two sets of variables,
+<span class="math display">\[
+\mathbf{X}=
+\left[
+\begin{array}{c}
+X_1\\ X_2\\ \vdots\\ X_p
+\end{array}
+\right],
+\quad \quad
+\mathbf{Y}=
+\left[
+\begin{array}{c}
+Y_1\\ Y_2\\ \vdots\\ Y_q
+\end{array}
+\right]
+\quad \quad
+p\le q
+\]</span>
+with
+<span class="math display">\[
+\mbox{Cov}\left[
+\begin{array}{c}
+\mathbf{X}\\ \cdots\\\mathbf{Y}
+\end{array}
+\right]=\mbox{Cov}\left[
+\begin{array}{c}
+X_1\\ X_2\\ \vdots\\ X_p\\ \cdots \\ Y_1\\ Y_2\\ \vdots\\ Y_q
+\end{array}
+\right]=\left[
+\begin{array}{ccc}
+\mbox{Var}(\mathbf{X}) &amp;\vdots &amp;\mbox{Cov}(\mathbf{X},\mathbf{Y})   \\
+\cdots&amp;\cdots&amp;\cdots\\
+\mbox{Cov}(\mathbf{Y},\mathbf{X})   &amp;\vdots &amp;  \mbox{Var}(\mathbf{Y})\\
+\end{array}
+\right]=\left[
+\begin{array}{ccc}
+\mathbf{\Sigma}_{11} &amp;\vdots &amp;\mathbf{\Sigma}_{12}   \\
+\cdots&amp;\cdots&amp;\cdots\\
+\mathbf{\Sigma}_{21}  &amp;\vdots &amp;  \mathbf{\Sigma}_{22} \\
+\end{array}
+\right]
+\]</span></p>
+<p>We want to use <span class="math inline">\(k\)</span> uncorrelated canonical variates pairs <span class="math inline">\((u_i, v_i), i=1, 2 \cdots, k\)</span> to represent the data such that the pair <span class="math inline">\((u_i, v_i)\)</span> has the <span class="math inline">\(i\)</span>th largest correlation. That is,
+<span class="math display">\[\begin{align*}
+u_1&amp;=\mathbf{a}_1^{T}\mathbf{X}=a_{11}X_1+a_{12}X_2+\cdots+a_{1p}X_p\\
+u_2&amp;=\mathbf{a}_2^{T}\mathbf{X}=a_{21}X_1+a_{22}X_2+\cdots+a_{2p}X_p\\
+\vdots\\
+u_p&amp;=\mathbf{a}_p^{T}\mathbf{X}=a_{p1}X_1+a_{p2}X_2+\cdots+a_{pp}X_p\\
+v_1&amp;=\mathbf{b}_1^{T}\mathbf{Y}=b_{11}Y_1+b_{12}Y_2+\cdots+b_{1q}Y_q\\
+v_2&amp;=\mathbf{b}_2^{T}\mathbf{Y}=b_{21}Y_1+b_{22}Y_2+\cdots+b_{2q}Y_q\\
+\vdots\\
+v_q&amp;=\mathbf{b}_q^{T}\mathbf{Y}=b_{q1}Y_1+b_{q2}Y_2+\cdots+b_{qq}Y_q\\
+\end{align*}\]</span>
+with
+<span class="math display">\[
+\mbox{Cov}(u_1, v_1)\ge \mbox{Cov}(u_2, v_2)\ge \cdots \ge \mbox{Cov}(u_p, v_p).
+\]</span>
+And the canonical variates pairs <span class="math inline">\((u_i, v_i)\)</span> are uncorrelated, that is
+<span class="math display">\[
+\mbox{Cov}(u_i, u_j)=0, \mbox{Cov}(u_i, v_j)=0, \mbox{Cov}(v_i, v_j)=0, \mbox{Cov}(u_j, v_i)=0, \mbox{ for $i&lt;j$}.
+\]</span>
+The correlations of the canonical variates pairs <span class="math inline">\(\rho_i=\text{Corr}(u_i, v_i)\)</span> are called the canonical correlations. Canonical correlation analysis allows us to summarize the covariance matrix <span class="math inline">\(\mathbf{\Sigma}_{12}\)</span> whose dimension is <span class="math inline">\(p\times q\)</span> using <span class="math inline">\(p\)</span> canonical correlations <span class="math inline">\(\rho_i, i=1, 2, \cdots, p\)</span>.</p>
+</div>
+<div id="obtain-the-canonical-variates-pairs" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Obtain the Canonical Variates Pairs<a href="canonical-correlation-analysis.html#obtain-the-canonical-variates-pairs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It can be shown that the first canonical variates pair is associated to the eigenvector corresponding to the largest eigenvalue of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\)</span>, the correlation of the first canonical pair is the square root of the largest eigenvalue. In general, the <span class="math inline">\(i\)</span>th canonical variates pair is associated to the eigenvector corresponding to the <span class="math inline">\(i\)</span>th largest eigenvalue of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\)</span>.</p>
+<p><span class="math inline">\(\textbf{Proof}\)</span>: We want to maximize <span class="math inline">\(\mbox{Cov}(u, v)=\mbox{Cov}(\mathbf{a}^T\mathbf{X},\mathbf{b}^T\mathbf{Y})=\mathbf{a}^T\mathbf{\Sigma}_{12}\mathbf{b}\)</span> with the constraints <span class="math inline">\(\mathbf{a}^T\mathbf{\Sigma}_{11}\mathbf{a}=1\)</span> and <span class="math inline">\(\mathbf{b}^T\mathbf{\Sigma}_{22}\mathbf{b}=1\)</span>.
+The steps to obtain the canonical variates pairs are as follows.</p>
+<ol style="list-style-type: decimal">
+<li>Find the eigenvalues of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\)</span>, <span class="math inline">\(\lambda_1^2 \ge \lambda_2^2 \ge \cdots \ge \lambda_p^2\)</span>. Obtain the corresponding unit eigenvectors <span class="math inline">\(\mathbf{e}_1, \mathbf{e}_2, \cdots, \mathbf{e}_p\)</span>.</li>
+<li>The <span class="math inline">\(i\)</span>th canonical variates pair <span class="math inline">\((u_i, v_i)\)</span> is given by
+<span class="math display">\[
+u_i=\mathbf{a}_i^T\mathbf{X}; \quad \mathbf{a}_i=\frac{\mathbf{e}_i}{\sqrt{c_i}}; \mbox{ with $c_i=\mathbf{e}_i^T \mathbf{\Sigma}_{11} \mathbf{e}_i$}
+\]</span>
+<span class="math display">\[
+v_i=\mathbf{b}_i^T\mathbf{Y}; \quad \mathbf{b}_i=\frac{1}{\lambda_i}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{a}_i
+\]</span>
+And the correlation of <span class="math inline">\(u_i\)</span> and <span class="math inline">\(v_i\)</span> is
+<span class="math display">\[
+\rho_i=\frac{\mbox{Cov}(u_i, v_i)}{\sqrt{\mbox{Var}(u_i)\mbox{Var}(v_i)}}=\frac{\mathbf{a}_i^T \mathbf{\Sigma}_{12}\mathbf{b}_i}{\sqrt{(\mathbf{a}_i^T \mathbf{\Sigma}_{11}\mathbf{a}_i)(\mathbf{b}_i^T \mathbf{\Sigma}_{22}\mathbf{b}_i)}}=\lambda_i
+\]</span></li>
+</ol>
+<p><span class="math inline">\(\textbf{Note}\)</span>:If we want to find <span class="math inline">\(q\)</span> canonical variates to represent <span class="math inline">\(\mathbf{Y}\)</span>, we can find the eigenvalues of the matrix <span class="math inline">\(\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\)</span>, <span class="math inline">\(\lambda_1^2 \ge \lambda_2^2 \ge \cdots \ge \lambda_p^2\ge \cdots \ge \lambda_q^2\)</span>. The first <span class="math inline">\(p\)</span> eigenvalues are the same as those of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\)</span>. Obtain the corresponding unit eigenvectors <span class="math inline">\(\mathbf{f}_1, \mathbf{f}_2, \cdots, \mathbf{f}_q\)</span>. Then
+<span class="math display">\[
+\mathbf{b}_i=\frac{\mathbf{f}_i}{\sqrt{d_i}}; \mbox{ with $d_i=\mathbf{f}_i^T \mathbf{\Sigma}_{22} \mathbf{f}_i$}, i=1, 2, \cdots, q
+\]</span></p>
+<p><span class="math inline">\(\textbf{Proof}\)</span>:The first canonical variates pair is the one giving the largest correlation. That is to maximize
+<span class="math display">\[
+\rho=\frac{\mbox{Cov}(u, v)}{\sqrt{\mbox{Var}(u)\mbox{Var}(v)}}=\frac{\mathbf{a}^T \mathbf{\Sigma}_{12}\mathbf{b}}{\sqrt{(\mathbf{a}^T \mathbf{\Sigma}_{11}\mathbf{a})(\mathbf{b}^T \mathbf{\Sigma}_{22}\mathbf{b})}}.
+\]</span>
+This is equivalent to maximizing <span class="math inline">\(\mathbf{a}^T \mathbf{\Sigma}_{12}\mathbf{b}\)</span> with the constraints <span class="math inline">\(\mathbf{a}^T \mathbf{\Sigma}_{11}\mathbf{a}=1\)</span> and <span class="math inline">\(\mathbf{b}^T \mathbf{\Sigma}_{22}\mathbf{b}=1\)</span>. Using the Lagrange multiplier method, we want to find
+<span class="math display">\[
+\arg \max_{\mathbf{a},\mathbf{b}, \lambda, \gamma} Q=\mathbf{a}^T \mathbf{\Sigma}_{12}\mathbf{b}-\frac{\lambda}{2}(\mathbf{a}^T \mathbf{\Sigma}_{11}\mathbf{a}-1)-\frac{\gamma}{2}(\mathbf{b}^T \mathbf{\Sigma}_{22}\mathbf{b}-1)
+\]</span>
+<span class="math display">\[\begin{align}
+\label{eq:eq1}
+\frac{\partial Q}{\partial \mathbf{a}}&amp;=\mathbf{\Sigma}_{12}\mathbf{b}-\lambda \mathbf{\Sigma}_{11}\mathbf{a}=0 \Longrightarrow \mathbf{a}^T\mathbf{\Sigma}_{12}\mathbf{b}=\lambda \mathbf{a}^T\mathbf{\Sigma}_{11}\mathbf{a}=\lambda \\
+\label{eq:eq2}
+\frac{\partial Q}{\partial \mathbf{b}}&amp;=\mathbf{\Sigma}_{21}\mathbf{a}-\gamma \mathbf{\Sigma}_{22}\mathbf{b}=0 \Longrightarrow \mathbf{b}^T\mathbf{\Sigma}_{21}\mathbf{a}=\gamma \mathbf{b}^T\mathbf{\Sigma}_{22}\mathbf{b}=\gamma\\
+\frac{\partial Q}{\partial \lambda}&amp;=0\Longrightarrow  \mathbf{a}^T \mathbf{\Sigma}_{11}\mathbf{a}=1\nonumber\\
+\frac{\partial Q}{\partial \gamma}&amp;=0\Longrightarrow \mathbf{b}^T \mathbf{\Sigma}_{22}\mathbf{b}=1\nonumber
+\end{align}\]</span>
+Equations (<span class="math inline">\(\ref{eq:eq1}\)</span>) and (<span class="math inline">\(\ref{eq:eq2}\)</span>) imply <span class="math inline">\(\lambda=\gamma\)</span>. Equation (<span class="math inline">\(\ref{eq:eq2}\)</span>) also implies <span class="math inline">\(\mathbf{b}=\frac{1}{\gamma}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{a}\)</span>. Plug it in back to Equation (<span class="math inline">\(\ref{eq:eq1}\)</span>),
+we have
+<span class="math display">\[
+\mathbf{\Sigma}_{12}\frac{1}{\gamma}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{a}=\lambda \mathbf{\Sigma}_{11} \mathbf{a} \Longrightarrow \mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{a}=\lambda^2\mathbf{a}.
+\]</span>
+This implies <span class="math inline">\(\lambda^2\)</span> is an eigenvalue of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\)</span> and <span class="math inline">\(\mathbf{a}\)</span> is the corresponding eigenvector. By Equation (<span class="math inline">\(\ref{eq:eq1}\)</span>), <span class="math inline">\(\mathbf{a}^T\mathbf{\Sigma}_{12}\mathbf{b}=\lambda\)</span>; therefore, to maximize <span class="math inline">\(\mathbf{a}^T\mathbf{\Sigma}_{12}\mathbf{b}\)</span> is to maximize <span class="math inline">\(\lambda\)</span> (or <span class="math inline">\(\lambda^2\)</span>), i.e., the largest eigenvalue. As a result, <span class="math inline">\(\mathbf{a}\)</span> is an eigenvector associated with the largest eigenvalue <span class="math inline">\(\lambda^2\)</span> of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\)</span>. We need to scale <span class="math inline">\(\mathbf{a}\)</span> such that <span class="math inline">\(\mathbf{a}^T \mathbf{\Sigma}_{11}\mathbf{a}=1\)</span>. Suppose <span class="math inline">\(\mathbf{e}\)</span> is the unit eigenvector associated to the largest eigenvalue <span class="math inline">\(\lambda^2\)</span>, let
+<span class="math display">\[
+\mathbf{a}=\frac{\mathbf{e}}{\sqrt{c}}, \quad \mbox{where $c=\mathbf{e}^T \mathbf{\Sigma}_{11}\mathbf{e}$}.
+\]</span>
+Let
+<span class="math display">\[
+\mathbf{b}=\frac{1}{\lambda}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{a}
+\]</span>
+It can be shown that <span class="math inline">\(\mathbf{b}^T \mathbf{\Sigma}_{22}\mathbf{b}=1\)</span>,
+<span class="math display">\[
+\mathbf{b}^T \mathbf{\Sigma}_{22}\mathbf{b}=(\frac{1}{\lambda}\mathbf{a}^T\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1})\mathbf{\Sigma}_{22}(\frac{1}{\lambda}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{a})=\frac{1}{\lambda^2}\mathbf{a}^T\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{a}=\frac{1}{\lambda^2}\mathbf{a}^T\mathbf{\Sigma}_{11}(\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{a})=\frac{1}{\lambda^2}\mathbf{a}^T\mathbf{\Sigma}_{11}(\lambda^2 \mathbf{a})=1
+\]</span></p>
+<p>Applying the similar idea, we can prove that the second canonical variates pair is related to the eigenvector of the second largest eigenvalue, and etc. If we work on the correlation matrix, the conclusions still hold, just replace the covariance matrices with correlation matrices.</p>
+<p><span class="math inline">\(\textbf{Note}\)</span>: There is another way to calculate the canonical variates pairs, the steps are as follows.</p>
+<ol style="list-style-type: decimal">
+<li>Find the eigenvalues of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1/2}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\)</span> and the corresponding unit eigenvectors <span class="math inline">\(\mathbf{e}_1, \mathbf{e}_2, \cdots \mathbf{e}_p\)</span>. It can be shown that <span class="math inline">\(\lambda_1^2 \ge \lambda_2^2 \ge \cdots \ge \lambda_p^2\)</span> are also the <span class="math inline">\(p\)</span> largest eigenvalues of the matrix <span class="math inline">\(\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1/2}\)</span> with the corresponding unit eigenvectors <span class="math inline">\(\mathbf{f}_1, \mathbf{f}_2, \cdots \mathbf{f}_p\)</span>.</li>
+<li>The <span class="math inline">\(i\)</span>th canonical variates pair <span class="math inline">\((u_i, v_i)\)</span> is given by
+<span class="math display">\[
+u_i=\mathbf{a}_i^T\mathbf{X}; \quad \mathbf{a}_i=\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_i; \quad \quad v_i=\mathbf{b}_i^T\mathbf{Y}; \quad \mathbf{b}_i=\mathbf{\Sigma}_{22}^{-1/2}\mathbf{f}_i
+\]</span>
+And the correlation of <span class="math inline">\(u_i\)</span> and <span class="math inline">\(v_i\)</span> is <span class="math inline">\(\rho_i=\frac{\mbox{Cov}(u_i, v_i)}{\sqrt{\mbox{Var}(u_i)\mbox{Var}(v_i)}}=\lambda_i\)</span>.</li>
+</ol>
+<p><span class="math inline">\(\textbf{Proof}\)</span>: Recall that we want to find <span class="math inline">\(\mathbf{a}\)</span> and <span class="math inline">\(\mathbf{b}\)</span> such that
+<span class="math display">\[
+\rho=\frac{\mbox{Cov}(u, v)}{\sqrt{\mbox{Var}(u)\mbox{Var}(v)}}=\frac{\mathbf{a}^T \mathbf{\Sigma}_{12}\mathbf{b}}{\sqrt{(\mathbf{a}^T \mathbf{\Sigma}_{11}\mathbf{a})(\mathbf{b}^T \mathbf{\Sigma}_{22}\mathbf{b})}}.
+\]</span>
+is maximized. Let
+<span class="math display">\[
+\mathbf{c}=\mathbf{\Sigma}_{11}^{1/2}\mathbf{a}; \mathbf{d}=\mathbf{\Sigma}_{22}^{1/2}\mathbf{b},
+\]</span>
+then
+<span class="math display">\[
+\rho=\mbox{Corr}(u,v)=\frac{\mbox{Cov}(u, v)}{\sqrt{\mbox{Var}(u)\mbox{Var}(v)}}=\frac{\mathbf{a}^T \mathbf{\Sigma}_{12}\mathbf{b}}{\sqrt{(\mathbf{a}^T \mathbf{\Sigma}_{11}\mathbf{a})(\mathbf{b}^T \mathbf{\Sigma}_{22}\mathbf{b})}}=\frac{\mathbf{c}^T\mathbf{\Sigma}_{11}^{-1/2}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1/2}\mathbf{d}}{\sqrt{(\mathbf{c}^T\mathbf{c})(\mathbf{d}^T\mathbf{d})}}.
+\]</span>
+By Cauchy Schwarz inequality, the numerator
+<span class="math display">\[
+\mathbf{c}^T\mathbf{\Sigma}_{11}^{-1/2}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1/2}\mathbf{d}\le (\mathbf{c}^T\mathbf{\Sigma}_{11}^{-1/2}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{c})^{1/2}(\mathbf{d}^T\mathbf{d})^{1/2}.
+\]</span></p>
+<p>Since <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1/2}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\)</span> is a <span class="math inline">\(p\times p\)</span> symmetric matrix, we have
+<span class="math display">\[
+\mathbf{c}^T\mathbf{\Sigma}_{11}^{-1/2}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{c}\le \lambda_1\mathbf{c}^T\mathbf{c}
+\]</span>
+where <span class="math inline">\(\lambda_1\)</span> is the largest eigenvalue of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1/2}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\)</span> and maximum is attained when <span class="math inline">\(\mathbf{c}=\mathbf{e}_1\)</span>, the unit eigenvector associated with <span class="math inline">\(\lambda_1\)</span>. Therefore, <span class="math inline">\(\mathbf{a}=\mathbf{\Sigma}_{11}^{-1/2} \mathbf{c}=\mathbf{\Sigma}_{11}^{-1/2} \mathbf{e}_1\)</span> and <span class="math inline">\(\mathbf{b} \propto \mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1\)</span>, the <span class="math inline">\(\max_{\mathbf{a}, \mathbf{b}}\mbox{Corr}(\mathbf{a}^T\mathbf{X},\mathbf{b}^T\mathbf{Y})=\sqrt{\lambda_1}\)</span>. Take <span class="math inline">\(\mathbf{b}=\mathbf{\Sigma}_{22}^{-1/2}\mathbf{f}_1\)</span> where <span class="math inline">\(\mathbf{f}_1=\frac{\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1}{|\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1|}=\frac{\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1}{\sqrt{\lambda_1}}\)</span>, the normalized form of <span class="math inline">\(\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1\)</span>.</p>
+<p>It can be shown that <span class="math inline">\(\mathbf{f}_1\)</span> is the unit engenvector corresponding to the largest eigenvalue of the matrix <span class="math inline">\(\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1/2}\)</span>. Since <span class="math inline">\(\mathbf{e}_1\)</span> is the unit eigenvector corresponding to the largest eigenvalue of <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1/2}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\)</span>, we have
+<span class="math display">\[\begin{equation}
+\label{eq:eq3}
+\mathbf{\Sigma}_{11}^{-1/2}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1=\lambda_1 \mathbf{e}_1
+\end{equation}\]</span>
+multiplying equation (<span class="math inline">\(\ref{eq:eq3}\)</span>) both sides by <span class="math inline">\(\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\)</span>, we have
+<span class="math display">\[
+\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1/2}\underbrace{(\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1)}\limits_{\mbox{eigenvector}}=\lambda_1 \underbrace{(\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1)}\limits_{\mbox{eigenvector}},
+\]</span>
+which means <span class="math inline">\(\lambda_1\)</span> is also the largest eigenvalue of the matrix <span class="math inline">\(\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1/2}\)</span> and the corresponding unit eigenvector is
+<span class="math display">\[
+\mathbf{f}_1=\frac{\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1}{|\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1|}
+=\frac{\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1}{\sqrt{\mathbf{e}_1^T \underbrace{\mathbf{\Sigma}_{11}^{-1/2} \mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1}\limits_{\lambda_1\mathbf{e}_1 \mbox{  by Equation (\ref{eq:eq1})}}}}=\frac{\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}_1}{\sqrt{\lambda_1}}.
+\]</span>
+Another way, an easier way to show that <span class="math inline">\(\mathbf{b}=\mathbf{\Sigma}_{22}^{-1/2}\mathbf{f}\)</span> where <span class="math inline">\(\mathbf{f}\)</span> is the unit eigenvector corresponding to the largest eigenvalue of the matrix <span class="math inline">\(\mathbf{\Sigma}_{22}^{-1/2}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1/2}\)</span> is
+<span class="math display">\[
+\rho=\frac{\mbox{Cov}(u, v)}{\sqrt{\mbox{Var}(u)\mbox{Var}(v)}}=\frac{\mbox{Cov}(v, u)}{\sqrt{\mbox{Var}(v)\mbox{Var}(u)}}\frac{\mathbf{b}^T \mathbf{\Sigma}_{21}\mathbf{a}}{\sqrt{(\mathbf{b}^T \mathbf{\Sigma}_{22}\mathbf{b})(\mathbf{a}^T \mathbf{\Sigma}_{11}\mathbf{a})}}.
+\]</span>
+We will arrive at the conclusion by the same logic as we did for <span class="math inline">\(\mathbf{a}\)</span> using Cauchy Schwarz inequality.</p>
+<p><span class="math inline">\(\textbf{Result}\)</span></p>
+<p>It can be shown that if <span class="math inline">\(\lambda\)</span> is an eigenvalue of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1/2}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\mathbf{\Sigma}_{11}^{-1/2}\)</span> with the corresponding unit eigenvectors <span class="math inline">\(\mathbf{e}\)</span>, then <span class="math inline">\(\lambda\)</span> is also an eigenvalue of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\)</span> with the corresponding eigenvector <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1/2}\mathbf{e}\)</span>.</p>
+<div style="page-break-after: always;"></div>
+<p><span class="math inline">\(\textbf{Example}\)</span>: Canonical Correlation Analysis</p>
+<p>A researcher has collected data on three psychological variables, four academic variables (standardized test scores) for 600 college freshman. She is interested in how the set of psychological variables relates to the academic variables. In particular, the researcher is interested in how many dimensions (canonical variables) are necessary to understand the association between the two sets of variables.The psychological variables are locus-of-control (<span class="math inline">\(X_1\)</span>), self-concept (<span class="math inline">\(X_2\)</span>)and motivation (<span class="math inline">\(X_3\)</span>). The academic variables are standardized tests in reading (<span class="math inline">\(Y_1\)</span>, read), writing (<span class="math inline">\(Y_2\)</span>, write), math (<span class="math inline">\(Y_3\)</span>, math) and science (<span class="math inline">\(Y_4\)</span>, science). Determine the sample canonical variates and their correlations.</p>
+<div class="sourceCode" id="cb507"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb507-1"><a href="canonical-correlation-analysis.html#cb507-1" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb507-2"><a href="canonical-correlation-analysis.html#cb507-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb507-3"><a href="canonical-correlation-analysis.html#cb507-3" tabindex="-1"></a></span>
+<span id="cb507-4"><a href="canonical-correlation-analysis.html#cb507-4" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">&quot;data/mmreg.csv&quot;</span>)</span>
+<span id="cb507-5"><a href="canonical-correlation-analysis.html#cb507-5" tabindex="-1"></a>x1 <span class="op">=</span> data.iloc[:, <span class="dv">0</span>:<span class="dv">3</span>].values  <span class="co"># psychological variables</span></span>
+<span id="cb507-6"><a href="canonical-correlation-analysis.html#cb507-6" tabindex="-1"></a>x2 <span class="op">=</span> data.iloc[:, <span class="dv">3</span>:<span class="dv">7</span>].values  <span class="co"># academic variables</span></span>
+<span id="cb507-7"><a href="canonical-correlation-analysis.html#cb507-7" tabindex="-1"></a></span>
+<span id="cb507-8"><a href="canonical-correlation-analysis.html#cb507-8" tabindex="-1"></a>s11 <span class="op">=</span> np.cov(x1, rowvar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb507-9"><a href="canonical-correlation-analysis.html#cb507-9" tabindex="-1"></a>s22 <span class="op">=</span> np.cov(x2, rowvar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb507-10"><a href="canonical-correlation-analysis.html#cb507-10" tabindex="-1"></a>s12 <span class="op">=</span> np.cov(x1.T, x2.T)[:x1.shape[<span class="dv">1</span>], x1.shape[<span class="dv">1</span>]:]</span>
+<span id="cb507-11"><a href="canonical-correlation-analysis.html#cb507-11" tabindex="-1"></a>s21 <span class="op">=</span> s12.T</span>
+<span id="cb507-12"><a href="canonical-correlation-analysis.html#cb507-12" tabindex="-1"></a><span class="co"># eigen</span></span>
+<span id="cb507-13"><a href="canonical-correlation-analysis.html#cb507-13" tabindex="-1"></a>A <span class="op">=</span> np.linalg.inv(s11) <span class="op">@</span> s12 <span class="op">@</span> np.linalg.inv(s22) <span class="op">@</span> s21</span>
+<span id="cb507-14"><a href="canonical-correlation-analysis.html#cb507-14" tabindex="-1"></a>eigvals_A, eigvecs_A <span class="op">=</span> np.linalg.eig(A)</span>
+<span id="cb507-15"><a href="canonical-correlation-analysis.html#cb507-15" tabindex="-1"></a>sorted_idx <span class="op">=</span> np.argsort(<span class="op">-</span>eigvals_A.real)</span>
+<span id="cb507-16"><a href="canonical-correlation-analysis.html#cb507-16" tabindex="-1"></a>eigvals_A <span class="op">=</span> eigvals_A[sorted_idx]</span>
+<span id="cb507-17"><a href="canonical-correlation-analysis.html#cb507-17" tabindex="-1"></a>eigvecs_A <span class="op">=</span> eigvecs_A[:, sorted_idx]</span>
+<span id="cb507-18"><a href="canonical-correlation-analysis.html#cb507-18" tabindex="-1"></a><span class="co"># Canonical correlations</span></span>
+<span id="cb507-19"><a href="canonical-correlation-analysis.html#cb507-19" tabindex="-1"></a>rsquared <span class="op">=</span> eigvals_A.real</span>
+<span id="cb507-20"><a href="canonical-correlation-analysis.html#cb507-20" tabindex="-1"></a>r <span class="op">=</span> np.sqrt(rsquared)</span>
+<span id="cb507-21"><a href="canonical-correlation-analysis.html#cb507-21" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Squared Canonical Correlations (rsuqre):&quot;</span>)</span></code></pre></div>
+<pre><code>## Squared Canonical Correlations (rsuqre):</code></pre>
+<div class="sourceCode" id="cb509"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb509-1"><a href="canonical-correlation-analysis.html#cb509-1" tabindex="-1"></a><span class="bu">print</span>(rsquared)</span></code></pre></div>
+<pre><code>## [0.19930553 0.02351899 0.00050641]</code></pre>
+<div class="sourceCode" id="cb511"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb511-1"><a href="canonical-correlation-analysis.html#cb511-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Canonical Correlations (r):&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## Canonical Correlations (r):</code></pre>
+<div class="sourceCode" id="cb513"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb513-1"><a href="canonical-correlation-analysis.html#cb513-1" tabindex="-1"></a><span class="bu">print</span>(r)</span></code></pre></div>
+<pre><code>## [0.44643648 0.15335902 0.02250348]</code></pre>
+<div class="sourceCode" id="cb515"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb515-1"><a href="canonical-correlation-analysis.html#cb515-1" tabindex="-1"></a><span class="co"># Canonical coefficients for X</span></span>
+<span id="cb515-2"><a href="canonical-correlation-analysis.html#cb515-2" tabindex="-1"></a>ca <span class="op">=</span> np.diag(eigvecs_A.T <span class="op">@</span> s11 <span class="op">@</span> eigvecs_A)</span>
+<span id="cb515-3"><a href="canonical-correlation-analysis.html#cb515-3" tabindex="-1"></a>a <span class="op">=</span> eigvecs_A <span class="op">/</span> np.sqrt(ca)</span>
+<span id="cb515-4"><a href="canonical-correlation-analysis.html#cb515-4" tabindex="-1"></a>a <span class="op">=</span> <span class="op">-</span>a  <span class="co"># match sign convention</span></span>
+<span id="cb515-5"><a href="canonical-correlation-analysis.html#cb515-5" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Canonical Coefficients for X (a):&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## Canonical Coefficients for X (a):</code></pre>
+<div class="sourceCode" id="cb517"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb517-1"><a href="canonical-correlation-analysis.html#cb517-1" tabindex="-1"></a><span class="bu">print</span>(a)</span></code></pre></div>
+<pre><code>## [[ 1.25012121 -0.76596331  0.49665288]
+##  [-0.23673315 -0.84211102 -1.20512253]
+##  [ 1.24914344  2.63596248 -1.09350847]]</code></pre>
+<div class="sourceCode" id="cb519"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb519-1"><a href="canonical-correlation-analysis.html#cb519-1" tabindex="-1"></a><span class="co"># Canonical coefficients for Y</span></span>
+<span id="cb519-2"><a href="canonical-correlation-analysis.html#cb519-2" tabindex="-1"></a>b0 <span class="op">=</span> (np.linalg.inv(s22) <span class="op">@</span> s21 <span class="op">@</span> a.T).T <span class="op">/</span> r[:, np.newaxis]</span>
+<span id="cb519-3"><a href="canonical-correlation-analysis.html#cb519-3" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Canonical Coefficients for Y (b0):&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## Canonical Coefficients for Y (b0):</code></pre>
+<div class="sourceCode" id="cb521"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb521-1"><a href="canonical-correlation-analysis.html#cb521-1" tabindex="-1"></a><span class="bu">print</span>(b0)</span></code></pre></div>
+<pre><code>## [[ 0.03363747  0.04705111  0.0136445  -0.00100402]
+##  [-0.06674536 -0.0554379  -0.03458983  0.00682534]
+##  [ 0.74832428 -0.15983915  0.37723787  0.95593596]]</code></pre>
+<div class="sourceCode" id="cb523"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb523-1"><a href="canonical-correlation-analysis.html#cb523-1" tabindex="-1"></a><span class="co"># Canonical loadings for Y</span></span>
+<span id="cb523-2"><a href="canonical-correlation-analysis.html#cb523-2" tabindex="-1"></a>B <span class="op">=</span> np.linalg.inv(s22) <span class="op">@</span> s21 <span class="op">@</span> np.linalg.inv(s11) <span class="op">@</span> s12</span>
+<span id="cb523-3"><a href="canonical-correlation-analysis.html#cb523-3" tabindex="-1"></a>eigvals_B, eigvecs_B <span class="op">=</span> np.linalg.eig(B)</span>
+<span id="cb523-4"><a href="canonical-correlation-analysis.html#cb523-4" tabindex="-1"></a>sorted_idx_B <span class="op">=</span> np.argsort(<span class="op">-</span>eigvals_B.real)</span>
+<span id="cb523-5"><a href="canonical-correlation-analysis.html#cb523-5" tabindex="-1"></a>eigvecs_B <span class="op">=</span> eigvecs_B[:, sorted_idx_B]</span>
+<span id="cb523-6"><a href="canonical-correlation-analysis.html#cb523-6" tabindex="-1"></a>cb <span class="op">=</span> np.diag(eigvecs_B.T <span class="op">@</span> s22 <span class="op">@</span> eigvecs_B)</span>
+<span id="cb523-7"><a href="canonical-correlation-analysis.html#cb523-7" tabindex="-1"></a>b <span class="op">=</span> eigvecs_B <span class="op">/</span> np.sqrt(cb)</span>
+<span id="cb523-8"><a href="canonical-correlation-analysis.html#cb523-8" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Canonical Loadings for Y (b):&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## Canonical Loadings for Y (b):</code></pre>
+<div class="sourceCode" id="cb525"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb525-1"><a href="canonical-correlation-analysis.html#cb525-1" tabindex="-1"></a><span class="bu">print</span>(b)</span></code></pre></div>
+<pre><code>## [[ 0.04404713  0.00159291  0.08833171  0.12136827]
+##  [ 0.05508884  0.0904146  -0.09612884 -0.00036555]
+##  [ 0.0194011   0.00295546  0.08782244 -0.13423836]
+##  [-0.00379776 -0.12420898 -0.08849519 -0.00969114]]</code></pre>
+<p>Since <span class="math inline">\(p=3, q=4\)</span>, we can obtain <span class="math inline">\(\min\{p, q\}=3\)</span> canonical variates pairs. Based on the comupter outputs,
+<span class="math display">\[
+u_1=1.2501X_1-0.2367X_2+1.2491X_3, \quad v_1=0.0440Y_1+0.0551Y_2+0.0194Y_3-0.0038Y_4
+\]</span>
+<span class="math inline">\(u_1\)</span> is more related to locus-of-control and motivation since their coefficients are larger in magnitude.<span class="math inline">\(v_1\)</span> is contributed by reading, writing and math. And their correlation is <span class="math inline">\(\rho_1=\mbox{Corr}(u_1, v_1)=0.4464\)</span>.</p>
+<p>Similarly, the second and third pairs are
+<span class="math display">\[
+u_2=-0.7660X_1-0.8421X_2+2.6360X_3, \quad v_2=0.0016Y_1+0.0904Y_2+0.0030Y_3-0.1242Y_4
+\]</span>
+<span class="math inline">\(u_2\)</span> is more related to motivation and <span class="math inline">\(v_2\)</span> is more related to science. Their correlation is <span class="math inline">\(\rho_2=\mbox{Corr}(u_2, v_2)=0.1534\)</span>.
+<span class="math display">\[
+u_3=-0.4967X_1-1.2051X_2-1.0935X_3, \quad v_3=-0.0883Y_1+0.0961Y_2-0.0878Y_3+0.0885Y_4
+\]</span>
+<span class="math inline">\(u_3\)</span> is more related to self-concept and motivation, <span class="math inline">\(v_3\)</span> is quite uniformly contributed by reading, writing, math and science. Their correlation is <span class="math inline">\(\rho_3=\mbox{Corr}(u_3, v_3)=0.0225\)</span>.</p>
+<p>We can also obtain the canonical correlations and the canonical variate pairs using the built-in Python function.</p>
+<div class="sourceCode" id="cb527"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb527-1"><a href="canonical-correlation-analysis.html#cb527-1" tabindex="-1"></a><span class="im">from</span> sklearn.cross_decomposition <span class="im">import</span> CCA</span>
+<span id="cb527-2"><a href="canonical-correlation-analysis.html#cb527-2" tabindex="-1"></a></span>
+<span id="cb527-3"><a href="canonical-correlation-analysis.html#cb527-3" tabindex="-1"></a>cca <span class="op">=</span> CCA(n_components<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb527-4"><a href="canonical-correlation-analysis.html#cb527-4" tabindex="-1"></a>cca.fit(x1, x2)</span></code></pre></div>
+<pre><code>## CCA(n_components=3)</code></pre>
+<div class="sourceCode" id="cb529"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb529-1"><a href="canonical-correlation-analysis.html#cb529-1" tabindex="-1"></a><span class="co"># Canonical coefficients</span></span>
+<span id="cb529-2"><a href="canonical-correlation-analysis.html#cb529-2" tabindex="-1"></a>xcoef <span class="op">=</span> cca.x_weights_  <span class="co"># Like m1$xcoef in R</span></span>
+<span id="cb529-3"><a href="canonical-correlation-analysis.html#cb529-3" tabindex="-1"></a>ycoef <span class="op">=</span> cca.y_weights_  <span class="co"># Like m1$ycoef in R</span></span>
+<span id="cb529-4"><a href="canonical-correlation-analysis.html#cb529-4" tabindex="-1"></a>U, V <span class="op">=</span> cca.transform(x1, x2) <span class="co"># Canonical variates</span></span>
+<span id="cb529-5"><a href="canonical-correlation-analysis.html#cb529-5" tabindex="-1"></a>canonical_corrs <span class="op">=</span> [np.corrcoef(U[:, i], V[:, i])[<span class="dv">0</span>, <span class="dv">1</span>] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(U.shape[<span class="dv">1</span>])] <span class="co"># Canonical correlations</span></span>
+<span id="cb529-6"><a href="canonical-correlation-analysis.html#cb529-6" tabindex="-1"></a></span>
+<span id="cb529-7"><a href="canonical-correlation-analysis.html#cb529-7" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Canonical Correlations:&quot;</span>)</span></code></pre></div>
+<pre><code>## Canonical Correlations:</code></pre>
+<div class="sourceCode" id="cb531"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb531-1"><a href="canonical-correlation-analysis.html#cb531-1" tabindex="-1"></a><span class="bu">print</span>(np.array(canonical_corrs))</span></code></pre></div>
+<pre><code>## [0.44643648 0.15335902 0.02250348]</code></pre>
+<div class="sourceCode" id="cb533"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb533-1"><a href="canonical-correlation-analysis.html#cb533-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Canonical Coefficients for X (xcoef):&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## Canonical Coefficients for X (xcoef):</code></pre>
+<div class="sourceCode" id="cb535"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb535-1"><a href="canonical-correlation-analysis.html#cb535-1" tabindex="-1"></a><span class="bu">print</span>(xcoef)</span></code></pre></div>
+<pre><code>## [[ 0.87680885 -0.47223469 -0.0905574 ]
+##  [-0.17475389 -0.48841469  0.85493401]
+##  [ 0.44795906  0.73378845  0.51077117]]</code></pre>
+<div class="sourceCode" id="cb537"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb537-1"><a href="canonical-correlation-analysis.html#cb537-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Canonical Coefficients for Y (ycoef):&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## Canonical Coefficients for Y (ycoef):</code></pre>
+<div class="sourceCode" id="cb539"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb539-1"><a href="canonical-correlation-analysis.html#cb539-1" tabindex="-1"></a><span class="bu">print</span>(ycoef)</span></code></pre></div>
+<pre><code>## [[ 0.61720365 -0.33503872  0.49647279]
+##  [ 0.74314753  0.25780352 -0.59999653]
+##  [ 0.25333511 -0.12120509  0.46569993]
+##  [-0.05111483 -0.89810675 -0.4202886 ]]</code></pre>
+</div>
+<div id="interpretation" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> Interpretation<a href="canonical-correlation-analysis.html#interpretation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Even though we can investigate the association between the original variables and their corresponding canonical variates by comparing the magnitudes of the coefficients, it is better to look at the correlations between the original variables and the canonical variates. Now consider regressing <span class="math inline">\(X_i\)</span>s on <span class="math inline">\(u_i\)</span>s,
+<span class="math display">\[\begin{align*}
+X_1&amp;=c_{11}u_1+c_{12}u_2+\cdots+c_{1p}u_p\\
+X_2&amp;=c_{21}u_1+c_{22}u_2+\cdots+c_{2p}u_p\\
+\vdots\\
+X_p&amp;=c_{p1}u_1+c_{p2}u_2+\cdots+c_{pp}u_p
+\end{align*}\]</span>
+which means <span class="math inline">\(\mathbf{X}=\mathbf{C}\mathbf{u}\)</span>. Recall that the linear combinations in <span class="math inline">\(\mathbf{X}\)</span> are <span class="math inline">\(\mathbf{u}=\mathbf{A}\mathbf{X}\)</span> where
+<span class="math display">\[
+\mathbf{A}=\left[
+\begin{array}{cccc}
+a_{11} &amp;a_{12}&amp;\cdots&amp; a_{1p}\\
+a_{21} &amp;a_{22}&amp;\cdots&amp; a_{2p}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\vdots\\
+a_{p1} &amp;a_{p2}&amp;\cdots&amp; a_{pp}
+\end{array}
+\right].
+\]</span>
+Therefore, <span class="math inline">\(\mathbf{C}=\mathbf{A}^{-1}\)</span>, i.e., <span class="math inline">\(\mathbf{X}=\mathbf{A}^{-1}\mathbf{u}\)</span>. Similarly, <span class="math inline">\(\mathbf{Y}=\mathbf{B}^{-1}\mathbf{v}\)</span> where
+<span class="math display">\[
+\mathbf{B}=\left[
+\begin{array}{cccc}
+b_{11} &amp;b_{12}&amp;\cdots&amp; b_{1q}\\
+b_{21} &amp;b_{22}&amp;\cdots&amp; b_{2q}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\vdots\\
+b_{q1} &amp;b_{q2}&amp;\cdots&amp; b_{qq}
+\end{array}
+\right].
+\]</span></p>
+<p>We would like to explore the correlations between original variable <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{u}\)</span>, <span class="math inline">\(\mathbf{Y}\)</span> and <span class="math inline">\(\mathbf{u}\)</span>, <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{v}\)</span>, and <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{v}\)</span>. Since
+<span class="math display">\[
+\mathbf{u}=\mathbf{AX}\Longrightarrow \mathbf{X}=\mathbf{A}^{-1}\mathbf{u}; \quad
+\mathbf{v}=\mathbf{BY}\Longrightarrow \mathbf{Y}=\mathbf{B}^{-1}\mathbf{v}
+\]</span></p>
+<p>Then,
+<span class="math display">\[\begin{align*}
+\text{Corr}(\mathbf{X}, \mathbf{u})&amp;=\text{Corr}(\mathbf{A}^{-1}\mathbf{u}, \mathbf{u})=\mathbf{A}^{-1}\text{Corr}(\mathbf{u}, \mathbf{u})=\mathbf{A}^{-1}\mathbf{I};\\
+\text{Corr}(\mathbf{Y}, \mathbf{v})&amp;=\text{Corr}(\mathbf{B}^{-1}\mathbf{v}, \mathbf{v})=\mathbf{B}^{-1}\text{Corr}(\mathbf{v}, \mathbf{v})=\mathbf{B}^{-1}\mathbf{I};\\
+\text{Corr}(\mathbf{X}, \mathbf{v})&amp;=\text{Corr}(\mathbf{A}^{-1}\mathbf{u}, \mathbf{v})=\mathbf{A}^{-1}\text{Corr}(\mathbf{u}, \mathbf{v})=\mathbf{A}^{-1}\mathbf{\Lambda};\\
+\text{Corr}(\mathbf{Y}, \mathbf{u})&amp;=\text{Corr}(\mathbf{B}^{-1}\mathbf{v}, \mathbf{u})=\mathbf{B}^{-1}\text{Corr}(\mathbf{v}, \mathbf{u})=\mathbf{B}^{-1}\mathbf{\Lambda},
+\end{align*}\]</span>
+where <span class="math inline">\(\mathbf{\Lambda}\)</span> is a diagonal matrix with <span class="math inline">\(\lambda_1\ge \lambda_2 \ge \cdots \ge \lambda_p\)</span> as the diagonal elements and <span class="math inline">\(\lambda_i^2\)</span> are the eigenvalues of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\)</span>. Take the correlation between <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{u}\)</span> for example,
+<span class="math display">\[
+\mathbf{A}^{-1}=\left[
+\begin{array}{cccc}
+r_{X_1, u_1} &amp;r_{X_1, u_2}&amp;\cdots&amp; r_{X_1,u_p}\\
+r_{X_2, u_1} &amp;r_{X_2, u_2}&amp;\cdots&amp; r_{X_2,u_p}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\vdots\\
+r_{X_p, u_1} &amp;r_{X_p, u_2}&amp;\cdots&amp; r_{X_p,u_p}
+\end{array}
+\right].
+\]</span>
+The sum of squares of the first row of <span class="math inline">\(\mathbf{A}^{-1}\)</span> is <span class="math inline">\(\text{Var}(X_1)=0.44927511\)</span>. The sum of squares of all elements in <span class="math inline">\(\mathbf{A}^{-1}\)</span> is the total variation in <span class="math inline">\(\mathbf{X}\)</span> is given by
+<span class="math display">\[
+\text{Var}(X_1)+\text{Var}(X_2)+\text{Var}(X_3)=\text{trace}(\mathbf{\Sigma_{11}})=0.449+0.498+0.117=1.064.
+\]</span></p>
+<p>Recall that in linear regression model, the <span class="math inline">\(R^2\)</span> is the percentage of variation in the response variable explained by the predictor variables. Therefore, the sum of squares of the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\mathbf{A}^{-1}\)</span> divided by the sum of squares of entire matrix of <span class="math inline">\(\mathbf{A}^{-1}\)</span> gives the proportion of variation in <span class="math inline">\(\mathbf{X}\)</span> explained by <span class="math inline">\(u_j\)</span>. Similarly, the sum of squares of the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\mathbf{B}^{-1}\)</span> divided by the sum of squares of entire matrix of <span class="math inline">\(\mathbf{B}^{-1}\)</span> gives the proportion of variation in <span class="math inline">\(\mathbf{Y}\)</span> explained by <span class="math inline">\(v_j\)</span>.</p>
+<p>If we work on the correlation matrix, i.e., the standardized variables, the total variation in the standardized <span class="math inline">\(\mathbf{X}\)</span> is <span class="math inline">\(p\)</span> and the total variation in the standardized <span class="math inline">\(\mathbf{Y}\)</span> is <span class="math inline">\(q\)</span>. Then, the sum of squares of the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\mathbf{A}^{-1}\)</span> divided by <span class="math inline">\(p\)</span> gives the proportion of variation in <span class="math inline">\(\mathbf{X}\)</span> explained by <span class="math inline">\(u_j\)</span>. Similarly, the sum of squares of the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\mathbf{B}^{-1}\)</span> divided by <span class="math inline">\(q\)</span> gives the proportion of variation in <span class="math inline">\(\mathbf{Y}\)</span> explained by <span class="math inline">\(v_j\)</span>.</p>
+<div class="sourceCode" id="cb541"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb541-1"><a href="canonical-correlation-analysis.html#cb541-1" tabindex="-1"></a>rxu <span class="op">=</span> np.linalg.inv(a.T)</span>
+<span id="cb541-2"><a href="canonical-correlation-analysis.html#cb541-2" tabindex="-1"></a><span class="bu">print</span>(rxu)</span></code></pre></div>
+<pre><code>## [[ 0.61282695 -0.26386106  0.06399669]
+##  [ 0.07052849 -0.29723825 -0.63594265]
+##  [ 0.20060823  0.20773608 -0.18456833]]</code></pre>
+<div class="sourceCode" id="cb543"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb543-1"><a href="canonical-correlation-analysis.html#cb543-1" tabindex="-1"></a>ryv <span class="op">=</span> np.linalg.inv(b.T)</span>
+<span id="cb543-2"><a href="canonical-correlation-analysis.html#cb543-2" tabindex="-1"></a><span class="bu">print</span>(ryv)</span></code></pre></div>
+<pre><code>## [[ 8.89499166 -2.47432533  2.75869217  3.03590494]
+##  [ 8.85231264  2.14924967 -3.30501598 -0.83551342]
+##  [ 7.53170467 -1.76934159  2.66974562 -4.65323269]
+##  [ 6.73708844 -6.56029074 -2.30689461 -0.67997603]]</code></pre>
+<div class="sourceCode" id="cb545"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb545-1"><a href="canonical-correlation-analysis.html#cb545-1" tabindex="-1"></a>var_x <span class="op">=</span> np.<span class="bu">sum</span>(rxu<span class="op">**</span><span class="dv">2</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb545-2"><a href="canonical-correlation-analysis.html#cb545-2" tabindex="-1"></a><span class="bu">print</span>(var_x)</span></code></pre></div>
+<pre><code>## [0.44927511 0.49774791 0.11746341]</code></pre>
+<div class="sourceCode" id="cb547"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb547-1"><a href="canonical-correlation-analysis.html#cb547-1" tabindex="-1"></a><span class="bu">print</span>(np.diag(s11))</span></code></pre></div>
+<pre><code>## [0.44927511 0.49774791 0.11746341]</code></pre>
+<div class="sourceCode" id="cb549"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb549-1"><a href="canonical-correlation-analysis.html#cb549-1" tabindex="-1"></a>var_y <span class="op">=</span> np.<span class="bu">sum</span>(ryv<span class="op">**</span><span class="dv">2</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb549-2"><a href="canonical-correlation-analysis.html#cb549-2" tabindex="-1"></a><span class="bu">print</span>(var_y)</span></code></pre></div>
+<pre><code>## [102.07026375  94.60392652  88.6372611   94.2099054 ]</code></pre>
+<div class="sourceCode" id="cb551"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb551-1"><a href="canonical-correlation-analysis.html#cb551-1" tabindex="-1"></a><span class="bu">print</span>(np.diag(s22))</span></code></pre></div>
+<pre><code>## [102.07026375  94.60392652  88.6372611   94.2099054 ]</code></pre>
+<div class="sourceCode" id="cb553"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb553-1"><a href="canonical-correlation-analysis.html#cb553-1" tabindex="-1"></a>prop_var_x1 <span class="op">=</span> np.<span class="bu">sum</span>(rxu[:, <span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> np.<span class="bu">sum</span>(rxu<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb553-2"><a href="canonical-correlation-analysis.html#cb553-2" tabindex="-1"></a><span class="bu">print</span>(prop_var_x1)</span></code></pre></div>
+<pre><code>## 0.39528433214630615</code></pre>
+<div class="sourceCode" id="cb555"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb555-1"><a href="canonical-correlation-analysis.html#cb555-1" tabindex="-1"></a>prop_var_y1 <span class="op">=</span> np.<span class="bu">sum</span>(ryv[:, <span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> np.<span class="bu">sum</span>(ryv<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb555-2"><a href="canonical-correlation-analysis.html#cb555-2" tabindex="-1"></a><span class="bu">print</span>(prop_var_y1)</span></code></pre></div>
+<pre><code>## 0.6840175053832112</code></pre>
+<div class="sourceCode" id="cb557"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb557-1"><a href="canonical-correlation-analysis.html#cb557-1" tabindex="-1"></a>rxv <span class="op">=</span> rxu <span class="op">@</span> np.diag(np.sqrt(eigvals_A))</span>
+<span id="cb557-2"><a href="canonical-correlation-analysis.html#cb557-2" tabindex="-1"></a><span class="bu">print</span>(rxv)</span></code></pre></div>
+<pre><code>## [[ 0.27358831 -0.04046547  0.00144015]
+##  [ 0.03148649 -0.04558417 -0.01431092]
+##  [ 0.08955883  0.0318582  -0.00415343]]</code></pre>
+<div class="sourceCode" id="cb559"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb559-1"><a href="canonical-correlation-analysis.html#cb559-1" tabindex="-1"></a>ryu <span class="op">=</span> ryv <span class="op">@</span> np.diag(np.sqrt(eigvals_B))</span></code></pre></div>
+<pre><code>## &lt;string&gt;:1: RuntimeWarning: invalid value encountered in sqrt</code></pre>
+<div class="sourceCode" id="cb561"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb561-1"><a href="canonical-correlation-analysis.html#cb561-1" tabindex="-1"></a><span class="bu">print</span>(ryu)</span></code></pre></div>
+<pre><code>## [[ 3.97104879 -0.37946012  0.06208017         nan]
+##  [ 3.95199532  0.32960683 -0.07437436         nan]
+##  [ 3.36242774 -0.2713445   0.06007856         nan]
+##  [ 3.00768207 -1.00607979 -0.05191315         nan]]</code></pre>
+<p>Based on the computer output, <span class="math inline">\(u_1\)</span> accounts for 39.53% variation in <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(v_1\)</span> accounts for 68.40% variation in <span class="math inline">\(\mathbf{Y}\)</span>.</p>
+<p>If we work on the standardized variables, i.e., we work on the correlation matrix rather than the covariance matrix, we will identical canonical correlations and canonical variates, but different matrices of correlations between the original variables and canonical variates.</p>
+<div class="sourceCode" id="cb563"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb563-1"><a href="canonical-correlation-analysis.html#cb563-1" tabindex="-1"></a><span class="co">#if we work on the correlation matrix</span></span>
+<span id="cb563-2"><a href="canonical-correlation-analysis.html#cb563-2" tabindex="-1"></a>s11 <span class="op">=</span> np.corrcoef(x1, rowvar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb563-3"><a href="canonical-correlation-analysis.html#cb563-3" tabindex="-1"></a>s22 <span class="op">=</span> np.corrcoef(x2, rowvar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb563-4"><a href="canonical-correlation-analysis.html#cb563-4" tabindex="-1"></a>s12 <span class="op">=</span> np.corrcoef(np.hstack([x1, x2]), rowvar<span class="op">=</span><span class="va">False</span>)[:x1.shape[<span class="dv">1</span>], x1.shape[<span class="dv">1</span>]:]</span>
+<span id="cb563-5"><a href="canonical-correlation-analysis.html#cb563-5" tabindex="-1"></a>s21 <span class="op">=</span> s12.T</span>
+<span id="cb563-6"><a href="canonical-correlation-analysis.html#cb563-6" tabindex="-1"></a></span>
+<span id="cb563-7"><a href="canonical-correlation-analysis.html#cb563-7" tabindex="-1"></a>A <span class="op">=</span> np.linalg.inv(s11) <span class="op">@</span> s12 <span class="op">@</span> np.linalg.inv(s22) <span class="op">@</span> s21</span>
+<span id="cb563-8"><a href="canonical-correlation-analysis.html#cb563-8" tabindex="-1"></a>eigvals_A, eigvecs_A <span class="op">=</span> np.linalg.eig(A)</span>
+<span id="cb563-9"><a href="canonical-correlation-analysis.html#cb563-9" tabindex="-1"></a>idx <span class="op">=</span> np.argsort(<span class="op">-</span>eigvals_A.real)</span>
+<span id="cb563-10"><a href="canonical-correlation-analysis.html#cb563-10" tabindex="-1"></a>eigvals_A <span class="op">=</span> eigvals_A[idx].real</span>
+<span id="cb563-11"><a href="canonical-correlation-analysis.html#cb563-11" tabindex="-1"></a>eigvecs_A <span class="op">=</span> eigvecs_A[:, idx]</span>
+<span id="cb563-12"><a href="canonical-correlation-analysis.html#cb563-12" tabindex="-1"></a></span>
+<span id="cb563-13"><a href="canonical-correlation-analysis.html#cb563-13" tabindex="-1"></a>rsuqre <span class="op">=</span> eigvals_A</span>
+<span id="cb563-14"><a href="canonical-correlation-analysis.html#cb563-14" tabindex="-1"></a><span class="bu">print</span>(rsuqre)</span></code></pre></div>
+<pre><code>## [0.19930553 0.02351899 0.00050641]</code></pre>
+<div class="sourceCode" id="cb565"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb565-1"><a href="canonical-correlation-analysis.html#cb565-1" tabindex="-1"></a>r1 <span class="op">=</span> np.sqrt(rsuqre)<span class="co">#the correlation, the same as r</span></span>
+<span id="cb565-2"><a href="canonical-correlation-analysis.html#cb565-2" tabindex="-1"></a><span class="bu">print</span>(r1)</span></code></pre></div>
+<pre><code>## [0.44643648 0.15335902 0.02250348]</code></pre>
+<div class="sourceCode" id="cb567"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb567-1"><a href="canonical-correlation-analysis.html#cb567-1" tabindex="-1"></a>ca <span class="op">=</span> np.diag(eigvecs_A.T <span class="op">@</span> s11 <span class="op">@</span> eigvecs_A)<span class="co">#figure out the normalizing constants, var(u1)=1</span></span>
+<span id="cb567-2"><a href="canonical-correlation-analysis.html#cb567-2" tabindex="-1"></a>a1 <span class="op">=</span> eigvecs_A <span class="op">/</span> np.sqrt(ca)<span class="co">#normally, make the one with the largest magnitude positive</span></span>
+<span id="cb567-3"><a href="canonical-correlation-analysis.html#cb567-3" tabindex="-1"></a>a1 <span class="op">=</span> <span class="op">-</span>a1</span>
+<span id="cb567-4"><a href="canonical-correlation-analysis.html#cb567-4" tabindex="-1"></a><span class="bu">print</span>(a1)</span></code></pre></div>
+<pre><code>## [[ 0.83793108 -0.51340979  0.33289643]
+##  [-0.1670182  -0.59411986 -0.85022903]
+##  [ 0.42811813  0.90342172 -0.37477745]]</code></pre>
+<div class="sourceCode" id="cb569"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb569-1"><a href="canonical-correlation-analysis.html#cb569-1" tabindex="-1"></a>b01 <span class="op">=</span> (np.linalg.inv(s22) <span class="op">@</span> s21 <span class="op">@</span> a1.T).T <span class="op">/</span> r1[:, np.newaxis]<span class="co">#if want p variates</span></span>
+<span id="cb569-2"><a href="canonical-correlation-analysis.html#cb569-2" tabindex="-1"></a><span class="bu">print</span>(b01)</span></code></pre></div>
+<pre><code>## [[ 0.3889304   0.53118425  0.15184358 -0.05432815]
+##  [-1.0506522  -1.14822694 -0.50152911  0.43962014]
+##  [ 2.74125976 -2.39806227  1.27616057  5.69531967]]</code></pre>
+<div class="sourceCode" id="cb571"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb571-1"><a href="canonical-correlation-analysis.html#cb571-1" tabindex="-1"></a>B <span class="op">=</span> np.linalg.inv(s22) <span class="op">@</span> s21 <span class="op">@</span> np.linalg.inv(s11) <span class="op">@</span> s12</span>
+<span id="cb571-2"><a href="canonical-correlation-analysis.html#cb571-2" tabindex="-1"></a>eigvals_B, eigvecs_B <span class="op">=</span> np.linalg.eig(B)</span>
+<span id="cb571-3"><a href="canonical-correlation-analysis.html#cb571-3" tabindex="-1"></a>idx_B <span class="op">=</span> np.argsort(<span class="op">-</span>eigvals_B.real)</span>
+<span id="cb571-4"><a href="canonical-correlation-analysis.html#cb571-4" tabindex="-1"></a>eigvals_B <span class="op">=</span> eigvals_B[idx_B].real</span>
+<span id="cb571-5"><a href="canonical-correlation-analysis.html#cb571-5" tabindex="-1"></a>eigvecs_B <span class="op">=</span> eigvecs_B[:, idx_B]</span>
+<span id="cb571-6"><a href="canonical-correlation-analysis.html#cb571-6" tabindex="-1"></a>cb <span class="op">=</span> np.diag(eigvecs_B.T <span class="op">@</span> s22 <span class="op">@</span> eigvecs_B)<span class="co">#figure out the normalizing constants, var(v1)=1</span></span>
+<span id="cb571-7"><a href="canonical-correlation-analysis.html#cb571-7" tabindex="-1"></a>b1 <span class="op">=</span> eigvecs_B <span class="op">/</span> np.sqrt(cb)<span class="co"># the same as b</span></span>
+<span id="cb571-8"><a href="canonical-correlation-analysis.html#cb571-8" tabindex="-1"></a><span class="bu">print</span>(b1)</span></code></pre></div>
+<pre><code>## [[ 0.44500741  0.01609314  0.89241378  1.22618151]
+##  [ 0.53581915  0.87941356 -0.93499287 -0.00355549]
+##  [ 0.18265622  0.02782487  0.82682508 -1.26381876]
+##  [-0.03686176 -1.20559459 -0.85895011 -0.09406397]]</code></pre>
+<div class="sourceCode" id="cb573"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb573-1"><a href="canonical-correlation-analysis.html#cb573-1" tabindex="-1"></a>rxu1 <span class="op">=</span> np.linalg.inv(a1.T)</span>
+<span id="cb573-2"><a href="canonical-correlation-analysis.html#cb573-2" tabindex="-1"></a><span class="bu">print</span>(rxu1)</span></code></pre></div>
+<pre><code>## [[ 0.91428518 -0.39365803  0.09547756]
+##  [ 0.09996773 -0.42130826 -0.90139104]
+##  [ 0.58532551  0.6061228  -0.53852502]]</code></pre>
+<div class="sourceCode" id="cb575"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb575-1"><a href="canonical-correlation-analysis.html#cb575-1" tabindex="-1"></a>ryv1 <span class="op">=</span> np.linalg.inv(b1.T)</span>
+<span id="cb575-2"><a href="canonical-correlation-analysis.html#cb575-2" tabindex="-1"></a><span class="bu">print</span>(ryv1)</span></code></pre></div>
+<pre><code>## [[ 0.88043222 -0.24491037  0.27305719  0.3004959 ]
+##  [ 0.91012734  0.22096948 -0.33979656 -0.08590112]
+##  [ 0.79999103 -0.18793321  0.28357094 -0.49424992]
+##  [ 0.69410307 -0.6758881  -0.23767279 -0.070056  ]]</code></pre>
+<div class="sourceCode" id="cb577"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb577-1"><a href="canonical-correlation-analysis.html#cb577-1" tabindex="-1"></a><span class="co"># reuse canonical weights a from previous block (covariance-based)</span></span>
+<span id="cb577-2"><a href="canonical-correlation-analysis.html#cb577-2" tabindex="-1"></a>rxv1 <span class="op">=</span> np.linalg.inv(a.T) <span class="op">@</span> np.diag(r1)</span>
+<span id="cb577-3"><a href="canonical-correlation-analysis.html#cb577-3" tabindex="-1"></a><span class="bu">print</span>(rxv1)</span></code></pre></div>
+<pre><code>## [[ 0.27358831 -0.04046547  0.00144015]
+##  [ 0.03148649 -0.04558417 -0.01431092]
+##  [ 0.08955883  0.0318582  -0.00415343]]</code></pre>
+<div class="sourceCode" id="cb579"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb579-1"><a href="canonical-correlation-analysis.html#cb579-1" tabindex="-1"></a>ryu1 <span class="op">=</span> np.linalg.inv(b.T) <span class="op">@</span> np.diag(np.sqrt(eigvals_B))</span>
+<span id="cb579-2"><a href="canonical-correlation-analysis.html#cb579-2" tabindex="-1"></a><span class="bu">print</span>(ryu1)</span></code></pre></div>
+<pre><code>## [[ 3.97104879e+00 -3.79460120e-01  6.20801703e-02  1.19700552e-08]
+##  [ 3.95199532e+00  3.29606833e-01 -7.43743567e-02 -3.29428685e-09]
+##  [ 3.36242774e+00 -2.71344501e-01  6.00785637e-02 -1.83469025e-08]
+##  [ 3.00768207e+00 -1.00607979e+00 -5.19131537e-02 -2.68102948e-09]]</code></pre>
+<p>We can also use the built-in function to obtain matrices of correlations between the original variables and canonical variates.</p>
+<div class="sourceCode" id="cb581"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb581-1"><a href="canonical-correlation-analysis.html#cb581-1" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">&quot;data/mmreg.csv&quot;</span>)</span>
+<span id="cb581-2"><a href="canonical-correlation-analysis.html#cb581-2" tabindex="-1"></a>x1 <span class="op">=</span> data.iloc[:, <span class="dv">0</span>:<span class="dv">3</span>]</span>
+<span id="cb581-3"><a href="canonical-correlation-analysis.html#cb581-3" tabindex="-1"></a>x2 <span class="op">=</span> data.iloc[:, <span class="dv">3</span>:<span class="dv">7</span>]</span>
+<span id="cb581-4"><a href="canonical-correlation-analysis.html#cb581-4" tabindex="-1"></a></span>
+<span id="cb581-5"><a href="canonical-correlation-analysis.html#cb581-5" tabindex="-1"></a>x1_names <span class="op">=</span> x1.columns.tolist()</span>
+<span id="cb581-6"><a href="canonical-correlation-analysis.html#cb581-6" tabindex="-1"></a>x2_names <span class="op">=</span> x2.columns.tolist()</span>
+<span id="cb581-7"><a href="canonical-correlation-analysis.html#cb581-7" tabindex="-1"></a>x1 <span class="op">=</span> (x1 <span class="op">-</span> x1.mean()) <span class="op">/</span> x1.std()</span>
+<span id="cb581-8"><a href="canonical-correlation-analysis.html#cb581-8" tabindex="-1"></a>x2 <span class="op">=</span> (x2 <span class="op">-</span> x2.mean()) <span class="op">/</span> x2.std()</span>
+<span id="cb581-9"><a href="canonical-correlation-analysis.html#cb581-9" tabindex="-1"></a></span>
+<span id="cb581-10"><a href="canonical-correlation-analysis.html#cb581-10" tabindex="-1"></a>cca <span class="op">=</span> CCA(n_components<span class="op">=</span><span class="bu">min</span>(x1.shape[<span class="dv">1</span>], x2.shape[<span class="dv">1</span>]))</span>
+<span id="cb581-11"><a href="canonical-correlation-analysis.html#cb581-11" tabindex="-1"></a>cca.fit(x1, x2)</span></code></pre></div>
+<pre><code>## CCA(n_components=3)</code></pre>
+<div class="sourceCode" id="cb583"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb583-1"><a href="canonical-correlation-analysis.html#cb583-1" tabindex="-1"></a>X_c, Y_c <span class="op">=</span> cca.transform(x1, x2)</span>
+<span id="cb583-2"><a href="canonical-correlation-analysis.html#cb583-2" tabindex="-1"></a></span>
+<span id="cb583-3"><a href="canonical-correlation-analysis.html#cb583-3" tabindex="-1"></a><span class="co"># xu: correlation between X and canonical variates of X</span></span>
+<span id="cb583-4"><a href="canonical-correlation-analysis.html#cb583-4" tabindex="-1"></a>xu <span class="op">=</span> np.corrcoef(x1.T, X_c.T)[:x1.shape[<span class="dv">1</span>], x1.shape[<span class="dv">1</span>]:]</span>
+<span id="cb583-5"><a href="canonical-correlation-analysis.html#cb583-5" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame(xu, index<span class="op">=</span>x1_names, columns<span class="op">=</span>[<span class="ss">f&quot;U</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">&quot;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(X_c.shape[<span class="dv">1</span>])]))</span></code></pre></div>
+<pre><code>##                         U1        U2        U3
+## locus_of_control  0.914292 -0.393641 -0.095478
+## self_concept      0.099976 -0.421308  0.901390
+## motivation        0.585314  0.606133  0.538526</code></pre>
+<div class="sourceCode" id="cb585"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb585-1"><a href="canonical-correlation-analysis.html#cb585-1" tabindex="-1"></a><span class="co"># yv: correlation between Y and canonical variates of Y</span></span>
+<span id="cb585-2"><a href="canonical-correlation-analysis.html#cb585-2" tabindex="-1"></a>yv <span class="op">=</span> np.corrcoef(x2.T, Y_c.T)[:x2.shape[<span class="dv">1</span>], x2.shape[<span class="dv">1</span>]:]</span>
+<span id="cb585-3"><a href="canonical-correlation-analysis.html#cb585-3" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame(yv, index<span class="op">=</span>x2_names, columns<span class="op">=</span>[<span class="ss">f&quot;V</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">&quot;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Y_c.shape[<span class="dv">1</span>])]))</span></code></pre></div>
+<pre><code>##                V1        V2        V3
+## read     0.880434 -0.244905  0.273057
+## write    0.910126  0.220975 -0.339797
+## math     0.799992 -0.187928  0.283571
+## science  0.694107 -0.675884 -0.237673</code></pre>
+<div class="sourceCode" id="cb587"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb587-1"><a href="canonical-correlation-analysis.html#cb587-1" tabindex="-1"></a><span class="co"># xv: correlation between X and canonical variates of Y</span></span>
+<span id="cb587-2"><a href="canonical-correlation-analysis.html#cb587-2" tabindex="-1"></a>xv <span class="op">=</span> np.corrcoef(x1.T, Y_c.T)[:x1.shape[<span class="dv">1</span>], x1.shape[<span class="dv">1</span>]:]</span>
+<span id="cb587-3"><a href="canonical-correlation-analysis.html#cb587-3" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame(xv, index<span class="op">=</span>x1_names, columns<span class="op">=</span>[<span class="ss">f&quot;V</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">&quot;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(Y_c.shape[<span class="dv">1</span>])]))</span></code></pre></div>
+<pre><code>##                         V1        V2        V3
+## locus_of_control  0.408171 -0.060368 -0.002149
+## self_concept      0.044630 -0.064611  0.020284
+## motivation        0.261310  0.092956  0.012119</code></pre>
+<div class="sourceCode" id="cb589"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb589-1"><a href="canonical-correlation-analysis.html#cb589-1" tabindex="-1"></a><span class="co"># yu: correlation between Y and canonical variates of X</span></span>
+<span id="cb589-2"><a href="canonical-correlation-analysis.html#cb589-2" tabindex="-1"></a>yu <span class="op">=</span> np.corrcoef(x2.T, X_c.T)[:x2.shape[<span class="dv">1</span>], x2.shape[<span class="dv">1</span>]:]</span>
+<span id="cb589-3"><a href="canonical-correlation-analysis.html#cb589-3" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame(yu, index<span class="op">=</span>x2_names, columns<span class="op">=</span>[<span class="ss">f&quot;U</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">&quot;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(X_c.shape[<span class="dv">1</span>])]))</span></code></pre></div>
+<pre><code>##                U1        U2        U3
+## read     0.393058 -0.037552  0.006145
+## write    0.406313  0.033895 -0.007647
+## math     0.357146 -0.028815  0.006381
+## science  0.309875 -0.103648 -0.005349</code></pre>
+</div>
+<div id="testing-mathbfsigma_120" class="section level2 hasAnchor" number="9.4">
+<h2><span class="header-section-number">9.4</span> Testing <span class="math inline">\(\mathbf{\Sigma}_{12}=0\)</span><a href="canonical-correlation-analysis.html#testing-mathbfsigma_120" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If <span class="math inline">\(\mathbf{\Sigma}_{12}=0\)</span>, all canonical correlations must be 0; there is no point in conducting a canonical correlation analysis. By the result of a likelihood ratio test, reject <span class="math inline">\(H_0: \mathbf{\Sigma}_{12}=0 (\rho_1=\rho_2=\cdots=\rho_p=0)\)</span> at the significance level <span class="math inline">\(\alpha\)</span> if <span class="math inline">\(-\left(n-1-\frac{p+q+1}{2}\right)\ln(\prod_{i=1}^p(1-\hat \rho_i^2))&gt;\chi_{pq}^2(\alpha)\)</span> where <span class="math inline">\(\hat \rho_1^2\ge \hat \rho_2^2\ge \cdots \ge \hat \rho_p^2\)</span> are the eigenvalues of the matrix <span class="math inline">\(\mathbf{\Sigma}_{11}^{-1}\mathbf{\Sigma}_{12}\mathbf{\Sigma}_{22}^{-1}\mathbf{\Sigma}_{21}\)</span>. We can conduct a sequence of hypotheses to determine the number of canonical variates pairs to summarize the data:
+<span class="math display">\[\begin{align*}
+H_0^{(k)}&amp;:\rho_1 \ne 0, \rho_2\ne 0, \cdots, \rho_k \ne 0, \rho_{k+1}=\cdots=\rho_p=0\\
+H_a^{(k)}&amp;:\rho_i\ne 0 \mbox{ for $i\ge k+1$}
+\end{align*}\]</span>
+Reject <span class="math inline">\(H_0\)</span> if <span class="math inline">\(-\left(n-1-\frac{p+q+1}{2}\right)\ln(\prod_{i=k+1}^p(1-\hat \rho_i^2))&gt;\chi_{(p-k)(q-k)}^2(\alpha)\)</span>.</p>
+<p><span class="math inline">\(\textbf{Example}\)</span>: Canonical Correlation Analysis (continued)</p>
+<ol style="list-style-type: decimal">
+<li>How much data variation can be explained by the first canonical variates?</li>
+<li>At the 5% significance level, test whether the canonical relations are significant.</li>
+<li>How many pairs of canonical variates provide a good summary of the relations between the two sets of variables?</li>
+</ol>
+<p>We have done Part (a) in the previous section. Based on the computer output, <span class="math inline">\(u_1\)</span> accounts for 39.62% of the variation in <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(v_1\)</span> accounts for 68.13% of the variation in <span class="math inline">\(\mathbf{Y}\)</span>. <span class="math inline">\(v_1\)</span> has a better representation of the academic variables. Here is another way to obtain the percentage.</p>
+<div class="sourceCode" id="cb591"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb591-1"><a href="canonical-correlation-analysis.html#cb591-1" tabindex="-1"></a>s11 <span class="op">=</span> np.cov(x1, rowvar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb591-2"><a href="canonical-correlation-analysis.html#cb591-2" tabindex="-1"></a>s22 <span class="op">=</span> np.cov(x2, rowvar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb591-3"><a href="canonical-correlation-analysis.html#cb591-3" tabindex="-1"></a>s12 <span class="op">=</span> np.cov(x1.T, x2.T)[:x1.shape[<span class="dv">1</span>], x1.shape[<span class="dv">1</span>]:]</span>
+<span id="cb591-4"><a href="canonical-correlation-analysis.html#cb591-4" tabindex="-1"></a>s21 <span class="op">=</span> s12.T</span>
+<span id="cb591-5"><a href="canonical-correlation-analysis.html#cb591-5" tabindex="-1"></a></span>
+<span id="cb591-6"><a href="canonical-correlation-analysis.html#cb591-6" tabindex="-1"></a>pmatu <span class="op">=</span> (a <span class="op">@</span> s11).T</span>
+<span id="cb591-7"><a href="canonical-correlation-analysis.html#cb591-7" tabindex="-1"></a><span class="bu">print</span>(pmatu)</span></code></pre></div>
+<pre><code>## [[ 1.2407433  -0.67630669  1.43233379]
+##  [-0.40863834 -1.23039995  2.53424601]
+##  [ 0.58206333 -1.50616207 -0.02664144]]</code></pre>
+<div class="sourceCode" id="cb593"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb593-1"><a href="canonical-correlation-analysis.html#cb593-1" tabindex="-1"></a>pmatv <span class="op">=</span> (b <span class="op">@</span> s22).T</span>
+<span id="cb593-2"><a href="canonical-correlation-analysis.html#cb593-2" tabindex="-1"></a><span class="bu">print</span>(pmatv)</span></code></pre></div>
+<pre><code>## [[ 0.1888782   0.04637217 -0.01180297 -0.14868063]
+##  [ 0.15424177  0.06401741 -0.00568862 -0.18809987]
+##  [ 0.1980915  -0.00174348  0.01567963 -0.17595242]
+##  [ 0.21007166  0.02670519 -0.06211309 -0.14048769]]</code></pre>
+<div class="sourceCode" id="cb595"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb595-1"><a href="canonical-correlation-analysis.html#cb595-1" tabindex="-1"></a>prop_x <span class="op">=</span> np.<span class="bu">sum</span>(pmatu[:, <span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> np.<span class="bu">sum</span>(pmatu<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb595-2"><a href="canonical-correlation-analysis.html#cb595-2" tabindex="-1"></a><span class="bu">print</span>(prop_x)</span></code></pre></div>
+<pre><code>## 0.1385681530989629</code></pre>
+<div class="sourceCode" id="cb597"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb597-1"><a href="canonical-correlation-analysis.html#cb597-1" tabindex="-1"></a>prop_y <span class="op">=</span> np.<span class="bu">sum</span>(pmatv[:, <span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> np.<span class="bu">sum</span>(pmatv<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb597-2"><a href="canonical-correlation-analysis.html#cb597-2" tabindex="-1"></a><span class="bu">print</span>(prop_y)</span></code></pre></div>
+<pre><code>## 0.5446350243255978</code></pre>
+<p>Here is the R code for Part (b).</p>
+<div class="sourceCode" id="cb599"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb599-1"><a href="canonical-correlation-analysis.html#cb599-1" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chi2</span>
+<span id="cb599-2"><a href="canonical-correlation-analysis.html#cb599-2" tabindex="-1"></a></span>
+<span id="cb599-3"><a href="canonical-correlation-analysis.html#cb599-3" tabindex="-1"></a>A <span class="op">=</span> np.linalg.inv(s11) <span class="op">@</span> s12 <span class="op">@</span> np.linalg.inv(s22) <span class="op">@</span> s21</span>
+<span id="cb599-4"><a href="canonical-correlation-analysis.html#cb599-4" tabindex="-1"></a>eigvals_A, _ <span class="op">=</span> np.linalg.eig(A)</span>
+<span id="cb599-5"><a href="canonical-correlation-analysis.html#cb599-5" tabindex="-1"></a>eigvals_A <span class="op">=</span> np.sort(eigvals_A.real)[::<span class="op">-</span><span class="dv">1</span>]  <span class="co"># sort descending</span></span>
+<span id="cb599-6"><a href="canonical-correlation-analysis.html#cb599-6" tabindex="-1"></a></span>
+<span id="cb599-7"><a href="canonical-correlation-analysis.html#cb599-7" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb599-8"><a href="canonical-correlation-analysis.html#cb599-8" tabindex="-1"></a>n <span class="op">=</span> x1.shape[<span class="dv">0</span>]</span>
+<span id="cb599-9"><a href="canonical-correlation-analysis.html#cb599-9" tabindex="-1"></a>p <span class="op">=</span> x1.shape[<span class="dv">1</span>]</span>
+<span id="cb599-10"><a href="canonical-correlation-analysis.html#cb599-10" tabindex="-1"></a>q <span class="op">=</span> x2.shape[<span class="dv">1</span>]</span>
+<span id="cb599-11"><a href="canonical-correlation-analysis.html#cb599-11" tabindex="-1"></a>k <span class="op">=</span> <span class="bu">min</span>(p, q)</span>
+<span id="cb599-12"><a href="canonical-correlation-analysis.html#cb599-12" tabindex="-1"></a>test <span class="op">=</span> np.zeros(k)</span>
+<span id="cb599-13"><a href="canonical-correlation-analysis.html#cb599-13" tabindex="-1"></a>qvec <span class="op">=</span> np.zeros(k)</span>
+<span id="cb599-14"><a href="canonical-correlation-analysis.html#cb599-14" tabindex="-1"></a></span>
+<span id="cb599-15"><a href="canonical-correlation-analysis.html#cb599-15" tabindex="-1"></a><span class="co"># Likelihood ratio test (Wilks&#39; Lambda transformed)</span></span>
+<span id="cb599-16"><a href="canonical-correlation-analysis.html#cb599-16" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
+<span id="cb599-17"><a href="canonical-correlation-analysis.html#cb599-17" tabindex="-1"></a>    product_term <span class="op">=</span> np.prod(<span class="dv">1</span> <span class="op">-</span> eigvals_A[i:k])</span>
+<span id="cb599-18"><a href="canonical-correlation-analysis.html#cb599-18" tabindex="-1"></a>    test[i] <span class="op">=</span> <span class="op">-</span>(n <span class="op">-</span> <span class="dv">1</span> <span class="op">-</span> (p <span class="op">+</span> q <span class="op">+</span> <span class="dv">1</span>)<span class="op">/</span><span class="dv">2</span>) <span class="op">*</span> np.log(product_term)</span>
+<span id="cb599-19"><a href="canonical-correlation-analysis.html#cb599-19" tabindex="-1"></a>    df <span class="op">=</span> (p <span class="op">-</span> i) <span class="op">*</span> (q <span class="op">-</span> i)</span>
+<span id="cb599-20"><a href="canonical-correlation-analysis.html#cb599-20" tabindex="-1"></a>    qvec[i] <span class="op">=</span> chi2.ppf(<span class="dv">1</span> <span class="op">-</span> alpha, df)</span>
+<span id="cb599-21"><a href="canonical-correlation-analysis.html#cb599-21" tabindex="-1"></a></span>
+<span id="cb599-22"><a href="canonical-correlation-analysis.html#cb599-22" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;      test        qvec&quot;</span>)</span></code></pre></div>
+<pre><code>##       test        qvec</code></pre>
+<div class="sourceCode" id="cb601"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb601-1"><a href="canonical-correlation-analysis.html#cb601-1" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
+<span id="cb601-2"><a href="canonical-correlation-analysis.html#cb601-2" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;[</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">,] </span><span class="sc">{</span>test[i]<span class="sc">:.6f}</span><span class="ss">   </span><span class="sc">{</span>qvec[i]<span class="sc">:.6f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>## [1,] 146.716501   21.026070
+## [2,] 14.462374   12.591587
+## [3,] 0.301388   5.991465</code></pre>
+<p>The steps for the test are as follows.</p>
+<ol style="list-style-type: decimal">
+<li>Hypotheses.<span class="math inline">\(H_0: \rho_1=\rho_2=\rho_3=0\)</span> v.s. $H_a: $.</li>
+<li>Significance level <span class="math inline">\(\alpha=0.05\)</span></li>
+<li>Test statistic.
+<span class="math display">\[
+-\left(n-1-\frac{p+q+1}{2}\right)\ln(\prod_{i=1}^p(1-\hat \rho_i^2))=146.7165
+\]</span></li>
+<li>Decision: since <span class="math inline">\(146.7165&gt;\chi_{(p=3)(q=4)}^2(0.05)=\chi_{12}^2(0.05)=21.026\)</span>, we reject <span class="math inline">\(H_0\)</span>.</li>
+<li>Conclusions: at the 5% significance level, we have sufficient evidence that the at least one canonical correlation is not zero.</li>
+</ol>
+<p>Based on a sequence of hypotheses, we reject the first two and can not reject the third one. As a result, we might need two pairs of canonical variates to provide a good summary of the relations between the two sets of variables.</p>
+<p>We can conduct the sequence of tests using built-in function to determine the number of canonical variates pairs.</p>
+<div class="sourceCode" id="cb603"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb603-1"><a href="canonical-correlation-analysis.html#cb603-1" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> f</span>
+<span id="cb603-2"><a href="canonical-correlation-analysis.html#cb603-2" tabindex="-1"></a></span>
+<span id="cb603-3"><a href="canonical-correlation-analysis.html#cb603-3" tabindex="-1"></a><span class="co"># Test via Wilks&#39; Lambda + Rao&#39;s F approximation</span></span>
+<span id="cb603-4"><a href="canonical-correlation-analysis.html#cb603-4" tabindex="-1"></a>n <span class="op">=</span> x1.shape[<span class="dv">0</span>]</span>
+<span id="cb603-5"><a href="canonical-correlation-analysis.html#cb603-5" tabindex="-1"></a>p <span class="op">=</span> x1.shape[<span class="dv">1</span>]</span>
+<span id="cb603-6"><a href="canonical-correlation-analysis.html#cb603-6" tabindex="-1"></a>q <span class="op">=</span> x2.shape[<span class="dv">1</span>]</span>
+<span id="cb603-7"><a href="canonical-correlation-analysis.html#cb603-7" tabindex="-1"></a>k <span class="op">=</span> <span class="bu">min</span>(p, q)</span>
+<span id="cb603-8"><a href="canonical-correlation-analysis.html#cb603-8" tabindex="-1"></a></span>
+<span id="cb603-9"><a href="canonical-correlation-analysis.html#cb603-9" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Wilks&#39; Lambda using F-approximation (Rao’s F):&quot;</span>)</span></code></pre></div>
+<pre><code>## Wilks&#39; Lambda using F-approximation (Rao’s F):</code></pre>
+<div class="sourceCode" id="cb605"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb605-1"><a href="canonical-correlation-analysis.html#cb605-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;  From   To     stat       approx df1    df2      p.value&quot;</span>)</span></code></pre></div>
+<pre><code>##   From   To     stat       approx df1    df2      p.value</code></pre>
+<div class="sourceCode" id="cb607"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb607-1"><a href="canonical-correlation-analysis.html#cb607-1" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
+<span id="cb607-2"><a href="canonical-correlation-analysis.html#cb607-2" tabindex="-1"></a>    r2 <span class="op">=</span> eigvals_A[i:]</span>
+<span id="cb607-3"><a href="canonical-correlation-analysis.html#cb607-3" tabindex="-1"></a>    wilks_lambda <span class="op">=</span> np.prod(<span class="dv">1</span> <span class="op">-</span> r2)</span>
+<span id="cb607-4"><a href="canonical-correlation-analysis.html#cb607-4" tabindex="-1"></a>    s <span class="op">=</span> <span class="op">-</span>np.log(wilks_lambda)</span>
+<span id="cb607-5"><a href="canonical-correlation-analysis.html#cb607-5" tabindex="-1"></a>    m <span class="op">=</span> n <span class="op">-</span> <span class="dv">1</span> <span class="op">-</span> (p <span class="op">+</span> q <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb607-6"><a href="canonical-correlation-analysis.html#cb607-6" tabindex="-1"></a>    t <span class="op">=</span> (p <span class="op">-</span> i) <span class="op">*</span> (q <span class="op">-</span> i)</span>
+<span id="cb607-7"><a href="canonical-correlation-analysis.html#cb607-7" tabindex="-1"></a>    <span class="co"># Rao’s F approximation</span></span>
+<span id="cb607-8"><a href="canonical-correlation-analysis.html#cb607-8" tabindex="-1"></a>    df1 <span class="op">=</span> t</span>
+<span id="cb607-9"><a href="canonical-correlation-analysis.html#cb607-9" tabindex="-1"></a>    df2 <span class="op">=</span> m <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb607-10"><a href="canonical-correlation-analysis.html#cb607-10" tabindex="-1"></a>    approx <span class="op">=</span> ((<span class="dv">1</span> <span class="op">-</span> wilks_lambda <span class="op">**</span> (<span class="dv">1</span> <span class="op">/</span> np.sqrt((t <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>)))) <span class="op">/</span> wilks_lambda <span class="op">**</span> (<span class="dv">1</span> <span class="op">/</span> np.sqrt((t <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>)))) <span class="op">*</span> df2 <span class="op">/</span> df1</span>
+<span id="cb607-11"><a href="canonical-correlation-analysis.html#cb607-11" tabindex="-1"></a>    pval <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> f.cdf(approx, df1, df2)</span>
+<span id="cb607-12"><a href="canonical-correlation-analysis.html#cb607-12" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;  </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">   </span><span class="sc">{</span>wilks_lambda<span class="sc">:.6f}</span><span class="ss">   </span><span class="sc">{</span>approx<span class="sc">:.6f}</span><span class="ss">   </span><span class="sc">{</span><span class="bu">int</span>(df1)<span class="sc">}</span><span class="ss">   </span><span class="sc">{</span><span class="bu">int</span>(df2)<span class="sc">}</span><span class="ss">   </span><span class="sc">{</span>pval<span class="sc">:.7f}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<pre><code>##   1 to 3   0.781467   2.051625   12   1190   0.0175418
+##   2 to 3   0.975987   0.794119   6   1190   0.5745254
+##   3 to 3   0.999494   0.134800   2   1190   0.8739039</code></pre>
+</div>
+<div id="revisit-learning-outcomes-2" class="section level2 unnumbered hasAnchor">
+<h2>Revisit Learning Outcomes<a href="canonical-correlation-analysis.html#revisit-learning-outcomes-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After finishing this chapter, students should be able to</p>
+<ul>
+<li>Understand the objective of canonical correlation analysis.</li>
+<li>Prove important results related to canonical correlation analysis.</li>
+<li>Conduct a canonical correlation analysis in R.</li>
+<li>Interpret the computer output of a canonical correlation analysis.</li>
+<li>Conduct a hypothesis test to test whether the canonical relations are significant.</li>
+<li>Determine the proper number of canonical variates pairs.</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="clustering-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="multidimensional-scaling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
